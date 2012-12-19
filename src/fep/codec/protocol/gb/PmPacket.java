@@ -8,8 +8,8 @@ package fep.codec.protocol.gb;
  *
  * @author luxiaochung
  */
-import java.nio.ByteBuffer;
 import fep.codec.utils.BcdUtils;
+import java.nio.ByteBuffer;
 
 abstract public class PmPacket {
 
@@ -21,8 +21,8 @@ abstract public class PmPacket {
     private EventCountor eventCountor;
     private Authorize authorize;
     private TimeProtectValue tpv;
-    private String remark1;
-    private String remark2;
+    private String commandRemark;//命令标志字
+    private String mpSnRemark;
 
     public PmPacket() {
         super();
@@ -255,28 +255,28 @@ abstract public class PmPacket {
     /**
      * @return the remark1
      */
-    public String getRemark1() {
-        return remark1;
+    public String getCommandRemark() {
+        return commandRemark;
     }
 
     /**
      * @param remark1 the remark1 to set
      */
-    public void setRemark1(String remark1) {
-        this.remark1 = remark1;
+    public void setCommandRemark(String remark) {
+        this.commandRemark = remark;
     }
 
     /**
      * @return the remark2
      */
-    public String getRemark2() {
-        return remark2;
+    public String getMpSnRemark() {
+        return mpSnRemark;
     }
 
     /**
      * @param remark2 the remark2 to set
      */
-    public void setRemark2(String remark2) {
-        this.remark2 = remark2;
+    public void setMpSnRemark(String remark) {
+        this.mpSnRemark = remark;
     }
 }

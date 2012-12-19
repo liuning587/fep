@@ -23,14 +23,16 @@ public class MTO_376 extends MessageTranObject{
     }
 
     public void addCollectObject(CollectObject collectObject){
-        if (null == getCollectObjects())
+        if (null == getCollectObjects()) {
             setCollectObjects(new ArrayList<CollectObject>());
+        }
         this.getCollectObjects().add(collectObject);
     }
 
     public void addCollectObject_Transmit(CollectObject_TransMit collectObject){
-        if (null == getCollectObjects())
+        if (null == getCollectObjects()) {
             setCollectObjects_Transmit(new ArrayList<CollectObject_TransMit>());
+        }
         this.getCollectObjects_Transmit().add(collectObject);
     }
 

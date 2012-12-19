@@ -15,11 +15,12 @@ import fep.codec.protocol.gb.PmPacket;
 public class PmPacket376 extends PmPacket {
     private static byte protocolVersion = 2;
 
+    @Override
     public PmPacket376 clone(){
         PmPacket376 result = new PmPacket376();
         result.setValue(this.getValue(),0);
-        result.setRemark1(this.getRemark1());
-        result.setRemark2(this.getRemark2());
+        result.setCommandRemark(this.getCommandRemark());
+        result.setMpSnRemark(this.getMpSnRemark());
         
         return result;
     }

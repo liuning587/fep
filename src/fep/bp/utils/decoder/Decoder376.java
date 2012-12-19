@@ -3,29 +3,28 @@
  */
 package fep.bp.utils.decoder;
 
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fep.bp.model.Dto;
 import fep.bp.model.Dto.DtoItem;
 import fep.bp.realinterface.conf.ProtocolDataItem;
 import fep.bp.utils.UtilsBp;
-
 import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
 import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645MeterPacket;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Thinkpad
  */
-public class Decoder376 extends Decoder {
+public abstract class Decoder376 extends Decoder {
 
     private int groupBinValue = 0;
     private byte bits = 8;
@@ -53,9 +52,6 @@ public class Decoder376 extends Decoder {
         return results;
     }
 
-    
-
-    
 
     @Override
     public void decode2dto(Object pack, Dto dto) {
@@ -80,12 +76,11 @@ public class Decoder376 extends Decoder {
 
       
 
-    @Override
-    public void decode2dto_TransMit(Object pack, Dto dto) {
-        
-    }
+    public abstract void decode2dto_TransMit(Object pack, Dto dto) ;
 
-    
+    public abstract Map<String, Map<String, String>> decode2Map_TransMit_WriteBack(Object pack);
+
+    public abstract Map<String, Map<String, String>> decode2Map_TransMit(Object pack); 
 
     /**
      * 根据配置文件数据项格式定义，抽取databuffer内容，填充到dataItem列表中
@@ -203,15 +198,8 @@ public class Decoder376 extends Decoder {
         }
     }
 
-    @Override
-    public Map<String, Map<String, String>> decode2Map_TransMit_WriteBack(Object pack) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
-    @Override
-    public Map<String, Map<String, String>> decode2Map_TransMit(Object pack) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+
     /*=======================================protected =====================================================
     /**
      *根据命令项编码从dataBuffer中将数据项解析到数据项Map中
@@ -309,5 +297,43 @@ public class Decoder376 extends Decoder {
         dataBuffer645.getRowIoBuffer().get(commandItem);
         String commandItemCode = "8000" + BcdUtils.binArrayToString(BcdUtils.reverseBytes(commandItem));
         return commandItemCode;
+    }
+    
+    public Map<String, String> decodeTransMitBack(Object pack,int successCode,int failedCode) {
+        Map<String, String> results = new HashMap<String, String>();
+        PmPacket376 packet = (PmPacket376)pack;
+        String logicAddress = packet.getAddress().getRtua();
+        PmPacketData dataBuf = packet.getDataBuffer();
+        dataBuf.rewind();
+        PmPacket376DA da = new PmPacket376DA();
+        dataBuf.getDA(da);
+        PmPacket376DT dt = new PmPacket376DT();
+        dataBuf.getDT(dt);
+        
+        byte[] GpArray = da.getValue();
+        byte[] CommandArray = dt.getValue();
+        
+        byte afn = packet.getAfn();
+        if (afn == 0X10) {  //透明转发，特殊处理
+            long port = dataBuf.getBin(1);//终端通信端口号
+            long len = dataBuf.getBin(2);//透明转发内容字节数k
+            byte[] databuff = new byte[(int) len];
+            dataBuf.getRowIoBuffer().get(databuff);
+            int head = Gb645MeterPacket.getMsgHeadOffset(databuff, 0);
+            Gb645MeterPacket packet645 = Gb645MeterPacket.getPacket(databuff, head);
+            for (int i = 0; i < GpArray.length; i++) {
+                for (int j = 0; j < CommandArray.length; j++) {
+                    String key = logicAddress + "#" + String.valueOf(GpArray[i]) + "#" + String.valueOf(CommandArray[i]);
+                    String value = "2";
+                    if (BcdUtils.byteToUnsigned(packet645.getControlCode().getValue()) == successCode) {
+                        value = String.valueOf(1);//确认
+                    } else if (BcdUtils.byteToUnsigned(packet645.getControlCode().getValue()) == failedCode) {
+                        value = String.valueOf(2);//否认
+                    }
+                    results.put(key, value);
+                }
+            }
+        }
+        return results;
     }
 }

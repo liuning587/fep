@@ -25,6 +25,8 @@ public class RealTimeTaskDAO {
     private String gpMark;//测量点标志：1#2#3#
     private String commandMark;//命令项标志：10040009#10040010
     private String task_type;
+    private String terminalProtocol;
+    private String meterProtocol;
 
     public RealTimeTaskDAO(){
         this.recvMsgs = new ArrayList<RTTaskRecvDAO>();
@@ -140,6 +142,34 @@ public class RealTimeTaskDAO {
      */
     public void setTask_type(String task_type) {
         this.task_type = task_type;
+    }
+
+    /**
+     * @return the terminalProtocol
+     */
+    public String getTerminalProtocol() {
+        return terminalProtocol;
+    }
+
+    /**
+     * @param terminalProtocol the terminalProtocol to set
+     */
+    public void setTerminalProtocol(String terminalProtocol) {
+        this.terminalProtocol = terminalProtocol;
+    }
+
+    /**
+     * @return the meterProtocol
+     */
+    public String getMeterProtocol() {
+        return meterProtocol;
+    }
+
+    /**
+     * @param meterProtocol the meterProtocol to set
+     */
+    public void setMeterProtocol(String meterProtocol) {
+        this.meterProtocol = meterProtocol;
     }
 
 

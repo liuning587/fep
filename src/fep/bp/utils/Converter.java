@@ -145,8 +145,8 @@ public class Converter {
                             packet.setAuthorize(new Authorize());
                         }
                         packet.setTpv(new TimeProtectValue());//时间标签
-                        packet.setRemark1(commandMark.toString());
-                        packet.setRemark2(gpMark.toString());
+                        packet.setCommandRemark(commandMark.toString());
+                        packet.setMpSnRemark(gpMark.toString());
                         results.add(packet);
                         commandMark.delete(0, commandMark.length());
                     }
@@ -299,8 +299,8 @@ public class Converter {
                 //生成一个报文
                 if (((Index - 1) % ActualgroupNumber == 0) && (!CanPacket)) {
                     packet = new PmPacket376();
-                    packet.setRemark1(commandItem.getIdentifier());//设置命令项标志
-                    packet.setRemark2(String.valueOf(MpSn));//设置测量点标志
+                    packet.setCommandRemark(commandItem.getIdentifier());//设置命令项标志
+                    packet.setMpSnRemark(String.valueOf(MpSn));//设置测量点标志
                     preSetPacket(packet, AFN, Rtua);
                     PmPacket376DA da = new PmPacket376DA(MpSn);
                     PmPacket376DT dt = new PmPacket376DT(fn);

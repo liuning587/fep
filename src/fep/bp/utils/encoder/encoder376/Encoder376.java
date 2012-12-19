@@ -3,15 +3,8 @@
  * and open the template in the editor.
  */
 
-package fep.bp.utils.encoder;
+package fep.bp.utils.encoder.encoder376;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fep.bp.realinterface.conf.ProtocolDataItem;
 import fep.bp.realinterface.mto.CircleDataItems;
 import fep.bp.realinterface.mto.CollectObject;
@@ -21,15 +14,20 @@ import fep.bp.realinterface.mto.DataItem;
 import fep.bp.realinterface.mto.DataItemGroup;
 import fep.bp.utils.AFNType;
 import fep.bp.utils.UtilsBp;
+import fep.bp.utils.encoder.Encoder;
 import fep.codec.protocol.gb.*;
-import fep.codec.protocol.gb.PmPacket;
-import fep.codec.protocol.gb.PmPacketData;
-import fep.codec.protocol.gb.TimeProtectValue;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
 import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645MeterPacket;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -43,6 +41,8 @@ public class Encoder376 extends Encoder{
     private int groupBinValue = 0;
     private byte bits = 8;
     
+    private EncodeUtility376 encodeUtility;
+   
     @Override
     public PmPacket Encode(CollectObject obj, byte AFN) {
         try {
@@ -78,7 +78,35 @@ public class Encoder376 extends Encoder{
             return null;
         }
     }
-
+    
+    /*
+    @Override
+    public PmPacket Encode(CollectObject obj, byte AFN) {
+        try {
+            String LogicalAddress = obj.getLogicalAddr();
+            List<CommandItem> CommandItems = obj.getCommandItems();
+            int[] MpSn = obj.getMpSn();
+            switch(AFN)
+            {
+                case AFNType.AFN_GETPARA:
+                    return encodeUtility.Encode_ReadPara(LogicalAddress, MpSn, CommandItems);
+                case AFNType.AFN_SETPARA:
+                    return encodeUtility.Encode_SetPara(LogicalAddress, MpSn, CommandItems);
+                case AFNType.AFN_READDATA1:
+                    return encodeUtility.Encode_ReadData1(LogicalAddress, MpSn, CommandItems);
+                case AFNType.AFN_READDATA2:
+                    return encodeUtility.Encode_ReadData2(LogicalAddress, MpSn, CommandItems);
+                case AFNType.AFN_RESET:
+                    return encodeUtility.Encode_Reset(LogicalAddress, MpSn, CommandItems);
+                default:
+                    return null;
+            }
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage());
+            return null;
+        }
+    }
+*/
     @Override
     public List<PmPacket376> EncodeList(CollectObject obj, byte AFN) {
         List<PmPacket376> results = new ArrayList<PmPacket376>();
@@ -123,8 +151,8 @@ public class Encoder376 extends Encoder{
                             packet.setAuthorize(new Authorize());
                         }
                         packet.setTpv(new TimeProtectValue());//时间标签
-                        packet.setRemark1(commandMark.toString());
-                        packet.setRemark2(gpMark.toString());
+                        packet.setCommandRemark(commandMark.toString());
+                        packet.setMpSnRemark(gpMark.toString());
                         results.add(packet);
                         commandMark.delete(0, commandMark.length());
                     }
@@ -172,9 +200,15 @@ public class Encoder376 extends Encoder{
                     continue;
                 }
                 Gb645MeterPacket pack = new Gb645MeterPacket(obj.getMeterAddr());
-                pack.setControlCode(true, false, false, (byte) obj.getFuncode());
+                byte funcode = (byte) obj.getFuncode();
+                pack.setControlCode(true, false, false, funcode);
                 byte[] DI = BcdUtils.reverseBytes(BcdUtils.stringToByteArray(commandItem.getIdentifier().substring(4, 8)));
                 pack.getDataAsPmPacketData().put(DI);
+                if((funcode == 0x1B)||(funcode==0x04))//控制、写数据
+                {
+                    byte[] PASS = {0,0,0,0};
+                    pack.getDataAsPmPacketData().put(PASS);
+                }   
                 Map<String, ProtocolDataItem> DataItemMap_Config = config.getDataItemMap(commandItem.getIdentifier());
                 Map<String, String> dataItemMap = commandItem.getDatacellParam();
                 if (dataItemMap != null) {
@@ -244,9 +278,10 @@ public class Encoder376 extends Encoder{
      * @param packet
      * @param commandItem
      */
+    /*
     private void putDataBuf_readWithConfig(PmPacket376 packet, CommandItem commandItem) {
-        String DataItemValue, Format, IsGroupEnd = "";
-        int Length, bitnumber = 0;
+        String DataItemValue, Format, IsGroupEnd ;
+        int Length, bitnumber;
         long TempCode = 0;
         List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
         Map<String, String> dataItemMap = commandItem.getDatacellParam();
@@ -256,11 +291,6 @@ public class Encoder376 extends Encoder{
             if (DataItemValue.equals("YESTERDAY")) //抄上一天
             {
                 DataItemValue = UtilsBp.getYeasterday();
-            }
-
-            else if(DataItemValue.equals("TODAY"))
-            {
-                DataItemValue = UtilsBp.getToday();
             }
             if (dataItemMap != null) {
                 if (dataItemMap.containsKey(DataItemCode)) {
@@ -276,8 +306,8 @@ public class Encoder376 extends Encoder{
     }
 
     public void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
-        String DataItemValue, Format, IsGroupEnd = "";
-        int Length, bitnumber = 0;
+        String DataItemValue, Format, IsGroupEnd ;
+        int Length, bitnumber;
         long TempCode = 0;
         List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
         Map<String, String> dataItemMap = commandItem.getDatacellParam();
@@ -301,7 +331,7 @@ public class Encoder376 extends Encoder{
             }
         }
     }
-
+*/
     public void FillDataBuffer(PmPacketData packetdata, String Format, String DataItemValue, String IsGroupEnd, int Length, int bitnumber) {
         if (Format.equals("HEX")) {
             packetdata.putBin(BcdUtils.stringToByte(UtilsBp.lPad(DataItemValue, "0", 2)), Length);
@@ -427,6 +457,69 @@ public class Encoder376 extends Encoder{
             return 0;
         }
     }
+    
+    /**
+     * 按规约配置文件填充数据区
+     * @param packet
+     * @param commandItem
+     */
+    private void putDataBuf_readWithConfig(PmPacket376 packet, CommandItem commandItem) {
+        String DataItemValue, Format, IsGroupEnd = "";
+        int Length, bitnumber = 0;
+        long TempCode = 0;
+        List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
+        Map<String, String> dataItemMap = commandItem.getDatacellParam();
+        for (ProtocolDataItem dataItem : DataItemList_Config) {
+            String DataItemCode = dataItem.getDataItemCode();
+            DataItemValue = dataItem.getDefaultValue();
+            if (DataItemValue.equals("YESTERDAY")) //抄上一天
+            {
+                DataItemValue = UtilsBp.getYeasterday();
+            }
+
+            else if(DataItemValue.equals("TODAY"))
+            {
+                DataItemValue = UtilsBp.getToday();
+            }
+            if (dataItemMap != null) {
+                if (dataItemMap.containsKey(DataItemCode)) {
+                    DataItemValue = dataItemMap.get(DataItemCode);
+                }
+            }
+            Format = dataItem.getFormat();
+            Length = dataItem.getLength();
+            IsGroupEnd = dataItem.getIsGroupEnd();
+            bitnumber = dataItem.getBitNumber();
+            FillDataBuffer(packet.getDataBuffer(), Format, DataItemValue, IsGroupEnd, Length, bitnumber);
+        }
+    }
+
+    public void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
+        String DataItemValue, Format, IsGroupEnd = "";
+        int Length, bitnumber = 0;
+        long TempCode = 0;
+        List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
+        Map<String, String> dataItemMap = commandItem.getDatacellParam();
+        if (dataItemMap != null) {
+            for (ProtocolDataItem dataItem : DataItemList_Config) {
+                String DataItemCode = dataItem.getDataItemCode();
+                DataItemValue = dataItem.getDefaultValue();
+                if (DataItemValue.equals("YESTERDAY")) //抄上一天
+                {
+                    DataItemValue = UtilsBp.getYeasterday();
+                }
+
+                if (dataItemMap.containsKey(DataItemCode)) {
+                    DataItemValue = dataItemMap.get(DataItemCode);
+                }
+                Format = dataItem.getFormat();
+                Length = dataItem.getLength();
+                IsGroupEnd = dataItem.getIsGroupEnd();
+                bitnumber = dataItem.getBitNumber();
+                FillDataBuffer(packet.getDataBuffer(), Format, DataItemValue, IsGroupEnd, Length, bitnumber);
+            }
+        }
+    }
 
     private void commandItem2PacketList(CommandItem commandItem, byte AFN, String Rtua, int MpSn, int PacketLen, List<PmPacket376> results) {
         int Index = 1;
@@ -435,9 +528,9 @@ public class Encoder376 extends Encoder{
         boolean CanPacket = false;
         int groupNumber = PacketLen / getDataItemGroupLength(commandItem);  //理论每一帧下发的参数组数
         int ActualgroupNumber = 0;//每次实际下发的参数组数
-        String DataItemValue = "";
-        String Format = "";
-        String IsGroupEnd = "";
+        String DataItemValue ;
+        String Format;
+        String IsGroupEnd;
         int Length = 0;
         int bitnumber = 0;
         ProtocolDataItem dataItem = null;
@@ -461,8 +554,8 @@ public class Encoder376 extends Encoder{
                 //生成一个报文
                 if (((Index - 1) % ActualgroupNumber == 0) && (!CanPacket)) {
                     packet = new PmPacket376();
-                    packet.setRemark1(commandItem.getIdentifier());//设置命令项标志
-                    packet.setRemark2(String.valueOf(MpSn));//设置测量点标志
+                    packet.setCommandRemark(commandItem.getIdentifier());//设置命令项标志
+                    packet.setMpSnRemark(String.valueOf(MpSn));//设置测量点标志
                     preSetPacket(packet, AFN, Rtua);
                     PmPacket376DA da = new PmPacket376DA(MpSn);
                     PmPacket376DT dt = new PmPacket376DT(fn);

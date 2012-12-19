@@ -4,16 +4,13 @@
  */
 package fep.bp.realinterface.conf;
 
+import fep.codec.utils.CastorUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-
-import fep.codec.utils.CastorUtil;
 
 /**
  *
@@ -21,8 +18,8 @@ import fep.codec.utils.CastorUtil;
  */
 public class ProtocolConfig {
 
-	private static String PROTOCOL_DATA_CONFIG_MAPPING;
-	private static String PROTOCOL_DATA_CONFIG;
+	private static String PROTOCOL_DATA_CONFIG_MAPPING="protocol-data-config-mapping.xml";
+	private static String PROTOCOL_DATA_CONFIG="protocol-data-config.xml";
 	private static ProtocolConfig instance = null;
 	private static ProtocolCommandItems commandItems;
 

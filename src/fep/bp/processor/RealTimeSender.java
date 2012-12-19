@@ -3,11 +3,6 @@
  */
 package fep.bp.processor;
 
-import java.util.List;
-import java.util.logging.Level;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import fep.bp.dal.RTTaskService;
 import fep.bp.model.RealTimeTaskDAO;
 import fep.codec.protocol.gb.PmPacket;
@@ -15,8 +10,11 @@ import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.utils.BcdUtils;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuRespPacketQueue;
-
 import fep.system.SystemConst;
+import java.util.List;
+import java.util.logging.Level;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -55,8 +53,9 @@ public class RealTimeSender extends BaseProcessor {
                     log.info("往下发队列中发送("+packet.getAddress().getRtua()+")报文："+task.getSendmsg());
                 }
             }
-            else
-              log.info("tasks为NULL");  
+            else {
+                log.info("tasks为NULL");
+            }  
         }
 
     }

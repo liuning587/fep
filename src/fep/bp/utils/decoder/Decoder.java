@@ -30,7 +30,8 @@ public abstract class Decoder {
 
     public abstract Map<String, Map<String, String>> decode2Map_TransMit(Object pack);
     public abstract Map<String, Map<String, String>> decode2Map_TransMit_WriteBack(Object pack);
-
+    public abstract Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack);
+    public abstract Map<String, String> decode2Map_TransMit_ControlBack(Object pack);
     public abstract void decode2dto_TransMit(Object pack, Dto dto);
     /**
      * @return the config

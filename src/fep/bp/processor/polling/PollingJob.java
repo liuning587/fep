@@ -31,7 +31,7 @@ import fep.bp.utils.BaudRate;
 import fep.bp.utils.MeterType;
 import fep.bp.utils.SerialPortPara;
 import fep.bp.utils.encoder.Encoder;
-import fep.bp.utils.encoder.Encoder376;
+import fep.bp.utils.encoder.encoder376.Encoder376;
 
 import fep.codec.utils.BcdUtils;
 import fep.system.SystemConst;

@@ -9,7 +9,7 @@ import fep.bp.realinterface.mto.*;
  *
  * @author Thinkpad
  */
-public interface CollectInterface {
+public interface RealTimeInterface {
     /**
      * 参数设置
      * @param MTO 消息传输对象
@@ -94,13 +94,7 @@ public interface CollectInterface {
      */
     public Map<String, String> getReturnByWriteParameter_TransMit(long appId) throws Exception;
 
-    /**
-     * 获取参数设置结果
-     * @param appId
-     * @return 返回JSon格式结果
-     * @throws Exception
-     */
-    public  String getReturnByWriteParameter_Json(long appId) throws Exception;
+ 
     
     /**
      * 获取参数读取结果
@@ -110,13 +104,6 @@ public interface CollectInterface {
      */
     public Map<String, Map<String, String>> getReturnByReadParameter(long appId) throws Exception;
 
-    /**
-     * 获取参数读取结果
-     * @param appId
-     * @return 返回JSon格式结果
-     * @throws Exception
-     */
-    public String getReturnByReadParameter_Json(long appId) throws Exception;
 
 
     /**

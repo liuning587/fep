@@ -36,7 +36,7 @@ import fep.bp.utils.Converter;
 import fep.bp.utils.MeterType;
 import fep.bp.utils.SerialPortPara;
 import fep.bp.utils.UtilsBp;
-import fep.bp.utils.encoder.Encoder376;
+import fep.bp.utils.encoder.encoder376.Encoder376;
 import fep.codec.protocol.gb.PmPacket;
 import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;

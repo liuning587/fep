@@ -4,16 +4,16 @@
  */
 package fep.codec.utils;
 
-import java.io.*;
-import java.net.URI;
-import java.net.URL;
-import org.exolab.castor.mapping.MappingException;
-import org.exolab.castor.mapping.Mapping;
-import org.exolab.castor.xml.*;
 import fep.bp.realinterface.conf.ProtocolCommandItem;
 import fep.bp.realinterface.conf.ProtocolCommandItems;
 import fep.bp.realinterface.conf.ProtocolDataItem;
 import fep.common.exception.CastorException;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.mapping.MappingException;
+import org.exolab.castor.xml.*;
 
 /**
  * 从 xml 文件中解析一个对象

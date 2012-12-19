@@ -5,20 +5,20 @@
 
 package fep.bp.utils.encoder;
 
-import java.util.List;
 import fep.bp.realinterface.conf.ProtocolConfig;
 import fep.bp.realinterface.mto.CollectObject;
 import fep.bp.realinterface.mto.CollectObject_TransMit;
 import fep.codec.protocol.gb.PmPacket;
 import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376;
+import java.util.List;
 
 /**
  *
  * @author xiekeli
  */
 public abstract class Encoder {
-    protected ProtocolConfig config;
+    public ProtocolConfig config;
     protected static final int MAX_PACKET_LEN = 256;
 
     /**

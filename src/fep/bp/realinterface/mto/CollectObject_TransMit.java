@@ -4,10 +4,10 @@
 
 package fep.bp.realinterface.mto;
 
-import java.util.ArrayList;
-import java.util.List;
 import fep.bp.utils.SerialPortPara;
 import fep.common.exception.BPException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -117,8 +117,9 @@ public class CollectObject_TransMit {
      * @param waitforPacket the waitforPacket to set
      */
     public void setWaitforPacket(byte waitforPacket) throws BPException {
-        if((waitforPacket<0)||(waitforPacket > 127))
+        if((waitforPacket<0)||(waitforPacket > 127)) {
             throw(new BPException("等待报文返回时间超过允许范围"));
+        }
         this.waitforPacket = waitforPacket;
     }
 

@@ -65,7 +65,7 @@
         <property name="config" ref="protocolConfig"/>
     </bean>
 
-    <bean id="encoder" class="fep.bp.utils.encoder.Encoder376">
+    <bean id="encoder" class="fep.bp.utils.encoder.encoder376.Encoder376">
         <property name="config" ref="protocolConfig"/>
     </bean>
 

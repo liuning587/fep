@@ -415,7 +415,7 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("2101"),
                     dataItemMap.get("2102"),
                     dataItemMap.get("2103"),
-                    00);
+                    "00");
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
         }

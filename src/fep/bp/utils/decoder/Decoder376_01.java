@@ -11,7 +11,9 @@ import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
+import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645MeterPacket;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import org.slf4j.Logger;
@@ -93,6 +95,27 @@ public class Decoder376_01 extends Decoder376{
             return null;
         }
 
+    }
+    
+    /**
+     * 针对透明转发类设置参数报文返回的规约解析
+     * @param pack：报文对象
+     * @return：返回嵌套map的数据结构：key = logicAddress + "#" + Mpsn + "#" + CommandCode;  value = 1(确认) 2（否认）
+     */
+    @Override
+    public Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack) {
+        return super.decodeTransMitBack(pack, 0x84, 0xc1);
+    }
+    
+    /**
+     * 针对透明转发类控制操作报文返回的规约解析
+     * @param pack：报文对象
+     * @return 返回嵌套map的数据结构：key = logicAddress + "#" + Mpsn + "#" + CommandCode;  value = 1(确认) 2（否认）
+     */
+    @Override
+    public Map<String, String> decode2Map_TransMit_ControlBack(Object pack)
+    {
+        return super.decodeTransMitBack(pack, 0x84, 0xc1);
     }
 
     private void readSwitchStatus(String commandItemCode, PmPacketData dataBuffer645) {
