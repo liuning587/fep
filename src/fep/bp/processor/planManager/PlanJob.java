@@ -113,7 +113,7 @@ public class PlanJob implements Job {
         object_trans.setWaitforPacket((byte) 10);
         object_trans.addCommandItem(Item);
         //List<PmPacket376> packetList = converter.CollectObject_TransMit2PacketList(object_trans, new StringBuffer());
-        List<PmPacket376> packetList = encoder.EncodeList_TransMit(object_trans);
+        List<PmPacket376> packetList = encoder.EncodeList_TransMit(object_trans,new StringBuilder());
         if (null != packetList) {
             for (PmPacket376 packet : packetList) {
                 //pack.getAddress().setMastStationId((byte) 2);

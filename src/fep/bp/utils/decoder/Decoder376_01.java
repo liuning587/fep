@@ -103,8 +103,8 @@ public class Decoder376_01 extends Decoder376{
      * @return：返回嵌套map的数据结构：key = logicAddress + "#" + Mpsn + "#" + CommandCode;  value = 1(确认) 2（否认）
      */
     @Override
-    public Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack) {
-        return super.decodeTransMitBack(pack, 0x84, 0xc1);
+    public Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack,String[] GpArray,String[] CommandArray) {
+        return super.decodeTransMitBack(pack, 0x84, 0xc1,GpArray,CommandArray);
     }
     
     /**
@@ -113,9 +113,9 @@ public class Decoder376_01 extends Decoder376{
      * @return 返回嵌套map的数据结构：key = logicAddress + "#" + Mpsn + "#" + CommandCode;  value = 1(确认) 2（否认）
      */
     @Override
-    public Map<String, String> decode2Map_TransMit_ControlBack(Object pack)
+    public Map<String, String> decode2Map_TransMit_ControlBack(Object pack,String[] GpArray,String[] CommandArray)
     {
-        return super.decodeTransMitBack(pack, 0x84, 0xc1);
+        return super.decodeTransMitBack(pack, 0x84, 0xc1,GpArray,CommandArray);
     }
 
     private void readSwitchStatus(String commandItemCode, PmPacketData dataBuffer645) {

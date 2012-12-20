@@ -122,4 +122,12 @@ public interface RealTimeInterface {
      * @throws Exception
      */
     public Map<String, Map<String, String>> getReturnByReadData(long appId) throws Exception;
+    
+    /**
+     * 获取控制操作返回结果
+     * @param appId
+     * @return
+     * @throws Exception 
+     */
+    public Map<String, String> getReturnByControl_TransMit(long appId) throws Exception;
 }

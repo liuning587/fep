@@ -40,9 +40,8 @@ public class Encoder376 extends Encoder{
     private String groupValue = "";
     private int groupBinValue = 0;
     private byte bits = 8;
-    
-    private EncodeUtility376 encodeUtility;
-   
+
+   /*
     @Override
     public PmPacket Encode(CollectObject obj, byte AFN) {
         try {
@@ -78,8 +77,8 @@ public class Encoder376 extends Encoder{
             return null;
         }
     }
+    */
     
-    /*
     @Override
     public PmPacket Encode(CollectObject obj, byte AFN) {
         try {
@@ -89,15 +88,15 @@ public class Encoder376 extends Encoder{
             switch(AFN)
             {
                 case AFNType.AFN_GETPARA:
-                    return encodeUtility.Encode_ReadPara(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadPara(LogicalAddress, MpSn, CommandItems);
                 case AFNType.AFN_SETPARA:
-                    return encodeUtility.Encode_SetPara(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_SetPara(LogicalAddress, MpSn, CommandItems);
                 case AFNType.AFN_READDATA1:
-                    return encodeUtility.Encode_ReadData1(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadData1(LogicalAddress, MpSn, CommandItems);
                 case AFNType.AFN_READDATA2:
-                    return encodeUtility.Encode_ReadData2(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadData2(LogicalAddress, MpSn, CommandItems);
                 case AFNType.AFN_RESET:
-                    return encodeUtility.Encode_Reset(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_Reset(LogicalAddress, MpSn, CommandItems);
                 default:
                     return null;
             }
@@ -106,7 +105,7 @@ public class Encoder376 extends Encoder{
             return null;
         }
     }
-*/
+
     @Override
     public List<PmPacket376> EncodeList(CollectObject obj, byte AFN) {
         List<PmPacket376> results = new ArrayList<PmPacket376>();
@@ -123,9 +122,9 @@ public class Encoder376 extends Encoder{
             List<CommandItem> CommandItems = obj.getCommandItems();
             for (CommandItem commandItem : CommandItems) {
 
-                if (IsSeqValid(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
+                if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
                 {
-                    commandItem2PacketList(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
+                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
                 }
                 else {
                     if ((Index - 1) % CmdItemNum == 0) {
@@ -139,11 +138,8 @@ public class Encoder376 extends Encoder{
                     dt.setFn(fn);
                     packet.getDataBuffer().putDA(da);
                     packet.getDataBuffer().putDT(dt);
-                    if ((AFN == AFNType.AFN_SETPARA)) {
+                    if ((AFN == AFNType.AFN_SETPARA)||(AFN == AFNType.AFN_READDATA2)) {
                         putDataBuf_withValue(packet, commandItem);
-                    }
-                    if ((AFN == AFNType.AFN_READDATA2)) {
-                        putDataBuf_readWithConfig(packet, commandItem);
                     }
                     if (Index % CmdItemNum == 0) {
                         if (AFN == AFNType.AFN_RESET || AFN == AFNType.AFN_SETPARA || AFN == AFNType.AFN_TRANSMIT)//消息认证码字段PW
@@ -164,11 +160,11 @@ public class Encoder376 extends Encoder{
     }
 
     @Override
-    public List<PmPacket376> EncodeList_TransMit(CollectObject_TransMit obj) {
+    public List<PmPacket376> EncodeList_TransMit(CollectObject_TransMit obj,StringBuilder commandMark) {
         try {
             List<PmPacket376> results = new ArrayList<PmPacket376>();
             List<CommandItem> CommandItems = obj.getCommandItems();
-
+            StringBuilder gpMark = new StringBuilder();
             for (CommandItem commandItem : CommandItems) {
 
                 PmPacket376 packet = new PmPacket376();
@@ -183,7 +179,7 @@ public class Encoder376 extends Encoder{
                 packet.getSeq().setIsFirstFrame(true);
                 packet.getSeq().setIsFinishFrame(true);
 
-               // commandMark.append(commandItem.getIdentifier()).append("#");
+                commandMark.append(commandItem.getIdentifier()).append("#");
                 PmPacket376DA da = new PmPacket376DA(obj.getMpSn());
                 PmPacket376DT dt = new PmPacket376DT(1);
 
@@ -263,7 +259,7 @@ public class Encoder376 extends Encoder{
         }
     }
 
-    private Boolean IsSeqValid(CommandItem commandItem) {
+    private Boolean NeedSubpackage(CommandItem commandItem) {
         Boolean result = (commandItem != null);
         result = result && (commandItem.getDatacellParam() != null);
         result = result && (commandItem.getCircleDataItems() != null);
@@ -332,7 +328,16 @@ public class Encoder376 extends Encoder{
         }
     }
 */
-    public void FillDataBuffer(PmPacketData packetdata, String Format, String DataItemValue, String IsGroupEnd, int Length, int bitnumber) {
+    /**
+     * 按规约命令/数据项配置文件填充数据包buffer
+     * @param packetdata：被填充的数据包
+     * @param Format：数据项格式码
+     * @param DataItemValue：数据项的值
+     * @param IsGroupEnd：该项数据项是否属于BS8格式的最后一个
+     * @param Length：数据项长度（字节）
+     * @param bitnumber：针对BS8格式的位数
+     */
+    private void FillDataBuffer(PmPacketData packetdata, String Format, String DataItemValue, String IsGroupEnd, int Length, int bitnumber) {
         if (Format.equals("HEX")) {
             packetdata.putBin(BcdUtils.stringToByte(UtilsBp.lPad(DataItemValue, "0", 2)), Length);
         } else if (Format.equals("BIN")) {
@@ -458,45 +463,10 @@ public class Encoder376 extends Encoder{
         }
     }
     
-    /**
-     * 按规约配置文件填充数据区
-     * @param packet
-     * @param commandItem
-     */
-    private void putDataBuf_readWithConfig(PmPacket376 packet, CommandItem commandItem) {
-        String DataItemValue, Format, IsGroupEnd = "";
-        int Length, bitnumber = 0;
-        long TempCode = 0;
-        List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
-        Map<String, String> dataItemMap = commandItem.getDatacellParam();
-        for (ProtocolDataItem dataItem : DataItemList_Config) {
-            String DataItemCode = dataItem.getDataItemCode();
-            DataItemValue = dataItem.getDefaultValue();
-            if (DataItemValue.equals("YESTERDAY")) //抄上一天
-            {
-                DataItemValue = UtilsBp.getYeasterday();
-            }
-
-            else if(DataItemValue.equals("TODAY"))
-            {
-                DataItemValue = UtilsBp.getToday();
-            }
-            if (dataItemMap != null) {
-                if (dataItemMap.containsKey(DataItemCode)) {
-                    DataItemValue = dataItemMap.get(DataItemCode);
-                }
-            }
-            Format = dataItem.getFormat();
-            Length = dataItem.getLength();
-            IsGroupEnd = dataItem.getIsGroupEnd();
-            bitnumber = dataItem.getBitNumber();
-            FillDataBuffer(packet.getDataBuffer(), Format, DataItemValue, IsGroupEnd, Length, bitnumber);
-        }
-    }
 
     public void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
-        String DataItemValue, Format, IsGroupEnd = "";
-        int Length, bitnumber = 0;
+        String DataItemValue, Format, IsGroupEnd ;
+        int Length, bitnumber ;
         long TempCode = 0;
         List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
         Map<String, String> dataItemMap = commandItem.getDatacellParam();
@@ -521,18 +491,27 @@ public class Encoder376 extends Encoder{
         }
     }
 
-    private void commandItem2PacketList(CommandItem commandItem, byte AFN, String Rtua, int MpSn, int PacketLen, List<PmPacket376> results) {
+    /**
+     *  带分包处理的转换函数，将命令对象解析成报文包列表
+     * @param commandItem
+     * @param AFN
+     * @param Rtua
+     * @param MpSn
+     * @param PacketLen
+     * @param results 
+     */
+    private void cmdItem2PacketList_Subpacket(CommandItem commandItem, byte AFN, String Rtua, int MpSn, int PacketLen, List<PmPacket376> results) {
         int Index = 1;
         int packetNo = 1;
         long TempCode = 0;
         boolean CanPacket = false;
         int groupNumber = PacketLen / getDataItemGroupLength(commandItem);  //理论每一帧下发的参数组数
-        int ActualgroupNumber = 0;//每次实际下发的参数组数
+        int ActualgroupNumber;//每次实际下发的参数组数
         String DataItemValue ;
         String Format;
         String IsGroupEnd;
-        int Length = 0;
-        int bitnumber = 0;
+        int Length ;
+        int bitnumber;
         ProtocolDataItem dataItem = null;
 
         Map<String, ProtocolDataItem> DataItemMap_Config = config.getDataItemMap(commandItem.getIdentifier());
@@ -630,7 +609,86 @@ public class Encoder376 extends Encoder{
             }
         }
     }
+    
+    //读一类数据组帧
+    private PmPacket Encode_ReadData1(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA1, MpSnList,CommandItems,false,true,false);
+    }
+    
+    //读二类数据组帧
+    private PmPacket Encode_ReadData2(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA2, MpSnList,CommandItems,false,true,true);
+    }
+    
+    //读参数组帧
+    private PmPacket Encode_ReadPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_GETPARA, MpSnList,CommandItems,false,true,false);
+    }
+    
+    //设置参数组帧
+    private PmPacket Encode_SetPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_SETPARA, MpSnList,CommandItems,true,true,true);
+    }
+    
+    //设置参数组帧
+    private PmPacket Encode_Transmit(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,true);
+    }
+    
+    //复位组帧
+    private PmPacket Encode_Reset(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    {
+        return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,false);
+    }
 
 
+    /**
+     * 
+     * @param LogicalAddr:终端逻辑地址
+     * @param AFN：功能码
+     * @param MpSnList ： 测量点列表
+     * @param CommandItems：命令像列表
+     * @param PW：是否含消息认证码字段PW
+     * @param Tp：是否含时间标签
+     * @param FillValue：是否填充CommandItem内数据项的值（如：参数设置）
+     * @return 
+     */
+    private PmPacket Encode_Normal(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
+    {
+        try {
+            PmPacket packet = new PmPacket376();
+            preSetPacket(packet, AFN, LogicalAddr);
+
+            for (int i = 0; i <= MpSnList.length - 1; i++) {
+                for (CommandItem commandItem : CommandItems) {
+                    PmPacket376DA da = new PmPacket376DA(MpSnList[i]);
+                    PmPacket376DT dt = new PmPacket376DT();
+                    int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
+                    dt.setFn(fn);
+                    packet.getDataBuffer().putDA(da);
+                    packet.getDataBuffer().putDT(dt);
+                    if (FillValue) {
+                        putDataBuf_withValue((PmPacket376) packet,commandItem);
+                    }
+                }
+            }
+            
+            if(PW){
+                packet.setAuthorize(new Authorize());
+            }
+            if(Tp) {
+                packet.setTpv(new TimeProtectValue());
+            }//时间标签
+            return packet;
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage());
+            return null;
+        }
+    }
 
 }

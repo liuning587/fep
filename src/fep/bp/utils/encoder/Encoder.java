@@ -42,7 +42,7 @@ public abstract class Encoder {
      * @param obj
      * @return
      */
-    public abstract List<PmPacket376> EncodeList_TransMit(CollectObject_TransMit obj);
+    public abstract List<PmPacket376> EncodeList_TransMit(CollectObject_TransMit obj,StringBuilder commandMark);
 
     /**
      * @return the config
@@ -58,6 +58,6 @@ public abstract class Encoder {
         this.config = config;
     }
 
-    public abstract void FillDataBuffer(PmPacketData packetdata, String Format, String DataItemValue, String IsGroupEnd, int Length, int bitnumber);
+ //   public abstract void FillDataBuffer(PmPacketData packetdata, String Format, String DataItemValue, String IsGroupEnd, int Length, int bitnumber);
 
 }

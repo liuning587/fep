@@ -92,13 +92,13 @@ public class Decoder376_02 extends Decoder376{
     }
     
     @Override
-    public Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack)
+    public Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack,String[] GpArray,String[] CommandArray)
     {
-        return super.decodeTransMitBack(pack, 0x84, 0xc4);
+        return super.decodeTransMitBack(pack, 0x84, 0xc4,GpArray,CommandArray);
     }
 
     @Override
-    public Map<String, String> decode2Map_TransMit_ControlBack(Object pack) {
-        return super.decodeTransMitBack(pack, 0x9B, 0xDB);
+    public Map<String, String> decode2Map_TransMit_ControlBack(Object pack,String[] GpArray,String[] CommandArray) {
+        return super.decodeTransMitBack(pack, 0x9B, 0xDB,GpArray,CommandArray);
     }
 }

@@ -299,7 +299,7 @@ public abstract class Decoder376 extends Decoder {
         return commandItemCode;
     }
     
-    public Map<String, String> decodeTransMitBack(Object pack,int successCode,int failedCode) {
+    public Map<String, String> decodeTransMitBack(Object pack,int successCode,int failedCode,String[] GpArray,String[] CommandArray) {
         Map<String, String> results = new HashMap<String, String>();
         PmPacket376 packet = (PmPacket376)pack;
         String logicAddress = packet.getAddress().getRtua();
@@ -309,9 +309,6 @@ public abstract class Decoder376 extends Decoder {
         dataBuf.getDA(da);
         PmPacket376DT dt = new PmPacket376DT();
         dataBuf.getDT(dt);
-        
-        byte[] GpArray = da.getValue();
-        byte[] CommandArray = dt.getValue();
         
         byte afn = packet.getAfn();
         if (afn == 0X10) {  //透明转发，特殊处理
