@@ -216,6 +216,11 @@ abstract public class PmPacket {
         }
         return buff.toString();
     }
+    
+    public String toHexString()
+    {
+        return BcdUtils.binArrayToString(this.getValue());
+    }
 
     protected static int getMsgHeadOffset(byte[] msg, byte protocolVersion, int firstIndex) {
         int head = PmPacket.getHeadOffset(msg, firstIndex, protocolVersion);

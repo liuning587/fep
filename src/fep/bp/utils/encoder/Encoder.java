@@ -9,7 +9,6 @@ import fep.bp.realinterface.conf.ProtocolConfig;
 import fep.bp.realinterface.mto.CollectObject;
 import fep.bp.realinterface.mto.CollectObject_TransMit;
 import fep.codec.protocol.gb.PmPacket;
-import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  * @author xiekeli
  */
 public abstract class Encoder {
-    public ProtocolConfig config;
+    protected ProtocolConfig config;
     protected static final int MAX_PACKET_LEN = 256;
 
     /**
@@ -44,6 +43,16 @@ public abstract class Encoder {
      */
     public abstract List<PmPacket376> EncodeList_TransMit(CollectObject_TransMit obj,StringBuilder commandMark);
 
+    
+    /**
+     * 对文件传输进行编码，包含自动分帧处理
+     * @param rtua
+     * @param binFile
+     * @return 
+     */
+    public abstract List<PmPacket376> EncodeList_Upgrade(String rtua,byte[] binFile);
+    
+    
     /**
      * @return the config
      */

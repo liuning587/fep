@@ -36,12 +36,13 @@ import org.slf4j.LoggerFactory;
 public class Encoder376 extends Encoder{
     private final static Logger log = LoggerFactory.getLogger(Encoder376.class);
     private static final byte FUNCODE_DOWM_1 = 1;//PRM =1 功能码：1 （发送/确认）
+    private final int UPGRADE_FILE_SEGMENT_SIZE = 512;//升级文件每段的最大长度
 
     private String groupValue = "";
     private int groupBinValue = 0;
     private byte bits = 8;
 
-   /*
+   /* 
     @Override
     public PmPacket Encode(CollectObject obj, byte AFN) {
         try {
@@ -59,7 +60,7 @@ public class Encoder376 extends Encoder{
                     packet.getDataBuffer().putDA(da);
                     packet.getDataBuffer().putDT(dt);
                     if (AFN == AFNType.AFN_READDATA2) {
-                        putDataBuf_readWithConfig((PmPacket376) packet,commandItem);
+                        putDataBuf_withValue((PmPacket376) packet,commandItem);
                     }
                     if ((AFN == AFNType.AFN_SETPARA)) {
                         putDataBuf_withValue((PmPacket376) packet,commandItem);
@@ -78,7 +79,7 @@ public class Encoder376 extends Encoder{
         }
     }
     */
-    
+   
     @Override
     public PmPacket Encode(CollectObject obj, byte AFN) {
         try {
@@ -237,8 +238,58 @@ public class Encoder376 extends Encoder{
             return null;
         }
     }
+    
+     @Override
+    public List<PmPacket376> EncodeList_Upgrade(String rtua,byte[] binFile)
+    {
+        List<PmPacket376> results = new ArrayList<PmPacket376>();
+        int segmentNumber =0;
+        int fileSize = binFile.length;
+        int lastSegBytes = fileSize % UPGRADE_FILE_SEGMENT_SIZE;
+        segmentNumber = (fileSize < UPGRADE_FILE_SEGMENT_SIZE)?1:(fileSize / UPGRADE_FILE_SEGMENT_SIZE);
+        int filePos = 0;
+        for(int i=0;i<segmentNumber;i++)
+        {
+            int thisSegmentLength = (i == segmentNumber-1)?lastSegBytes:UPGRADE_FILE_SEGMENT_SIZE;
+            byte[] thisSegment = new byte[UPGRADE_FILE_SEGMENT_SIZE];
+            if(i==segmentNumber-1)
+            {
+                initArray(thisSegment,(byte)0xFF);
+            }
+            System.arraycopy(binFile, filePos, thisSegment, 0, thisSegmentLength);
+            
+            PmPacket376 packet = new PmPacket376();
+            preSetPacket(packet, AFNType.AFN_UPGRADE, rtua);
+            PmPacket376DA da = new PmPacket376DA(0);//p0
+            PmPacket376DT dt = new PmPacket376DT();
+            dt.setFn(1);//F1,文件传输方式1
+            packet.getDataBuffer().putDA(da);
+            packet.getDataBuffer().putDT(dt);
+            packet.getDataBuffer().putBin(0, 1);//文件标识
+            packet.getDataBuffer().putBin(0, 1);//文件属性
+            packet.getDataBuffer().putBin(0, 1);//文件指令
+            packet.getDataBuffer().putBin(segmentNumber, 2);//总段数n
+            packet.getDataBuffer().putBin(i, 4);//第i段标识或偏移
+            packet.getDataBuffer().putBin(thisSegmentLength, 2);//第i段数据长度Lf
+            packet.getDataBuffer().put(thisSegment);//文件数据
+            results.add(packet);
+            filePos += thisSegmentLength;
+        }
+        
+                        
+        return results;
+        
+    }
 
     //--------------------private--------------------------------------
+    
+     private void initArray(byte[] objArray, byte value)
+     {
+         for(int i=0;i<objArray.length;i++) {
+             objArray[i] = value;
+         } 
+     }
+
 
     /**
      * 装配报文对象
@@ -259,6 +310,11 @@ public class Encoder376 extends Encoder{
         }
     }
 
+    /**
+     * 判断是否循环类命令项，如：F10
+     * @param commandItem
+     * @return 
+     */
     private Boolean NeedSubpackage(CommandItem commandItem) {
         Boolean result = (commandItem != null);
         result = result && (commandItem.getDatacellParam() != null);
@@ -443,7 +499,7 @@ public class Encoder376 extends Encoder{
         List<DataItemGroup> groups = commandItem.getCircleDataItems().getDataItemGroups();
         if (groups.size() > 0) {
             DataItemGroup group = groups.get(0);
-            Map<String, ProtocolDataItem> DataItemMap_Config = config.getDataItemMap(commandItem.getIdentifier());
+            Map<String, ProtocolDataItem> DataItemMap_Config = this.getConfig().getDataItemMap(commandItem.getIdentifier());
 
             List<DataItem> dataItemList = group.getDataItemList();
             for (DataItem dataItem : dataItemList) {
@@ -464,11 +520,11 @@ public class Encoder376 extends Encoder{
     }
     
 
-    public void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
+    private void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
         String DataItemValue, Format, IsGroupEnd ;
         int Length, bitnumber ;
         long TempCode = 0;
-        List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItem.getIdentifier());
+        List<ProtocolDataItem> DataItemList_Config = this.config.getDataItemList(commandItem.getIdentifier());
         Map<String, String> dataItemMap = commandItem.getDatacellParam();
         if (dataItemMap != null) {
             for (ProtocolDataItem dataItem : DataItemList_Config) {
@@ -691,4 +747,56 @@ public class Encoder376 extends Encoder{
         }
     }
 
+    
+    public List<PmPacket376> EncodeList_Normal(CollectObject obj, byte AFN) {
+        List<PmPacket376> results = new ArrayList<PmPacket376>();
+        PmPacket376 packet = new PmPacket376();
+        int Index = 1;
+        int[] MpSn = obj.getMpSn();
+        int DataBuffLen = MAX_PACKET_LEN - 16 - 22;//[68+L+L+68+C+A+AFN+SEQ+TP+PW+CS+16]
+        int CmdItemNum = obj.getCommandItems().size();
+        StringBuilder gpMark = new StringBuilder();
+        StringBuilder commandMark = new StringBuilder();
+        for (int i = 0; i <= MpSn.length - 1; i++) {
+            gpMark.delete(0, gpMark.length());
+            gpMark.append(String.valueOf(MpSn[i])).append("#");
+            List<CommandItem> CommandItems = obj.getCommandItems();
+            for (CommandItem commandItem : CommandItems) {
+
+                if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
+                {
+                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
+                }
+                else {
+                    if ((Index - 1) % CmdItemNum == 0) {
+                        packet = new PmPacket376();
+                        preSetPacket(packet, AFN, obj.getLogicalAddr());
+                    }
+                    commandMark.append(commandItem.getIdentifier()).append("#");
+                    PmPacket376DA da = new PmPacket376DA(MpSn[i]);
+                    PmPacket376DT dt = new PmPacket376DT();
+                    int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
+                    dt.setFn(fn);
+                    packet.getDataBuffer().putDA(da);
+                    packet.getDataBuffer().putDT(dt);
+                    if ((AFN == AFNType.AFN_SETPARA)||(AFN == AFNType.AFN_READDATA2)) {
+                        putDataBuf_withValue(packet, commandItem);
+                    }
+                    if (Index % CmdItemNum == 0) {
+                        if (AFN == AFNType.AFN_RESET || AFN == AFNType.AFN_SETPARA || AFN == AFNType.AFN_TRANSMIT)//消息认证码字段PW
+                        {
+                            packet.setAuthorize(new Authorize());
+                        }
+                        packet.setTpv(new TimeProtectValue());//时间标签
+                        packet.setCommandRemark(commandMark.toString());
+                        packet.setMpSnRemark(gpMark.toString());
+                        results.add(packet);
+                        commandMark.delete(0, commandMark.length());
+                    }
+                }
+                Index++;
+            }
+        }
+        return results;
+    }
 }
