@@ -4,18 +4,27 @@
  */
 package fep.bp.dal;
 
+import fep.bp.model.RTTaskRecvDAO;
+import fep.bp.model.RTTaskRecvRowMapper;
+import fep.bp.model.RTTaskRowMapper;
+import fep.bp.model.RealTimeTaskDAO;
+import fep.bp.model.UpgradeTaskDAO;
+import fep.bp.model.UpgradeTaskRowMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.support.lob.OracleLobHandler;
 import org.springframework.transaction.annotation.Transactional;
-import fep.bp.model.RTTaskRecvDAO;
-import fep.bp.model.RealTimeTaskDAO;
-import fep.bp.model.RTTaskRecvRowMapper;
-import fep.bp.model.RTTaskRowMapper;
 
 /**
  *
@@ -26,9 +35,22 @@ public class RTTaskServiceIMP implements RTTaskService {
 
     private final static Logger log = LoggerFactory.getLogger(RTTaskServiceIMP.class);
     private JdbcTemplate jdbcTemplate;
-
+    private OracleLobHandler  oracleLobHandler;
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+    
+    /**
+         * @return the oracleLobHandler
+         */
+    public OracleLobHandler getOracleLobHandler()
+    {
+        return oracleLobHandler;
+    }
+
+    public void setOracleLobHandler(OracleLobHandler oracleLobHandler)
+    {
+        this.oracleLobHandler = oracleLobHandler;
     }
 
     @Override
@@ -213,6 +235,85 @@ public class RTTaskServiceIMP implements RTTaskService {
         } catch (DataAccessException dataAccessException) {
             log.error(dataAccessException.getMessage());
             return false;
+        }
+    }
+   /* 
+    public InputStream getBlobData()
+        {
+                String sql = " SELECT * FROM TEST_BLOB WHERE ID = 1 ";
+                return getSimpleJdbcTemplate().queryForObject(sql, new FileMapper());
+        }
+
+        class FileMapper implements ParameterizedRowMapper<InputStream>
+        {
+                public InputStream mapRow(ResultSet rs, int rowNum) throws SQLException
+                {
+
+                        return rs.getBinaryStream(2);
+                }
+        }
+}
+*/
+    
+    public List<UpgradeTaskDAO> getUpgradeTasks() {
+        try {
+            //查询未处理任务
+            String SQL = "select a.TASK_ID,a.SEQUENCE_CODE,a.LOGICAL_ADDR,length(b.BINFILE) BINFILE_SIZE,b.BINFILE,a.POST_TIME,a.TASK_STATUS,a.SCHEDULE";
+            SQL += " from R_UPGRADE_TASK a,R_UPGRADE_FILE b";
+            SQL += " where a.file_id = b.file_id";
+            SQL += " and TASK_STATUS = '0'";
+            
+            List<UpgradeTaskDAO> results = (List<UpgradeTaskDAO>) jdbcTemplate.query(SQL, new UpgradeTaskRowMapper());
+            //更新任务状态
+            for (UpgradeTaskDAO task : results) {
+                jdbcTemplate.update("update R_UPGRADE_TASK set TASK_STATUS=? where TASK_ID=?",
+                        new Object[]{"1", task.getTaskId()});
+            }
+
+            return results;
+        } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage());
+            return null;
+        }
+    }
+
+    
+    
+    public void insertUpgradeFile(String fileVersion,String fileName,InputStream binFile)
+    {
+        final InputStream fileAsStream = binFile;
+        final String FileVersion = fileVersion;
+        final String FileName = fileName;
+        jdbcTemplate.update("insert into  R_UPGRADE_FILE(file_id,file_version,file_name,binfile) values(SEQ_UPGRADE_FILE_ID.nextval,?,?,?)",
+                    new PreparedStatementSetter() {
+                         public void setValues(PreparedStatement ps) throws SQLException
+                         {
+                            ps.setString(1, FileVersion);
+                            ps.setString(2, FileName);
+                            oracleLobHandler.getLobCreator().setBlobAsBinaryStream(ps, 3, fileAsStream,fileAsStream.toString().getBytes().length);
+                         }
+                    }                    
+            );
+    }
+    
+    public void insertUpgradeTask(UpgradeTaskDAO task) {
+        try {
+            final int sequenceCode = task.getSequenceCode();
+            final String logicalAddress = task.getLogicAddress();
+            final int fileID = task.getBinFileID();
+            jdbcTemplate.update("insert into  R_UPGRADE_TASK(TASK_ID,SEQUENCE_CODE,LOGICAL_ADDR,FILE_ID) values(SEQ_REALTIME_TASK.nextval,?,?,?)",
+                    new PreparedStatementSetter() {
+                         public void setValues(PreparedStatement ps) throws SQLException
+                         {
+                            ps.setInt(1, sequenceCode);
+                            ps.setString(2, logicalAddress);
+                            ps.setInt(3, fileID);
+                         }
+                    }                    
+            );
+            
+        } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage());
         }
     }
 

@@ -4,9 +4,11 @@
  */
 
 package fep.bp.dal;
+import fep.bp.model.RealTimeTaskDAO;
+import fep.bp.model.UpgradeTaskDAO;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-import fep.bp.model.RealTimeTaskDAO;
 /**
  *
  * @author Thinkpad
@@ -63,4 +65,25 @@ public interface RTTaskService {
      * @return
      */
     public boolean InsertTripTaskInfo(int ps_id,String date,Date postTime,Date acceptTime,String tripResult,int task_Id);
+    
+    /**
+     * 获取升级任务列表
+     * @return 
+     */
+    public List<UpgradeTaskDAO> getUpgradeTasks();
+    
+    /**
+     * 插入一条远程升级任务
+     * @param task 
+     */
+    public void insertUpgradeTask(UpgradeTaskDAO task);
+    
+    /**
+     * 插入终端升级文件
+     * @param fileVersion
+     * @param fileName
+     * @param binFile 
+     */
+    public void insertUpgradeFile(String fileVersion,String fileName,InputStream binFile);
+    
 }

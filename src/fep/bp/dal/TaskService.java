@@ -6,9 +6,9 @@
 package fep.bp.dal;
 
 
+import fep.bp.model.TermTaskDAO;
 import java.sql.Date;
 import java.util.List;
-import fep.bp.model.TermTaskDAO;
 
 /**
  *
