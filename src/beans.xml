@@ -147,7 +147,7 @@
 
     <bean id="rtTaskService" class="fep.bp.dal.RTTaskServiceIMP">
         <property name="dataSource" ref="dataSource" />
-
+        <property name="oracleLobHandler" ref="oracleLobHandler" />
     </bean>
 
     <bean id="taskService" class="fep.bp.dal.TaskServiceIMP">
@@ -194,7 +194,13 @@
         <property name="decoder" ref="decoder" />
         <property name="encoder" ref="encoder" />
     </bean>
-
+    
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"/>
+    <bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler">
+        <property name="nativeJdbcExtractor">
+        <ref local="nativeJdbcExtractor"/>
+        </property>
+    </bean>
     <!--<bean id="realTimeProxy376Test" class="pep.bp.realinterface.RealTimeProxy376Test">
         <property name="proxy" ref="realTimeProxy376"/>
         <property name="taskService" ref="rtTaskService" />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GBK"?>
 <ProtocolCommandItems>
     <CommandItem CommandCode="10040001">
         <DataItem DataItemCode="1004000101" Length="1" Format="BIN" BitNumber="0" Description="终端数传机延时时间RTS" DefaultValue="10" IsGroupEnd="0" LowBitBefore="1"/>
@@ -678,4 +678,5 @@
         <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
+
 </ProtocolCommandItems>
