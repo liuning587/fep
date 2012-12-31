@@ -22,6 +22,8 @@ public class UpgradeTaskDAO {
     private Date postTime;
     private String taskStatus = "0"; //默认未处理
     private float schedule;//进度
+    private int failFrameNo;
+    private String valid;
 
     /**
      * @return the taskId
@@ -155,5 +157,33 @@ public class UpgradeTaskDAO {
      */
     public void setBinFileID(int binFileID) {
         this.binFileID = binFileID;
+    }
+
+    /**
+     * @return the failFrameNo
+     */
+    public int getFailFrameNo() {
+        return failFrameNo;
+    }
+
+    /**
+     * @param failFrameNo the failFrameNo to set
+     */
+    public void setFailFrameNo(int failFrameNo) {
+        this.failFrameNo = failFrameNo;
+    }
+
+    /**
+     * @return the valid
+     */
+    public String getValid() {
+        return valid;
+    }
+
+    /**
+     * @param valid the valid to set
+     */
+    public void setValid(String valid) {
+        this.valid = valid;
     }
 }

@@ -126,7 +126,6 @@ public class PlanJob implements Job {
                 task.setGpMark(ps.getGp_sn()+"#");
                 this.rtTaskService.insertTask(task);
 
-                // pepCommunicator.SendPacket(this.getsequenceCode(), pack);
                 log.info("向终端：[" + ps.getLogicAddress() + "] 下发计划试跳报文（命令项;" + Item.getIdentifier() + "）：" + BcdUtils.binArrayToString(pack.getValue()));
             }         
         }

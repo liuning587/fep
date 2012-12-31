@@ -3,12 +3,8 @@
  */
 package fep.bp.processor;
 
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fep.bp.dal.DataService;
 import fep.bp.model.Dto;
-import fep.bp.utils.Converter;
 import fep.bp.utils.decoder.ClassTwoDataDecoder;
 import fep.bp.utils.decoder.Decoder;
 import fep.codec.protocol.gb.PmPacketData;
@@ -24,6 +20,9 @@ import fep.codec.utils.BcdUtils;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuAutoUploadPacketQueue;
 import fep.system.SystemConst;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -31,7 +30,7 @@ import fep.system.SystemConst;
  */
 public class UpLoadProcessor extends BaseProcessor {
 
-    private final static Logger log = LoggerFactory.getLogger(ResponseDealer.class);
+    private final static Logger log = LoggerFactory.getLogger(UpLoadProcessor.class);
     private DataService dataService;
     private PepCommunicatorInterface pepCommunicator;//通信代理器
     private RtuAutoUploadPacketQueue upLoadQueue;//主动上报报文队列

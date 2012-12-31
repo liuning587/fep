@@ -17,7 +17,7 @@ import fep.system.SystemConst;
 public class SMSCheckProcessor extends BaseProcessor {
 
     private final long TIME_BETWEEN_CHECKING = 5 * 1000;
-    private final static Logger log = LoggerFactory.getLogger(ResponseDealer.class);
+    private final static Logger log = LoggerFactory.getLogger(SMSCheckProcessor.class);
     private SmsService smsService;
 
     public SMSCheckProcessor() {

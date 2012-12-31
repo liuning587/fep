@@ -49,7 +49,7 @@ public class RealTimeSender extends BaseProcessor {
                     PmPacket packet = new PmPacket376();
                     packet.setValue(BcdUtils.stringToByteArray(task.getSendmsg()), 0);
                 //    log.info("开始往下发队列中发送报文："+task.getSendmsg());
-                    pepCommunicator.SendPacket(task.getTaskId(), packet,0);
+                    pepCommunicator.SendPacket(task.getTaskId(), packet,1);
                     log.info("往下发队列中发送("+packet.getAddress().getRtua()+")报文："+task.getSendmsg());
                 }
             }

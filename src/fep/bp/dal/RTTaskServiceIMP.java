@@ -258,7 +258,7 @@ public class RTTaskServiceIMP implements RTTaskService {
     public List<UpgradeTaskDAO> getUpgradeTasks() {
         try {
             //查询未处理任务
-            String SQL = "select a.TASK_ID,a.SEQUENCE_CODE,a.LOGICAL_ADDR,length(b.BINFILE) BINFILE_SIZE,b.BINFILE,a.POST_TIME,a.TASK_STATUS,a.SCHEDULE";
+            String SQL = "select a.TASK_ID,a.SEQUENCE_CODE,a.LOGICAL_ADDR,length(b.BINFILE) BINFILE_SIZE,b.BINFILE,a.POST_TIME,a.TASK_STATUS,a.SCHEDULE,a.failFrameNo,a.valid";
             SQL += " from R_UPGRADE_TASK a,R_UPGRADE_FILE b";
             SQL += " where a.file_id = b.file_id";
             SQL += " and TASK_STATUS = '0'";
@@ -311,6 +311,20 @@ public class RTTaskServiceIMP implements RTTaskService {
                          }
                     }                    
             );
+            
+        } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage());
+        }
+    }
+
+    public void updateUpgradeTask(UpgradeTaskDAO task) {
+        try {
+            jdbcTemplate.update("update R_UPGRADE_TASK set TASK_STATUS=?,SCHEDULE=?,FAILFRAMENO=? where TASK_ID=?",
+                        new Object[]{
+                            task.getTaskStatus(), 
+                            task.getSchedule(),
+                            task.getFailFrameNo(),
+                            task.getTaskId()});
             
         } catch (DataAccessException dataAccessException) {
             log.error(dataAccessException.getMessage());

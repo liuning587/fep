@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import fep.bp.processor.*;
 import fep.bp.processor.planManager.PlanManager;
+import fep.bp.processor.upgrade.UpgradeProcessor;
 import fep.mina.common.PepCommunicatorInterface;
 
 /**
@@ -25,6 +26,7 @@ public class MainProcess {
 
     private PollingProcessor pollingProcessor;
     private PlanManager planManager;
+    private UpgradeProcessor upgradeProcessor;
 
     private final static Logger log = LoggerFactory.getLogger(MainProcess.class);
     private PepCommunicatorInterface pepCommunicator;//通信代理器
@@ -81,7 +83,9 @@ public class MainProcess {
 
     public void run() {
         runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", new RealTimeSender(this.pepCommunicator));
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator));
+        upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：升级管理器 ", new RealTimeSender(this.pepCommunicator));
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator,upgradeProcessor));
         //runPlanManager();
         runPollingProcessor();
        // runProcessor(rtTaskSenderMaxNumber, "启动短信回复检查处理器 ", new SMSCheckProcessor());

@@ -7,7 +7,9 @@ create table R_UPGRADE_TASK
   binFile       BLOB,
   post_time     DATE default SYSDATE,
   task_status   VARCHAR2(5) default '0',
-  schedule      NUMBER
+  schedule      NUMBER default 0,
+  failFrameNo   NUMBER default 0,
+  valid         VARCHAR2(5) default '1'
 )
 tablespace TABS_INTERACTION
   pctfree 10

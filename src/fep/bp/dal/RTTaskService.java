@@ -86,4 +86,10 @@ public interface RTTaskService {
      */
     public void insertUpgradeFile(String fileVersion,String fileName,InputStream binFile);
     
+    /**
+     * 更新升级任务信息
+     * @param task 
+     */
+    public void updateUpgradeTask(UpgradeTaskDAO task);
+    
 }

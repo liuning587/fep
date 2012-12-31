@@ -22,15 +22,12 @@ public class UpgradeTaskRowMapper implements RowMapper{
         task.setSequenceCode(rs.getInt("SEQUENCE_CODE"));
         task.setLogicAddress(rs.getString("LOGICAL_ADDR"));
         task.setBinFileSize(rs.getInt("BINFILE_SIZE"));
-        task.setBinFile(rs.getBinaryStream("BINFILE"));
-        /*
-        OracleLobHandler lobHandler = new OracleLobHandler();
-        InputStream is =lobHandler.getBlobAsBinaryStream(rs, "BINFILE");
-        task.setBinFile(is);*/
-        
+        task.setBinFile(rs.getBinaryStream("BINFILE"));   
         task.setTaskStatus(rs.getString("TASK_STATUS"));
         task.setPostTime(rs.getTimestamp("POST_TIME"));
         task.setSchedule(rs.getFloat("SCHEDULE"));
+        task.setFailFrameNo(rs.getInt("failFrameNo"));
+        task.setValid(rs.getString("valid"));
         return task;
     }
 }

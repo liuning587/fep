@@ -116,7 +116,7 @@ public class PollingJob implements Job {
                 if(null != packetList){
                     for(PmPacket376 pack:packetList){
                         pack.getAddress().setMastStationId((byte) 2);
-                        this.pepCommunicator.SendPacket(this.getsequenceCode(), pack,1);
+                        this.pepCommunicator.SendPacket(this.getsequenceCode(), pack,2);
                         log.info("向终端：["+task.getLogicAddress()+"] 下发轮召报文（命令项;" + Item.getIdentifier() + "）：" + BcdUtils.binArrayToString(pack.getValue()));
                     }
                 }
@@ -127,7 +127,7 @@ public class PollingJob implements Job {
                 packet.getAddress().setMastStationId((byte) 2);
                 //converter.CollectObject2Packet(object, packet, task.getAFN(), new StringBuffer(), new StringBuffer());
 
-                pepCommunicator.SendPacket(this.getsequenceCode(), packet,1);
+                pepCommunicator.SendPacket(this.getsequenceCode(), packet,2);
                 log.info("向终端：["+task.getLogicAddress()+"] 下发轮召报文（命令项;" + Item.getIdentifier() + "）：" + BcdUtils.binArrayToString(packet.getValue()));
             }            
         }

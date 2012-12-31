@@ -3,20 +3,20 @@
  */
 package fep.mina.protocolcodec.gb;
 
+import fep.codec.protocol.gb.ControlCode;
+import fep.codec.protocol.gb.EventCountor;
+import fep.codec.protocol.gb.PmPacket;
+import fep.codec.protocol.gb.Seq;
+import fep.codec.protocol.gb.gb376.PmPacket376;
+import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
+import fep.mina.common.RtuRespPacketQueue;
+import fep.mina.common.SequencedPmPacket;
 import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fep.codec.protocol.gb.ControlCode;
-import fep.codec.protocol.gb.PmPacket;
-import fep.codec.protocol.gb.EventCountor;
-import fep.codec.protocol.gb.Seq;
-import fep.codec.protocol.gb.gb376.PmPacket376;
-import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
-import fep.mina.common.RtuRespPacketQueue;
-import fep.mina.common.SequencedPmPacket;
 
 /**
  *
@@ -26,8 +26,9 @@ public class RtuCommunicationInfo {
 
     private String rtua;
     private IoSession session;
-    private Queue<SeqPacket> unsendPacket;   //待发送帧队列，低优先级
-    private Queue<SeqPacket> unsendPacket0;  //待发送帧队列，高优先级 
+    private Queue<SeqPacket> unsendPacket2;   //待发送帧队列，低优先级
+    private Queue<SeqPacket> unsendPacket1;   //待发送帧队列，低优先级
+    private Queue<SeqPacket> unsendPacket0;  //待发送帧队列，高优先级0
     private byte currentSeq;        //下一个主动发送帧的帧序号
     private boolean idle;           //是否可以发送下行帧
     private byte currentRespSeq;    //当前等待回复的帧序号
@@ -65,7 +66,8 @@ public class RtuCommunicationInfo {
         idle = true;
         lastEc1 = 0;
         lastEc2 = 0;
-        unsendPacket = new ConcurrentLinkedQueue<SeqPacket>();
+        unsendPacket2 = new ConcurrentLinkedQueue<SeqPacket>();
+        unsendPacket1 = new ConcurrentLinkedQueue<SeqPacket>();
         unsendPacket0 = new ConcurrentLinkedQueue<SeqPacket>();
     }
 
@@ -141,10 +143,20 @@ public class RtuCommunicationInfo {
     }
 
     private void addPacket(int sequence, PmPacket packet, int priorityLevel) {
-        if (priorityLevel == 0) {
-            this.unsendPacket0.add(new SeqPacket(sequence, packet));
-        } else {
-            this.unsendPacket.add(new SeqPacket(sequence, packet));
+        switch(priorityLevel)
+        {
+            case 0:{
+                this.unsendPacket0.add(new SeqPacket(sequence, packet));
+                break;
+            }
+            case 1:{
+                this.unsendPacket1.add(new SeqPacket(sequence, packet));
+                break;
+            }
+            case 2:{
+                this.unsendPacket2.add(new SeqPacket(sequence, packet));
+                break;
+            }
         }
     }
 
@@ -172,11 +184,19 @@ public class RtuCommunicationInfo {
     }
 
     private SeqPacket pollPacket() {
+        
+        
         SeqPacket seqPacket = unsendPacket0.poll();
         if (seqPacket != null) {
             return seqPacket;
         } else {
-            return unsendPacket.poll();
+            seqPacket = unsendPacket1.poll();
+            if (seqPacket != null) { 
+                return seqPacket;
+            }
+            else{
+                return unsendPacket2.poll();
+            }
         }
     }
 
@@ -224,10 +244,10 @@ public class RtuCommunicationInfo {
                         new SequencedPmPacket(this.currentSequence, this.currentPacket,
                         SequencedPmPacket.Status.TIME_OUT));
                 this.idle = true;
-                LOGGER.info(rtua + " Timeout, send next packet." + this.unsendPacket0.size() + "priority packets " + this.unsendPacket.size() + " other packets waiting for sending" + " checkTime=" + checkTime.toString() + ", lastSendime=" + this.currentSendTicket.toString());
+                LOGGER.info(rtua + " 超时,发送下一包.（发送队列：0级数据包：" + this.unsendPacket0.size() + "个，1级数据包 " + this.unsendPacket1.size() + " 个,2级数据包" + this.unsendPacket2.size() + " 个" +" 检查时间=" + checkTime.toString() + ", 上次发送时间=" + this.currentSendTicket.toString()+")");
                 sendNextPacket(false);
             } else {
-                LOGGER.info(rtua + " Timeout, resend packet. " + this.unsendPacket0.size() + "priority packets " + this.unsendPacket.size() + " other packets waiting for sending" + " checkTime=" + checkTime.toString() + ", lastSendime=" + this.currentSendTicket.toString());
+                LOGGER.info(rtua + " 超时, 重发.（发送队列：0级数据包： " + this.unsendPacket0.size() + "个，1级数据包" + this.unsendPacket1.size() + " 个,2级数据包" + this.unsendPacket2.size() + " 个"+ " 检查时间=" + checkTime.toString() + ", 上次发送时间=" + this.currentSendTicket.toString()+")");
                 doSendPacket();
             }
         }
