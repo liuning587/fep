@@ -55,7 +55,7 @@ public class UpgradeProcessor extends BaseProcessor{
     public void run() {
         while (true) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 java.util.logging.Logger.getLogger(RealTimeSender.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -97,6 +97,7 @@ public class UpgradeProcessor extends BaseProcessor{
                     upgradeTask.setBinFileStream(fin);
                     upgradeTask.setBinFileSize(fileSize);
                     upgradeTask.setPepCommunicator(pepCommunicator);
+                    upgradeTask.EncodePacket();
                     this.upgradeTaskMap.put(rtua, upgradeTask);
                 }
             }

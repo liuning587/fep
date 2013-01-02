@@ -84,11 +84,11 @@ public class MainProcess {
     public void run() {
         runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", new RealTimeSender(this.pepCommunicator));
         upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：升级管理器 ", new RealTimeSender(this.pepCommunicator));
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：升级管理器 ", upgradeProcessor);
         runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator,upgradeProcessor));
-        //runPlanManager();
+        runPlanManager();
         runPollingProcessor();
-       // runProcessor(rtTaskSenderMaxNumber, "启动短信回复检查处理器 ", new SMSCheckProcessor());
+        runProcessor(rtTaskSenderMaxNumber, "启动短信回复检查处理器 ", new SMSCheckProcessor());
         runProcessor(rtTaskSenderMaxNumber, "启动组件：上报任务处理器 ", new UpLoadProcessor(this.pepCommunicator));
     }
 }

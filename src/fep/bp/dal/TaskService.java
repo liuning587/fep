@@ -16,6 +16,6 @@ import java.util.List;
  */
 public interface TaskService {
     public List<TermTaskDAO> getPollingTask(int CircleUnit,int interval);
-    public void updateTask(int TaskId,String ProtocolNo,String Sys_Object,Date StartTime,Date EndTime,int PollingNum);
+    public void updatePollingTask(int TaskId,String ProtocolNo,String Sys_Object,Date StartTime,Date EndTime,int PollingNum);
 
 }

@@ -36,6 +36,8 @@ import org.slf4j.LoggerFactory;
 public class Encoder376 extends Encoder{
     private final static Logger log = LoggerFactory.getLogger(Encoder376.class);
     private static final byte FUNCODE_DOWM_1 = 1;//PRM =1 功能码：1 （发送/确认）
+    private static final byte FUNCODE_DOWM_4 = 4;//用户数据 (发送∕无回答)	
+    private static final byte FUNCODE_DOWM_10 = 10;//请求1级数据 (请求∕响应帧)
     private final int UPGRADE_FILE_SEGMENT_SIZE = 512;//升级文件每段的最大长度
 
     private String groupValue = "";
@@ -130,7 +132,7 @@ public class Encoder376 extends Encoder{
                 else {
                     if ((Index - 1) % CmdItemNum == 0) {
                         packet = new PmPacket376();
-                        preSetPacket(packet, AFN, obj.getLogicalAddr());
+                        preSetPacket(packet, AFN, obj.getLogicalAddr(),FUNCODE_DOWM_4);
                     }
                     commandMark.append(commandItem.getIdentifier()).append("#");
                     PmPacket376DA da = new PmPacket376DA(MpSn[i]);
@@ -259,14 +261,19 @@ public class Encoder376 extends Encoder{
             System.arraycopy(binFile, filePos, thisSegment, 0, thisSegmentLength);
             
             PmPacket376 packet = new PmPacket376();
-            preSetPacket(packet, AFNType.AFN_UPGRADE, rtua);
+            preSetPacket(packet, AFNType.AFN_UPGRADE, rtua,FUNCODE_DOWM_10);
             PmPacket376DA da = new PmPacket376DA(0);//p0
             PmPacket376DT dt = new PmPacket376DT();
             dt.setFn(1);//F1,文件传输方式1
             packet.getDataBuffer().putDA(da);
             packet.getDataBuffer().putDT(dt);
-            packet.getDataBuffer().putBin(0, 1);//文件标识
-            packet.getDataBuffer().putBin(0, 1);//文件属性
+            packet.getDataBuffer().putBin(1, 1);//文件标识
+            if(i == segmentNumber-1) {
+                packet.getDataBuffer().putBin(1, 1);
+            }//文件属性
+            else {
+                packet.getDataBuffer().putBin(0, 1);
+            }//文件属性
             packet.getDataBuffer().putBin(0, 1);//文件指令
             packet.getDataBuffer().putBin(segmentNumber, 2);//总段数n
             packet.getDataBuffer().putBin(i, 4);//第i段标识或偏移
@@ -297,13 +304,13 @@ public class Encoder376 extends Encoder{
      * @param AFN
      * @param Rtua
      */
-    private void preSetPacket(PmPacket packet, byte AFN, String Rtua) {
+    private void preSetPacket(PmPacket packet, byte AFN, String Rtua,byte FunCode ) {
         if (null != packet) {
             packet.setAfn(AFN);//AFN
             packet.getAddress().setRtua(Rtua); //逻辑地址
             packet.getControlCode().setIsUpDirect(false);
             packet.getControlCode().setIsOrgniger(true);
-            packet.getControlCode().setFunctionKey(FUNCODE_DOWM_1);
+            packet.getControlCode().setFunctionKey(FunCode);
             packet.getControlCode().setIsDownDirectFrameCountAvaliable(true);
             packet.getControlCode().setDownDirectFrameCount((byte) 0);
             packet.getSeq().setIsTpvAvalibe(true);
@@ -591,7 +598,7 @@ public class Encoder376 extends Encoder{
                     packet = new PmPacket376();
                     packet.setCommandRemark(commandItem.getIdentifier());//设置命令项标志
                     packet.setMpSnRemark(String.valueOf(MpSn));//设置测量点标志
-                    preSetPacket(packet, AFN, Rtua);
+                    preSetPacket(packet, AFN, Rtua,FUNCODE_DOWM_4);
                     PmPacket376DA da = new PmPacket376DA(MpSn);
                     PmPacket376DT dt = new PmPacket376DT(fn);
                     packet.getDataBuffer().putDA(da);
@@ -718,7 +725,7 @@ public class Encoder376 extends Encoder{
     {
         try {
             PmPacket packet = new PmPacket376();
-            preSetPacket(packet, AFN, LogicalAddr);
+            preSetPacket(packet, AFN, LogicalAddr,FUNCODE_DOWM_4);
 
             for (int i = 0; i <= MpSnList.length - 1; i++) {
                 for (CommandItem commandItem : CommandItems) {
@@ -770,7 +777,7 @@ public class Encoder376 extends Encoder{
                 else {
                     if ((Index - 1) % CmdItemNum == 0) {
                         packet = new PmPacket376();
-                        preSetPacket(packet, AFN, obj.getLogicalAddr());
+                        preSetPacket(packet, AFN, obj.getLogicalAddr(),FUNCODE_DOWM_4);
                     }
                     commandMark.append(commandItem.getIdentifier()).append("#");
                     PmPacket376DA da = new PmPacket376DA(MpSn[i]);

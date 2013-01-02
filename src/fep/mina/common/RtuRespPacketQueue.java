@@ -33,6 +33,7 @@ public class RtuRespPacketQueue {
     }
 
     public synchronized SequencedPmPacket PollPacket() throws InterruptedException{
+        
         while (true){
             if (!receiveRturespPacketQueue.isEmpty()){
                 return receiveRturespPacketQueue.poll();

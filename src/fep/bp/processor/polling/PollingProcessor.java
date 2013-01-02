@@ -5,21 +5,18 @@
 
 package fep.bp.processor.polling;
 
-import java.util.Date;
+import fep.mina.common.PepCommunicatorInterface;
+import java.text.ParseException;
 import java.util.logging.Level;
+import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
-import org.quartz.TriggerUtils;
+import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fep.mina.common.PepCommunicatorInterface;
-import java.text.ParseException;
-import org.quartz.CronExpression;
-import org.quartz.impl.StdSchedulerFactory;
 
 /**
  *

@@ -5,25 +5,45 @@
 package fep.bp.realinterface.conf;
 
 import fep.codec.utils.CastorUtil;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.xml.Unmarshaller;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.xml.sax.InputSource;
 
 /**
  *
  * @author Thinkpad
  */
-public class ProtocolConfig {
+public final class ProtocolConfig {
 
 	private static String PROTOCOL_DATA_CONFIG_MAPPING="protocol-data-config-mapping.xml";
 	private static String PROTOCOL_DATA_CONFIG="protocol-data-config.xml";
 	private static ProtocolConfig instance = null;
 	private static ProtocolCommandItems commandItems;
-
-
+/*
+        public ProtocolConfig(final String str1, final String str2) throws IOException {
+            try {  
+                InputSource is = getTransFileReader(str2);                
+                Mapping map = new Mapping();  
+                map.loadMapping(this.getClass().getResource(str1));  
+                Unmarshaller unmarshaller = new Unmarshaller(ProtocolCommandItems.class);  
+                unmarshaller.setMapping(map);  
+                commandItems= (ProtocolCommandItems) unmarshaller.unmarshal(is);  
+            
+              //  commandItems = (ProtocolCommandItems) CastorUtil.unmarshal(resource1.getURL(), resource2.getURI());
+             //   commandItems.FillMap();
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        }
+*/
 	public ProtocolConfig(final String str1, final String str2) throws IOException {
             if (instance == null) {
                 try {
@@ -82,5 +102,12 @@ public class ProtocolConfig {
         public List<ProtocolDataItem> getDataItemList(String CommandItemCode){
             return commandItems.getCommandItem(CommandItemCode).getDataItems();
         }
+        
+        public InputSource getTransFileReader(String transFile) throws FileNotFoundException 
+        {  
+            InputSource is = null;  
+            is = new InputSource(new FileReader(transFile));  
+            return is;  
+        }  
 
 }

@@ -25,12 +25,12 @@ public class RealTimeSender extends BaseProcessor {
     private final static Logger log = LoggerFactory.getLogger(RealTimeSender.class);
     private RTTaskService taskService;
     private PepCommunicatorInterface pepCommunicator;//通信代理器
-    private RtuRespPacketQueue respQueue;//返回报文队列
+   // private RtuRespPacketQueue respQueue;//返回报文队列
 
     public RealTimeSender(PepCommunicatorInterface pepCommunicator) {
         super();
         taskService = (RTTaskService) cxt.getBean(SystemConst.REALTIMETASK_BEAN);
-        respQueue = pepCommunicator.getRtuRespPacketQueueInstance();
+     //   respQueue = pepCommunicator.getRtuRespPacketQueueInstance();
         this.pepCommunicator = pepCommunicator;
     }
 

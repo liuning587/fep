@@ -74,7 +74,7 @@ public class TaskServiceIMP implements  TaskService{
      }
 
     @Override
-     public void updateTask(int TaskId,String ProtocolNo,String Sys_Object,Date StartTime,Date EndTime,int PollingNum){
+     public void updatePollingTask(int TaskId,String ProtocolNo,String Sys_Object,Date StartTime,Date EndTime,int PollingNum){
          try {
              StringBuilder sbSQL = new StringBuilder();
              sbSQL.append("update g_task set START_TIME_MASTER = ?,END_TIME_MASTER=?,EXECONCE_TIMES=?");

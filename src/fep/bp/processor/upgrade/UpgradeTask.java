@@ -14,7 +14,6 @@ import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.SequencedPmPacket;
-import fep.mina.protocolcodec.gb.RtuCommunicationInfo;
 import fep.system.SystemConst;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,6 +94,7 @@ public class UpgradeTask {
             List<PmPacket376> packetList = encoder.EncodeList_Upgrade(this.rtua, binFile);
             for (PmPacket376 packet : packetList) {
                 addUpgradePacket(packet);
+                totalPacketNumber++;
             }
             binFileStream.close();
         } catch (IOException ex) {
@@ -146,6 +146,7 @@ public class UpgradeTask {
                     if (checkTime.getTime() - this.startSendTicket.getTime() >= this.TIME_OUT) {
                         updateTask(TaskStatus.Failed);
                         taskStatus = TaskStatus.Failed;
+                        emptyPacketQueue();
                     }
                 }
                 else
@@ -166,10 +167,9 @@ public class UpgradeTask {
                 this.pepCommunicator.SendPacket(toPacket.sequence, toPacket.pack, 0);
                 currentSendNo++;
                 this.startSendTicket = new Date();
-                log.info("集中器【"+rtua+"】,下发升级报文第%d帧，共有%d帧",currentSendNo,totalPacketNumber);
+                log.info("集中器【"+rtua+"】,下发升级报文第"+currentSendNo+"帧，共有"+totalPacketNumber+"帧");
             }
         }
-        
     }
     
     private void updateTask(String status)
@@ -184,6 +184,14 @@ public class UpgradeTask {
         taskService.updateUpgradeTask(dao);
     }
     
+    private void emptyPacketQueue()
+    {
+        synchronized(this){
+            this.rtuaUpgradeQueue.clear();
+            this.rtuaUpgradeBackQueue.clear();
+        }
+    }
+    
     private boolean IsOK(SequencedPmPacket backPacket)
     {
         boolean result = false;
@@ -195,7 +203,7 @@ public class UpgradeTask {
             SequencedPmPacket toPacket = rtuaUpgradeQueue.peek();
             if(toPacket.sequence == backPacket.sequence)
             {
-                result = (backPacket.pack.getAfn()==0x00);//确认/否则帧
+                result = (backPacket.pack.getAfn()==0x0F);//文件传输
                 PmPacketData dataBuf = backPacket.pack.getDataBuffer();
                 dataBuf.rewind();
                 dataBuf.getDA(new PmPacket376DA());
@@ -203,7 +211,12 @@ public class UpgradeTask {
                 dataBuf.getDT(dt);
                 int Fn = dt.getFn();
                 result = result && (Fn == 1);
+                
+                int SegNo  = (int) dataBuf.getBin(4);
+                result = result &&(SegNo+1 == this.currentSendNo);
+                
                 rtuaUpgradeQueue.poll();
+                rtuaUpgradeBackQueue.poll();
             }
         }
         return result;

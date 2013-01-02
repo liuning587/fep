@@ -102,7 +102,7 @@ public class RTTaskServiceIMPTest {
 
     }
     
-    //@Test
+    @Test
     public void testInsertUpgradeFile() throws FileNotFoundException {
         String s_FilePath = "F:\\pss\\material\\firmware.bin";
         FileInputStream fin; 
@@ -112,7 +112,7 @@ public class RTTaskServiceIMPTest {
         }
     }
     
-    @Test
+   // @Test
     public void testInsertUpgradeTask() throws FileNotFoundException, IOException, SerialException, SQLException
     {
         String s_FilePath = "F:\\pss\\material\\firmware.bin";

@@ -4,18 +4,19 @@
  */
 package fep.mina.protocolcodec.gb;
 
-import java.util.Date;
+import fep.codec.protocol.gb.PmPacket;
+import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuAutoUploadPacketQueue;
+import fep.mina.common.RtuConnectEventHandler;
+import fep.mina.common.RtuConnectListener;
+import fep.mina.common.RtuRespPacketQueue;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fep.codec.protocol.gb.PmPacket;
-import fep.mina.common.PepCommunicatorInterface;
-import fep.mina.common.RtuConnectEventHandler;
-import fep.mina.common.RtuConnectListener;
-import fep.mina.common.RtuRespPacketQueue;
 
 /**
  *
@@ -99,6 +100,7 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
     }
 
     public void rtuReceiveTcpPacket(String rtua, IoSession session, PmPacket pack) {
+        
         RtuCommunicationInfo rtu = getRtuCommunictionInfo(rtua);
         if (rtu == null) {
             rtu = new RtuCommunicationInfo(rtua, null);
@@ -115,6 +117,7 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
         if ((pack.getControlCode().getIsUpDirect()) && (pack.getControlCode().getUpDirectIsAppealCall())) {//要求访问
             rtu.callRtuEventRecord(pack.getEC());
         }
+        
     }
     
     private void addAutoUploadPacket(PmPacket pack){
