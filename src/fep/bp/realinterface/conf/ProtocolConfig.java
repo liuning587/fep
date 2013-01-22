@@ -5,13 +5,19 @@
 package fep.bp.realinterface.conf;
 
 import fep.codec.utils.CastorUtil;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.mapping.MappingException;
+import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Unmarshaller;
+import org.exolab.castor.xml.ValidationException;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -44,6 +50,7 @@ public final class ProtocolConfig {
         }  
         }
 */
+        
 	public ProtocolConfig(final String str1, final String str2) throws IOException {
             if (instance == null) {
                 try {
@@ -60,7 +67,26 @@ public final class ProtocolConfig {
             }
 	}
 
-	public static ProtocolConfig getInstance() throws IOException {
+     /*   
+        public ProtocolConfig(final String MapFile, final String ConfigFile) throws IOException, MappingException, MarshalException, ValidationException {
+            if (instance == null) {
+                try {
+                    Mapping mapping = new Mapping();
+                    mapping.loadMapping(MapFile);
+                    Reader reader = new InputStreamReader(new FileInputStream(ConfigFile), "UTF-8"); 
+                    Unmarshaller unmarshaller = new Unmarshaller(ProtocolCommandItems.class);
+                    unmarshaller.setMapping(mapping);
+
+                    commandItems = (ProtocolCommandItems) unmarshaller.unmarshal(reader);
+                   // Reader reader = new InputStreamReader(new FileInputStream("person.xml"), "UTF-8"); 
+                    commandItems.FillMap();
+                } catch (IOException iOException) {
+                   throw iOException;
+                }
+            }
+	}
+        */
+	public static ProtocolConfig getInstance() throws IOException, MappingException, MarshalException, ValidationException {
 		if (instance == null) {
 			try {
 				instance = new ProtocolConfig(PROTOCOL_DATA_CONFIG_MAPPING, PROTOCOL_DATA_CONFIG);

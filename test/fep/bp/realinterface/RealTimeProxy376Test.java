@@ -40,14 +40,13 @@ public class RealTimeProxy376Test {
     private static String RTUA = "";
     private static RealTimeProxy376 proxy;
     private RTTaskService taskService;
-    private Converter converter;
 
     
     public RealTimeProxy376Test(){
         ApplicationContext app =    new  ClassPathXmlApplicationContext("beans.xml");
         proxy = (RealTimeProxy376)app.getBean("realTimeProxy376");
         this.taskService = (RTTaskService)app.getBean("rtTaskService");
-        this.converter = (Converter)app.getBean("converter");
+       // this.converter = (Converter)app.getBean("converter");
     }
     /**
      * @param aRTUA the RTUA to set
@@ -86,7 +85,7 @@ public class RealTimeProxy376Test {
         PmPacket376 packet = new PmPacket376();
         packet.setValue(BcdUtils.stringToByteArray(task.getSendmsg()),0);
         Map<String,Map<String, String>> results = new HashMap<String,Map<String, String>>();
-        converter.decodeData(packet,results);
+//        converter.decodeData(packet,results);
         return results.get(key);
     }
 
@@ -616,7 +615,7 @@ public class RealTimeProxy376Test {
     /**
      * Test of transmitMsg method, of class RealTimeProxy376.
      */
-    @Test
+    //@Test
     public void testTransmitMsg() throws Exception {    
        Map datacellParams1 = new TreeMap();
        datacellParams1.put("0710", "0002");
@@ -681,14 +680,14 @@ public class RealTimeProxy376Test {
 
     }
 
-    //@Test
+    @Test
     public void testgetReturnByWriteParameter_TransMit()throws Exception {
         @SuppressWarnings("static-access")
-        Map<String, String> resultMap = this.proxy.getReturnByWriteParameter_TransMit(53);
+        Map<String, String> resultMap = this.proxy.getReturnByWriteParameter_TransMit(134971);
         assertTrue(resultMap.size() > 0 );
     }
 
-    @Test
+   // @Test
     public void testgetReturnByControl_TransMit()throws Exception {
         @SuppressWarnings("static-access")
         Map<String, String> resultMap = this.proxy.getReturnByControl_TransMit(63);
@@ -737,9 +736,9 @@ public class RealTimeProxy376Test {
     /**
      * Test of getReturnByREP method, of class RealTimeProxy376.
      */
-    //@Test
+    @Test
     public void testGetReturnByReadParameter() throws Exception {
-        Map result = proxy.getReturnByReadParameter(3623);
+        Map result = proxy.getReturnByReadParameter(134820);
         assertTrue(result.size() > 0);
     }
 
@@ -762,11 +761,5 @@ public class RealTimeProxy376Test {
         this.taskService = taskService;
     }
 
-    /**
-     * @param converter the converter to set
-     */
-    public void setConverter(Converter converter) {
-        this.converter = converter;
-    }
 
 }

@@ -930,12 +930,13 @@ public class CastorUtil {
            // String classPath = ProtocolConfig.class.getResource("protocol-data-config-mapping.xml").getPath();
             String classPath = "protocol-data-config-mapping.xml";
             map.loadMapping(classPath);
-            File file = new File("protocol-data-config.xml");
-            Writer writer = new FileWriter(file);
+            //File file = new File("protocol-data-config.xml");
+            //Writer writer = new FileWriter(file);
+            Writer writer=new OutputStreamWriter(new FileOutputStream("protocol-data-config.xml"), "UTF-8");
             Marshaller marshaller = new Marshaller(writer);
             marshaller.setMapping(map);
             marshaller.marshal(CommandItems);
-
+            File file = new File("protocol-data-config.xml");
             Reader reader = new FileReader(file);
             Unmarshaller unmarshaller = new Unmarshaller(map);
             ProtocolCommandItems read = (ProtocolCommandItems) unmarshaller.unmarshal(reader);

@@ -3,7 +3,7 @@
  */
 package fep.mina.protocolcodec.gb;
 
-import fep.bp.utils.DebugUtils;
+import fep.bp.utils.AFNType;
 import fep.codec.protocol.gb.ControlCode;
 import fep.codec.protocol.gb.EventCountor;
 import fep.codec.protocol.gb.PmPacket;
@@ -46,15 +46,25 @@ public class RtuCommunicationInfo {
     public final static byte LOUBAO_OPRATE_HOSTID = 4;//漏保恢复尝试
     public final static byte UPGRADE = 5;//漏保恢复尝试
     private static final long TIME_OUT = 20 * 1000;
+    private static final long TIME_OUT_UPGRADE = 180 * 1000;
     private final static Logger LOGGER = LoggerFactory.getLogger(RtuCommunicationInfo.class);
     private class SeqPacket {
 
         private int sequence;
         private PmPacket pack;
+        private long timeout;//发送超时时间（毫秒） add by lijun 2013.01.22
 
-        private SeqPacket(int sequence, PmPacket pack) {
+        private SeqPacket(int sequence, PmPacket pack,long timeout) {
             this.sequence = sequence;
             this.pack = pack;
+            this.timeout = timeout;
+        }
+
+        /**
+         * @return the timeout
+         */
+        public long getTimeout() {
+            return timeout;
         }
     }
 
@@ -144,18 +154,22 @@ public class RtuCommunicationInfo {
     }
 
     private void addPacket(int sequence, PmPacket packet, int priorityLevel) {
+        long timeOut = RtuCommunicationInfo.TIME_OUT;
+        if(packet.getAfn()==AFNType.AFN_UPGRADE) {
+            timeOut = RtuCommunicationInfo.TIME_OUT_UPGRADE;
+        }
         switch(priorityLevel)
         {
             case 0:{
-                this.unsendPacket0.add(new SeqPacket(sequence, packet));
+                this.unsendPacket0.add(new SeqPacket(sequence, packet,timeOut));
                 break;
             }
             case 1:{
-                this.unsendPacket1.add(new SeqPacket(sequence, packet));
+                this.unsendPacket1.add(new SeqPacket(sequence, packet,timeOut));
                 break;
             }
             case 2:{
-                this.unsendPacket2.add(new SeqPacket(sequence, packet));
+                this.unsendPacket2.add(new SeqPacket(sequence, packet,timeOut));
                 break;
             }
         }
@@ -226,6 +240,7 @@ public class RtuCommunicationInfo {
                 this.sendNextPacket(false);
             }
         }
+        
     }
 
     /**

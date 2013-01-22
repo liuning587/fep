@@ -7,6 +7,7 @@ import fep.bp.dal.DataService;
 import fep.bp.model.Dto;
 import fep.bp.utils.decoder.ClassTwoDataDecoder;
 import fep.bp.utils.decoder.Decoder;
+import fep.bp.utils.equipMap.EquipMap;
 import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.Packet376Event36;
 import fep.codec.protocol.gb.gb376.Packet376Event42;
@@ -34,15 +35,18 @@ public class UpLoadProcessor extends BaseProcessor {
     private DataService dataService;
     private PepCommunicatorInterface pepCommunicator;//通信代理器
     private RtuAutoUploadPacketQueue upLoadQueue;//主动上报报文队列
-    //private Converter converter;
-    private Decoder  decoder;
+    private EquipMap equipMap;
+    private Decoder  decoder100;
+    private Decoder  decoder101;
     public UpLoadProcessor(PepCommunicatorInterface pepCommunicator) {
         super();
         dataService = (DataService) cxt.getBean(SystemConst.DATASERVICE_BEAN);
         upLoadQueue = pepCommunicator.getRtuAutoUploadPacketQueueInstance();
         this.pepCommunicator = pepCommunicator;
-       // this.converter = (Converter) cxt.getBean("converter");
-        this.decoder = (Decoder)cxt.getBean("decoder");
+        this.equipMap = (EquipMap) cxt.getBean("equipMap");
+        this.equipMap.init();
+        this.decoder100 = (Decoder)cxt.getBean("decoder100");
+        this.decoder101 = (Decoder)cxt.getBean("decoder101");
     }
 
     @Override
@@ -72,16 +76,30 @@ public class UpLoadProcessor extends BaseProcessor {
             }
         }
     }
+    
+    private Decoder getDecoder(int loubaoProtocol)
+    {
+        if(loubaoProtocol == 101) {
+            return this.decoder101;
+        }
+        else {
+            return this.decoder100;
+        }
+    }
 
     private void decodeAndSaveClassOneData(PmPacket376 packet) {
-        Dto dto = new Dto(packet.getAddress().getRtua(), packet.getAfn());
-        this.decoder.decode2dto(packet, dto);
+        String logicalAddr = packet.getAddress().getRtua();
+        Dto dto = new Dto(logicalAddr, packet.getAfn());
+        Decoder decoder = getDecoder(this.equipMap.loubaoProtocol(logicalAddr));
+        decoder.decode2dto(packet, dto);
         dataService.insertRecvData(dto);
     }
 
     private void decodeAndSaveClasTransMitData(PmPacket376 packet) {
-        Dto dto = new Dto(packet.getAddress().getRtua(), packet.getAfn());
-        this.decoder.decode2dto_TransMit(packet, dto);
+        String logicalAddr = packet.getAddress().getRtua();
+        Dto dto = new Dto(logicalAddr, packet.getAfn());
+        Decoder decoder = getDecoder(this.equipMap.loubaoProtocol(logicalAddr));
+        decoder.decode2dto_TransMit(packet, dto);
         dataService.insertRecvData(dto);
     }
 

@@ -26,7 +26,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
     private final static String SESSION_RTUS = PmPacket376ServerIoHandler.class.getName() + ".rtus";
     private final static Logger LOGGER = LoggerFactory.getLogger(PmPacket376ServerIoHandler.class);
     //add by lijun
-    //private CommLogWriter  commLogWriter = CommLogWriter.getInstance();
+    private CommLogWriter  commLogWriter = CommLogWriter.getInstance();
 
     public PmPacket376ServerIoHandler(PepGbCommunicator rtuMap) {
         super();
@@ -58,7 +58,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
             return;
         }
         
-        //commLogWriter.insertLog(rtua,BcdUtils.binArrayToString(pack.getValue()),"U" );
+        commLogWriter.insertLog(rtua,BcdUtils.binArrayToString(pack.getValue()),"U" );
 
         registRtua(session, rtua);
 
@@ -103,7 +103,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         if (!((pack.getAfn() == 2) && (!showActTestPack))) {
             LOGGER.info(" Had Sent to rtua<" + pack.getAddress().getRtua() + ">: "
                     + BcdUtils.binArrayToString(pack.getValue()) + '\n' + pack.toString());
-           // commLogWriter.insertLog(pack.getAddress().getRtua(),BcdUtils.binArrayToString(pack.getValue()),"D" );
+            commLogWriter.insertLog(pack.getAddress().getRtua(),BcdUtils.binArrayToString(pack.getValue()),"D" );
         }
     }
 

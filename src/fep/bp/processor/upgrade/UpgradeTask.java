@@ -137,6 +137,7 @@ public class UpgradeTask {
                 {                  
                     updateTask(TaskStatus.Failed);
                     taskStatus = TaskStatus.Failed;
+                    log.info("收到否认帧失败！！！");
                 }
             }
             else//没有返回
@@ -144,6 +145,7 @@ public class UpgradeTask {
                 if (this.startSendTicket != null) {
                     Date checkTime =new Date();
                     if (checkTime.getTime() - this.startSendTicket.getTime() >= this.TIME_OUT) {
+                        log.info("超时失败！！！");
                         updateTask(TaskStatus.Failed);
                         taskStatus = TaskStatus.Failed;
                         emptyPacketQueue();

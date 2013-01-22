@@ -7,13 +7,12 @@ package fep.main;
 
 import fep.bp.config.Config;
 import fep.bp.processor.SmsRespProcessor;
-import fep.mina.common.RtuUnrespPacketChecker;
+import fep.mina.common.unrespchecker.RtuUnresponseChecker;
 import fep.mina.protocolcodec.gb.PepGbCommunicator;
 import fep.mina.protocolcodec.gb.gb376.PmPacket376CodecFactory;
 import fep.mina.protocolcodec.gb.gb376.PmPacket376ServerIoHandler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Timer;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
@@ -39,10 +38,10 @@ public class Main {
         System.out.println("FEP前置通信器监听端口： " + PORT);
         //System.out.println("Idle Timeout "+acceptor.getSessionConfig().getIdleTime(IdleStatus.BOTH_IDLE));
 
-        Timer checkTimer = new Timer();
-        RtuUnrespPacketChecker checker = new RtuUnrespPacketChecker(rtuMap);
-        long timestamp = 10*1000;
-        checkTimer.schedule(checker, timestamp,timestamp);
+
+
+        RtuUnresponseChecker checker = new RtuUnresponseChecker(rtuMap);
+        checker.run();
 
 
         //启动业务处理器

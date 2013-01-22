@@ -10,7 +10,6 @@ import fep.mina.common.RtuAutoUploadPacketQueue;
 import fep.mina.common.RtuConnectEventHandler;
 import fep.mina.common.RtuConnectListener;
 import fep.mina.common.RtuRespPacketQueue;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;

@@ -12,6 +12,7 @@ import fep.bp.realinterface.mto.*;
 import fep.bp.utils.AFNType;
 import fep.bp.utils.decoder.Decoder;
 import fep.bp.utils.encoder.Encoder;
+import fep.bp.utils.equipMap.EquipMap;
 import fep.codec.protocol.gb.*;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
@@ -20,6 +21,9 @@ import fep.codec.utils.BcdUtils;
 import java.io.IOException;
 import java.util.*;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.exolab.castor.mapping.MappingException;
+import org.exolab.castor.xml.MarshalException;
+import org.exolab.castor.xml.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -35,14 +39,37 @@ public class RealTimeProxy376 implements RealTimeInterface {
     private final int cmdItemNum = 1;
     private final static Logger log = LoggerFactory.getLogger(RealTimeProxy376.class);
 
-    private Decoder decoder;
-    private Encoder encoder;
-
+    private Decoder decoder100;
+    private Encoder encoder100;
+    
+    private Decoder decoder101;
+    private Encoder encoder101;
+    
     private RTTaskService taskService;
+    private EquipMap equipMap;
     public void setTaskService(RTTaskService rtTaskService) {
         this.taskService = rtTaskService;
     }
 
+    private Decoder getDecoder(int meterProtocol)
+    {
+        if(meterProtocol == 100) {
+            return decoder100;
+        }
+        else {
+            return getDecoder101();
+        }
+    }
+    
+    private Encoder getEncoder(int meterProtocol)
+    {
+        if(meterProtocol == 100) {
+            return getEncoder100();
+        }
+        else {
+            return getEncoder101();
+        }
+    }
 
     private int getID() {
         return taskService.getSequnce();
@@ -59,7 +86,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
                 gpMark.delete(0, gpMark.length());
                 commandMark.delete(0, commandMark.length());
 
-                List<PmPacket376> packetList = encoder.EncodeList(obj, AFN);
+                List<PmPacket376> packetList = getEncoder(100).EncodeList(obj, AFN);
                 for (PmPacket376 packet : packetList) {
                     RealTimeTaskDAO task = new RealTimeTaskDAO();
                     task.setSendmsg(BcdUtils.binArrayToString(packet.getValue()));
@@ -77,7 +104,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
     }
 
     
-    protected List<RealTimeTaskDAO> Encode_TransMit(MessageTranObject MTO, int sequenceCode) throws IOException {
+    protected List<RealTimeTaskDAO> Encode_TransMit(MessageTranObject MTO, int sequenceCode) throws IOException, MappingException, MarshalException, ValidationException {
         MTO_376 mto = (MTO_376) MTO;  
         List<RealTimeTaskDAO> tasks = new ArrayList<RealTimeTaskDAO>();
         ProtocolConfig config = ProtocolConfig.getInstance();//获取配置文件对象
@@ -88,7 +115,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
                 gpMark.delete(0, gpMark.length());
                 gpMark.append(obj.getMeterAddr()).append("#");
                 commandMark.delete(0, commandMark.length());
-                List<PmPacket376> packetList = this.encoder.EncodeList_TransMit(obj,commandMark);
+                List<PmPacket376> packetList = getEncoder(obj.getMeterType()).EncodeList_TransMit(obj,commandMark);
                 for (PmPacket376 packet : packetList) {
                     RealTimeTaskDAO task = new RealTimeTaskDAO();
                     task.setSendmsg(BcdUtils.binArrayToString(packet.getValue()));
@@ -323,7 +350,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                results = decoder.decode2Map(packet);
+                results = getDecoder(100).decode2Map(packet);
             }
         }
         return results;
@@ -359,7 +386,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = decoder.decode2Map(packet);
+                tempMap = getDecoder(100).decode2Map(packet);
             }
         }
         return Deal2DataMap(tempMap);
@@ -383,7 +410,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = decoder.decode2Map_TransMit(packet);
+                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit(packet);
             }
         }
         return tempMap;
@@ -401,7 +428,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = decoder.decode2Map_TransMit_WriteBack(packet);
+                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_WriteBack(packet);
             }
         }
         return tempMap;
@@ -421,7 +448,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = decoder.decode2Map(packet);
+                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map(packet);
             }
         }
         return Deal2DataMap(tempMap);
@@ -446,7 +473,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {               
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                resultList = decoder.decode2Map_TransMit_WriteParameterBack(packet,GpArray,CommandArray);
+                resultList = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_WriteParameterBack(packet,GpArray,CommandArray);
                 if(resultList!=null)
                 {
                     results.putAll(resultList);
@@ -470,7 +497,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {               
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                resultList = decoder.decode2Map_TransMit_ControlBack(packet,GpArray,CommandArray);
+                resultList = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_ControlBack(packet,GpArray,CommandArray);
                 if(resultList!=null)
                 {
                     results.putAll(resultList);
@@ -480,7 +507,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
         return results;
     }
 
-    private Map<String, Map<String, String>> Deal2DataMap(Map<String, Map<String, String>> sourceMap) throws IOException {
+    private Map<String, Map<String, String>> Deal2DataMap(Map<String, Map<String, String>> sourceMap) throws IOException, MappingException, MarshalException, ValidationException {
         String dataItemCode ;
         Map<String, Map<String, String>> results = new TreeMap<String, Map<String, String>>();
         ProtocolConfig config = ProtocolConfig.getInstance();//获取配置文件对象
@@ -511,17 +538,72 @@ public class RealTimeProxy376 implements RealTimeInterface {
         return results;
     }
 
+    public Decoder getDecoder100() {
+        return decoder100;
+    }
+        
     /**
      * @param decoder the decoder to set
      */
-    public void setDecoder(Decoder decoder) {
-        this.decoder = decoder;
+    public void setDecoder100(Decoder decoder) {
+        this.decoder100 = decoder;
     }
 
     /**
      * @param encoder the encoder to set
      */
-    public void setEncoder(Encoder encoder) {
-        this.encoder = encoder;
+    public void setEncoder100(Encoder encoder) {
+        this.encoder100 = encoder;
+    }
+
+    /**
+     * @return the encoder100
+     */
+    public Encoder getEncoder100() {
+        return encoder100;
+    }
+
+
+    /**
+     * @return the decoder101
+     */
+    public Decoder getDecoder101() {
+        return decoder101;
+    }
+
+    /**
+     * @param decoder101 the decoder101 to set
+     */
+    public void setDecoder101(Decoder decoder101) {
+        this.decoder101 = decoder101;
+    }
+
+    /**
+     * @return the encoder101
+     */
+    public Encoder getEncoder101() {
+        return encoder101;
+    }
+
+    /**
+     * @param encoder101 the encoder101 to set
+     */
+    public void setEncoder101(Encoder encoder101) {
+        this.encoder101 = encoder101;
+    }
+
+    /**
+     * @return the equipMap
+     */
+    public EquipMap getEquipMap() {
+        return equipMap;
+    }
+
+    /**
+     * @param equipMap the equipMap to set
+     */
+    public void setEquipMap(EquipMap equipMap) {
+        this.equipMap = equipMap;
+        this.equipMap.init();
     }
 }

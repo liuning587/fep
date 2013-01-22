@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Thinkpad
  */
 public class PollingProcessor implements Runnable{
-    private final static Logger log = LoggerFactory.getLogger(PollingJob.class);
+    private final static Logger log = LoggerFactory.getLogger(PollingProcessor.class);
     //任务周期类型
     private final int CIRCLE_UNIT_MINUTE =0;
     private final int CIRCLE_UNIT_HOUR =1;

@@ -4,16 +4,16 @@
  */
 package fep.main;
 
+import fep.bp.processor.*;
+import fep.bp.processor.planManager.PlanManager;
 import fep.bp.processor.polling.PollingProcessor;
+import fep.bp.processor.upgrade.UpgradeProcessor;
+import fep.mina.common.PepCommunicatorInterface;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fep.bp.processor.*;
-import fep.bp.processor.planManager.PlanManager;
-import fep.bp.processor.upgrade.UpgradeProcessor;
-import fep.mina.common.PepCommunicatorInterface;
 
 /**
  *
@@ -72,23 +72,24 @@ public class MainProcess {
     }
 
     public MainProcess(PepCommunicatorInterface pepCommunicator) {
-        this.threadPool = new ThreadPoolExecutor(4, 5, 3,
-                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(3),
+        this.threadPool = new ThreadPoolExecutor(10, 10, 3,
+                TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
         this.pepCommunicator = pepCommunicator;
         planManager = new PlanManager(this.pepCommunicator);
         pollingProcessor = new PollingProcessor(this.pepCommunicator);
-
-    }
+        upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
+   }
 
     public void run() {
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", new RealTimeSender(this.pepCommunicator));
-        upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：升级管理器 ", upgradeProcessor);
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator,upgradeProcessor));
-        runPlanManager();
         runPollingProcessor();
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator,upgradeProcessor));
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", new RealTimeSender(this.pepCommunicator));
+        
+        runPlanManager();
         runProcessor(rtTaskSenderMaxNumber, "启动短信回复检查处理器 ", new SMSCheckProcessor());
         runProcessor(rtTaskSenderMaxNumber, "启动组件：上报任务处理器 ", new UpLoadProcessor(this.pepCommunicator));
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：升级管理器 ", upgradeProcessor);
+
     }
 }

@@ -61,20 +61,21 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="decoder" class="fep.bp.utils.decoder.Decoder376_02">
+    <bean id="decoder101" class="fep.bp.utils.decoder.Decoder376_02">
         <property name="config" ref="protocolConfig"/>
     </bean>
 
-    <bean id="encoder" class="fep.bp.utils.encoder.encoder376.Encoder376">
+    <bean id="encoder101" class="fep.bp.utils.encoder.encoder376.Encoder376">
+        <property name="config" ref="protocolConfig"/>
+    </bean>
+    
+    <bean id="decoder100" class="fep.bp.utils.decoder.Decoder376_01">
         <property name="config" ref="protocolConfig"/>
     </bean>
 
-    <bean id="converter" class="fep.bp.utils.Converter">
+    <bean id="encoder100" class="fep.bp.utils.encoder.encoder376.Encoder376">
         <property name="config" ref="protocolConfig"/>
-        <property name="decoder" ref="decoder"/>
     </bean>
-
-
 
     <bean id="p_actDataStoredProcedure" class="fep.bp.dal.storedProc.P_ACT_StoredProcedure">
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
@@ -191,8 +192,11 @@
 
     <bean id="realTimeProxy376" class="fep.bp.realinterface.RealTimeProxy376">
         <property name="taskService" ref="rtTaskService" />
-        <property name="decoder" ref="decoder" />
-        <property name="encoder" ref="encoder" />
+        <property name="equipMap" ref="equipMap" />
+        <property name="decoder100" ref="decoder100" />
+        <property name="encoder100" ref="encoder100" />
+        <property name="decoder101" ref="decoder101" />
+        <property name="encoder101" ref="encoder101" />
     </bean>
     
     <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"/>
@@ -201,11 +205,10 @@
         <ref local="nativeJdbcExtractor"/>
         </property>
     </bean>
-    <!--<bean id="realTimeProxy376Test" class="pep.bp.realinterface.RealTimeProxy376Test">
-        <property name="proxy" ref="realTimeProxy376"/>
-        <property name="taskService" ref="rtTaskService" />
-        <property name="converter" ref="converter" />
-    </bean> -->
+    
+    <bean id="equipMap" class="fep.bp.utils.equipMap.EquipMap">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
 
 

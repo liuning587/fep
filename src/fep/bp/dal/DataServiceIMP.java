@@ -292,7 +292,7 @@ public class DataServiceIMP implements DataService {
 
         if (commandItemCode.equals("8000B66F")) {
             //電壓/電流曲線
-            this.insertData_EC_CURV_LouBao(logicalAddress, dtoItem.gp, commandItemCode,dtoItem.dataTime, dtoItem);
+            this.insertData_EC_CURV_LouBao(logicalAddress, dtoItem.gp, dtoItem.dataTime,commandItemCode, dtoItem);
             //漏保状态
             this.psStatusStoredProcedur.execute(logicalAddress, dtoItem.gp, dtoItem.dataTime,
                     dataItemMap.get("8000B66F01"), dataItemMap.get("8000B66F02"),
@@ -439,6 +439,19 @@ public class DataServiceIMP implements DataService {
                 {
                     phase = "01"; //针对接口数据，00按A相处理
                 }
+                this.eccurvStoredProcedure.execute(
+                    logicalAddress,
+                    gpSn,
+                    dataDate,
+                    dataItemMap.get("B621"),
+                    dataItemMap.get("B622"),
+                    dataItemMap.get("B623"),
+                    "",
+                    dataItemMap.get("B660"),
+                    dataItemMap.get("B611"),
+                    dataItemMap.get("B612"),
+                    dataItemMap.get("B613"),
+                    phase);
             }
             else if(commandItemCode.equals("800001FF"))
             {
@@ -449,7 +462,7 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("B621"),
                     dataItemMap.get("B622"),
                     dataItemMap.get("B623"),
-                    "",
+                    dataItemMap.get("B661"),
                     dataItemMap.get("B660"),
                     dataItemMap.get("B611"),
                     dataItemMap.get("B612"),

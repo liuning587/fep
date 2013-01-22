@@ -9,8 +9,8 @@ package fep.codec.utils;
  * @author luxiaochung
  */
 import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class BcdUtils {
 
