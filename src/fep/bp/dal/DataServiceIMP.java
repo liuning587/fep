@@ -169,6 +169,12 @@ public class DataServiceIMP implements DataService {
         if (commandItemCode.equals("100C0073")) {
             insertData_HUMITURE(logicalAddress, dtoItem.gp, "0", dataItemMap.get("100C007301"));
         }
+        
+        //新增一类数据（漏保数据F200、F201）
+        if (commandItemCode.equals("100C0200")) {
+            //電壓/電流曲線
+            this.insertData_EC_CURV_LouBao(logicalAddress, dtoItem.gp, dtoItem.dataTime,commandItemCode, dtoItem);
+        }
     }
 
     //二类数据入库
@@ -446,7 +452,7 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("B621"),
                     dataItemMap.get("B622"),
                     dataItemMap.get("B623"),
-                    "",
+                    "",//最大漏电相位对应的漏电电流
                     dataItemMap.get("B660"),
                     dataItemMap.get("B611"),
                     dataItemMap.get("B612"),
@@ -462,12 +468,28 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("B621"),
                     dataItemMap.get("B622"),
                     dataItemMap.get("B623"),
-                    dataItemMap.get("B661"),
+                    "",
                     dataItemMap.get("B660"),
                     dataItemMap.get("B611"),
                     dataItemMap.get("B612"),
                     dataItemMap.get("B613"),
-                    phase);
+                    dataItemMap.get("B661"));//最大漏电相位
+            }
+            else if(commandItemCode.equals("100C0200"))
+            {
+                this.eccurvStoredProcedure.execute(
+                    logicalAddress,
+                    gpSn,
+                    dataDate,
+                    dataItemMap.get("100C020001"),
+                    dataItemMap.get("100C020002"),
+                    dataItemMap.get("100C020003"),
+                    "",
+                    dataItemMap.get("100C020008"),
+                    dataItemMap.get("100C020004"),
+                    dataItemMap.get("100C020005"),
+                    dataItemMap.get("100C020006"),
+                    dataItemMap.get("100C020007"));
             }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
