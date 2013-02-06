@@ -8,7 +8,6 @@ package fep.bp.utils.encoder;
 import fep.bp.realinterface.conf.ProtocolConfig;
 import fep.bp.realinterface.mto.CollectObject;
 import fep.bp.realinterface.mto.CollectObject_TransMit;
-import fep.codec.protocol.gb.PmPacket;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import java.util.List;
 
@@ -26,7 +25,7 @@ public abstract class Encoder {
      * @param AFN
      * @return
      */
-    public abstract PmPacket Encode(CollectObject obj, byte AFN);
+    public abstract List<PmPacket376> Encode(CollectObject obj, byte AFN);
 
     /**
      *对采集对象编码，生成报文对象列表，针对一次采集多个对象的情况

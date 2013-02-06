@@ -4,12 +4,12 @@
  */
 package fep.codec.protocol.gb.gb376;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645Address;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *

@@ -11,9 +11,7 @@ import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
-import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645MeterPacket;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import org.slf4j.Logger;
@@ -57,12 +55,17 @@ public class Decoder376_01 extends Decoder376{
             Map<String, Map<String, String>> results = new TreeMap<String, Map<String, String>>();
             PmPacket376 packet = (PmPacket376) pack;
             InnerDataBuffer InnerData =  getDataBuffer645(packet);
-            PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
-            String commandItemCode = "8000C040";
-            readSwitchStatus(commandItemCode, dataBuffer645);//针对8000C040、8000C04F、8000B66F将附带的开关信息状态读掉
-            Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
-            results.put(InnerData.getKey(), dataItems);
-            return results;
+            if(InnerData != null)
+            {
+                PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
+                String commandItemCode = "8000C040";
+                readSwitchStatus(commandItemCode, dataBuffer645);//针对8000C040、8000C04F、8000B66F将附带的开关信息状态读掉
+                Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
+                results.put(InnerData.getKey(), dataItems);
+                return results;
+            }
+            else
+                return null;
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;
@@ -84,12 +87,17 @@ public class Decoder376_01 extends Decoder376{
             PmPacket376 packet = (PmPacket376) pack;
 
             InnerDataBuffer InnerData =  getDataBuffer645(packet);
-            PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
-            String commandItemCode = getCommandItemCode(dataBuffer645);
-            readSwitchStatus(commandItemCode, dataBuffer645);//针对8000C040、8000C04F、8000B66F将附带的开关信息状态读掉
-            Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
-            results.put(InnerData.getKey(), dataItems);
-            return results;
+            if(InnerData!= null )
+            {
+                PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
+                String commandItemCode = getCommandItemCode(dataBuffer645);
+                readSwitchStatus(commandItemCode, dataBuffer645);//针对8000C040、8000C04F、8000B66F将附带的开关信息状态读掉
+                Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
+                results.put(InnerData.getKey(), dataItems);
+                return results;
+            }
+            else
+                return null;
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;

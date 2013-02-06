@@ -197,6 +197,16 @@ public abstract class Decoder376 extends Decoder {
             }
         }
     }
+    
+    public  Gb645MeterPacket getGb645MeterPacket(PmPacket376 packet) throws Exception
+    {
+        PmPacketData dataBuffer = getDataBuffer(packet);
+        PmPacket376DA da = getDA(dataBuffer);
+        PmPacket376DT dt = getDt(dataBuffer);
+        byte afn = packet.getAfn();
+        Gb645MeterPacket packet645 = getInnerDataPacket(dataBuffer);//抽取内部包
+        return packet645;
+    }
 
 
 
@@ -208,16 +218,16 @@ public abstract class Decoder376 extends Decoder {
      * @param dataBuffer：接收到数据的buffer
      */
     protected Map<String, String> dataBuffer2Map(String commandItemCode, PmPacketData dataBuffer) {
-        try {
+ //       try {
 
             Map<String, String> dataItems = new TreeMap<String, String>();
             List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItemCode);
             fillDataItem(DataItemList_Config, dataItems, dataBuffer);
             return dataItems;
-        } catch (Exception e) {
+  /*      } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;
-        }
+        }*/
     }
 
     protected class InnerDataBuffer{
@@ -264,13 +274,18 @@ public abstract class Decoder376 extends Decoder {
         byte afn = packet.getAfn();
         Gb645MeterPacket packet645 = getInnerDataPacket(dataBuffer);//抽取内部包
         String MeterAddress = packet645.getAddress().getAddress();
-        PmPacketData dataBuffer645 =  packet645.getDataAsPmPacketData();
-        String commandItemCode = getCommandItemCode(dataBuffer645);
-        String key = packet.getAddress().getRtua() + "#" + MeterAddress + "#" + commandItemCode;
-        InnerDataBuffer InnerData = new InnerDataBuffer();
-        InnerData.setKey(key);
-        InnerData.setInnerPacketData(dataBuffer645);
-        return InnerData;
+        if(!packet645.getControlCode().isYichang())
+        {
+            PmPacketData dataBuffer645 =  packet645.getDataAsPmPacketData();
+            String commandItemCode = getCommandItemCode(dataBuffer645);
+            String key = packet.getAddress().getRtua() + "#" + MeterAddress + "#" + commandItemCode;
+            InnerDataBuffer InnerData = new InnerDataBuffer();
+            InnerData.setKey(key);
+            InnerData.setInnerPacketData(dataBuffer645);
+            return InnerData;
+        }
+        else
+            return null;
     }
 
     protected PmPacketData getDataBuffer(PmPacket376 packet) {

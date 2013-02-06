@@ -60,6 +60,10 @@
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    
+     <bean id="encoder" class="fep.bp.utils.encoder.encoder376.Encoder376">
+        <property name="config" ref="protocolConfig"/>
+    </bean>
 
     <bean id="decoder101" class="fep.bp.utils.decoder.Decoder376_02">
         <property name="config" ref="protocolConfig"/>

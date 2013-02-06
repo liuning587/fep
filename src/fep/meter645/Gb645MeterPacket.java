@@ -5,10 +5,10 @@
 
 package fep.meter645;
 
-import org.apache.mina.core.buffer.IoBuffer;
 import fep.codec.protocol.gb.PmPacketData;
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
+import org.apache.mina.core.buffer.IoBuffer;
 
 /**
  *
@@ -56,15 +56,17 @@ public class Gb645MeterPacket {
 
     private void setDataBytes(byte[] msg, int beginIndex, int len){ //将接收到的序列转换为去掉33
         byte[] dataBytes = new byte[len];
-        for (int i=0; i<len; i++)
+        for (int i=0; i<len; i++) {
             dataBytes[i] = (byte) (msg[beginIndex+i]+0x0100 - 0x0033);
+        }
         this.data.setValue(dataBytes);
     }
 
     private byte[] getDataBytes(){ //转换为发送序列
         byte[] dataBytes = this.data.getValue();
-        for (int i=0; i<dataBytes.length; i++)
+        for (int i=0; i<dataBytes.length; i++) {
             dataBytes[i] = (byte) (dataBytes[i] + 0x0133);
+        }
         return dataBytes;
     }
 
@@ -93,8 +95,9 @@ public class Gb645MeterPacket {
 
     private static byte calcCs(byte[] dataBytes, int beginIdx, int length){
         int cs = 0;
-        for (int i=0; i<length; i++)
+        for (int i=0; i<length; i++) {
             cs = cs+(dataBytes[beginIdx+i]+0x0100);
+        }
         return (byte) cs;
     }
 

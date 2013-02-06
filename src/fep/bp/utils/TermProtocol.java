@@ -8,8 +8,9 @@ package fep.bp.utils;
  *
  * @author Thinkpad
  */
-public interface Protocol {
-    static String TERM_GW_376 = "100";
+public interface TermProtocol {
+    static String TERM_GW_376_01 = "100";
+    static String TERM_GW_376_02 = "101";
     static String TERM_GW_05 = "106";
     static String TERM_ZJ = "120";
 }

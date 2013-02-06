@@ -17,6 +17,7 @@ public class CollectObject_TransMit {
     private String terminalAddr;            //终端逻辑地址
     private int mpSn;//测量点序号
     private String equipProtocol;           //设备规约号
+    private String meterProtocol;           //表计/漏保规约
     private String meterAddr;              //表地址
     private int meterType;            //表计规约
     private int funcode;                  //表计规约功能码
@@ -205,5 +206,19 @@ public class CollectObject_TransMit {
      */
     public void setMpSn(int mpSn) {
         this.mpSn = mpSn;
+    }
+
+    /**
+     * @return the meterProtocol
+     */
+    public String getMeterProtocol() {
+        return meterProtocol;
+    }
+
+    /**
+     * @param meterProtocol the meterProtocol to set
+     */
+    public void setMeterProtocol(String meterProtocol) {
+        this.meterProtocol = meterProtocol;
     }
 }

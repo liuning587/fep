@@ -5,6 +5,7 @@
 
 package fep.bp.processor.polling;
 
+import fep.bp.processor.BaseProcessor;
 import fep.mina.common.PepCommunicatorInterface;
 import java.text.ParseException;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Thinkpad
  */
-public class PollingProcessor implements Runnable{
+public class PollingProcessor extends BaseProcessor{
     private final static Logger log = LoggerFactory.getLogger(PollingProcessor.class);
     //任务周期类型
     private final int CIRCLE_UNIT_MINUTE =0;
@@ -60,7 +61,7 @@ public class PollingProcessor implements Runnable{
 
            //30分钟任务
            JobDetail jobDetailHalfHour = new JobDetail("PollingJobHalfHour", null, PollingJobProxy.class);
-           jobDetailHalfHour.getJobDataMap().put("PollingJob",new PollingJob(pepCommunicator,CIRCLE_UNIT_HOUR,30));
+           jobDetailHalfHour.getJobDataMap().put("PollingJob",new PollingJob(pepCommunicator,CIRCLE_UNIT_HOUR,30,this.status));
            CronTrigger halfHourTrigger = new CronTrigger(JOB_NAME_HALFHOUR,TRIGGER_GROUP_NAME);
            CronExpression cronExpression_halfhour = null;
            try {
@@ -78,11 +79,11 @@ public class PollingProcessor implements Runnable{
 
            //60分钟任务
            JobDetail jobDetailHour = new JobDetail("PollingJobHour", null, PollingJobProxy.class);
-           jobDetailHour.getJobDataMap().put("PollingJob",new PollingJob(pepCommunicator,CIRCLE_UNIT_HOUR,60));
+           jobDetailHour.getJobDataMap().put("PollingJob",new PollingJob(pepCommunicator,CIRCLE_UNIT_HOUR,60,this.status));
            CronTrigger hourTrigger = new CronTrigger(JOB_NAME_HOUR,TRIGGER_GROUP_NAME);
            CronExpression cronExpression_hour = null;
            try {
-              cronExpression_hour = new CronExpression("0 0 0/1 * * ?");  //从0点开始，每1小时触发一次 //格式: [秒] [分] [时] [月中的天] [月] [周中的天] [年]
+              cronExpression_hour = new CronExpression("0 5 0/1 * * ?");  //从0点开始，每1小时触发一次 //格式: [秒] [分] [时] [月中的天] [月] [周中的天] [年]
               hourTrigger.setCronExpression(cronExpression_hour);
               //注册作业
               scheduler.scheduleJob(jobDetailHour, hourTrigger);

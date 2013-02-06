@@ -6,6 +6,7 @@ package fep.bp.processor.upgrade;
 import fep.bp.dal.RTTaskService;
 import fep.bp.model.UpgradeTaskDAO;
 import fep.bp.processor.BaseProcessor;
+import fep.bp.processor.ProcessLevel;
 import fep.bp.processor.RealTimeSender;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.SequencedPmPacket;
@@ -40,7 +41,7 @@ public class UpgradeProcessor extends BaseProcessor{
     public void run() {
         while (true) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 java.util.logging.Logger.getLogger(RealTimeSender.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -77,13 +78,17 @@ public class UpgradeProcessor extends BaseProcessor{
                     InputStream fin = task.getBinFile();
                     int fileSize = task.getBinFileSize();
                     UpgradeTask upgradeTask = new UpgradeTask();
+                    upgradeTask.setHaveUpgradeTask(true);
+                    upgradeTask.setStatus(status);
                     upgradeTask.setTaskID(taskId);
                     upgradeTask.setRtua(rtua);
                     upgradeTask.setBinFileStream(fin);
                     upgradeTask.setBinFileSize(fileSize);
                     upgradeTask.setPepCommunicator(pepCommunicator);
+                    upgradeTask.setLastFailFrameNo(task.getFailFrameNo());
                     upgradeTask.EncodePacket();
                     this.upgradeTaskMap.put(rtua, upgradeTask);
+                    this.status.updateStatus(rtua, ProcessLevel.Level0);
                 }
             }
         }
@@ -99,7 +104,5 @@ public class UpgradeProcessor extends BaseProcessor{
             UpgradeTask upgradeTask = (UpgradeTask) entry.getValue();
             upgradeTask.CheckBackPacket();
         }
-    }
-    
-    
+    }  
 }

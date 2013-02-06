@@ -33,24 +33,7 @@ public final class ProtocolConfig {
 	private static String PROTOCOL_DATA_CONFIG="protocol-data-config.xml";
 	private static ProtocolConfig instance = null;
 	private static ProtocolCommandItems commandItems;
-/*
-        public ProtocolConfig(final String str1, final String str2) throws IOException {
-            try {  
-                InputSource is = getTransFileReader(str2);                
-                Mapping map = new Mapping();  
-                map.loadMapping(this.getClass().getResource(str1));  
-                Unmarshaller unmarshaller = new Unmarshaller(ProtocolCommandItems.class);  
-                unmarshaller.setMapping(map);  
-                commandItems= (ProtocolCommandItems) unmarshaller.unmarshal(is);  
-            
-              //  commandItems = (ProtocolCommandItems) CastorUtil.unmarshal(resource1.getURL(), resource2.getURI());
-             //   commandItems.FillMap();
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
-        }
-*/
-        
+
 	public ProtocolConfig(final String str1, final String str2) throws IOException {
             if (instance == null) {
                 try {
@@ -67,7 +50,7 @@ public final class ProtocolConfig {
             }
 	}
 
-     /*   
+        /*
         public ProtocolConfig(final String MapFile, final String ConfigFile) throws IOException, MappingException, MarshalException, ValidationException {
             if (instance == null) {
                 try {
@@ -78,7 +61,6 @@ public final class ProtocolConfig {
                     unmarshaller.setMapping(mapping);
 
                     commandItems = (ProtocolCommandItems) unmarshaller.unmarshal(reader);
-                   // Reader reader = new InputStreamReader(new FileInputStream("person.xml"), "UTF-8"); 
                     commandItems.FillMap();
                 } catch (IOException iOException) {
                    throw iOException;

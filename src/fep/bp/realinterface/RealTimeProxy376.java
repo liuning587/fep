@@ -10,6 +10,7 @@ import fep.bp.realinterface.conf.ProtocolConfig;
 import fep.bp.realinterface.conf.ProtocolDataItem;
 import fep.bp.realinterface.mto.*;
 import fep.bp.utils.AFNType;
+import fep.bp.utils.TermProtocol;
 import fep.bp.utils.decoder.Decoder;
 import fep.bp.utils.encoder.Encoder;
 import fep.bp.utils.equipMap.EquipMap;
@@ -50,6 +51,11 @@ public class RealTimeProxy376 implements RealTimeInterface {
     public void setTaskService(RTTaskService rtTaskService) {
         this.taskService = rtTaskService;
     }
+    
+    private Decoder getDecoder376()
+    {
+        return decoder100;
+    }
 
     private Decoder getDecoder(int meterProtocol)
     {
@@ -74,6 +80,54 @@ public class RealTimeProxy376 implements RealTimeInterface {
     private int getID() {
         return taskService.getSequnce();
     }
+    
+    
+    private Map<String, String> getReturnConfirm(long appId) throws Exception 
+    {
+        List<RealTimeTaskDAO> tasks = this.taskService.getTasks(appId);
+        StringBuilder sb = new StringBuilder();
+        Map<String, String> results = new HashMap<String, String>();
+        try {
+            for (RealTimeTaskDAO task : tasks) {
+                String logicAddress = task.getLogicAddress();
+                String gpMark = task.getGpMark();
+                String[] GpArray = null;
+                if (null != gpMark) {
+                    GpArray = task.getGpMark().split("#");
+                }
+
+                String[] CommandArray = task.getCommandMark().split("#");
+                List<RTTaskRecvDAO> recvs = task.getRecvMsgs();
+                PmPacket376 packet = new PmPacket376();
+                for (RTTaskRecvDAO recv : recvs) {
+                    byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
+                    packet.setValue(msg, 0);
+                    PmPacketData dataBuf = packet.getDataBuffer();
+                    dataBuf.rewind();
+                    dataBuf.getDA(new PmPacket376DA());
+                    PmPacket376DT dt = new PmPacket376DT();
+                    dataBuf.getDT(dt);
+                    int result = dt.getFn();
+                    //全部确认或否认
+                    if (result < 3) {
+                        for (int i = 0; i < GpArray.length; i++) {
+                            for (int j = 0; j < CommandArray.length; j++) {
+                                String key = logicAddress + "#" + String.valueOf(GpArray[i]) + "#" + String.valueOf(CommandArray[i]);
+                                String value = String.valueOf(result);
+                                results.put(key, value);
+                            }
+                        }
+                    }
+                    //逐项确认
+                    if (result == 3) {
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return results;
+    }
 
     protected List<RealTimeTaskDAO> Encode(MessageTranObject MTO, int sequenceCode, byte AFN) {
         MTO_376 mto = (MTO_376) MTO;
@@ -86,7 +140,15 @@ public class RealTimeProxy376 implements RealTimeInterface {
                 gpMark.delete(0, gpMark.length());
                 commandMark.delete(0, commandMark.length());
 
-                List<PmPacket376> packetList = getEncoder(100).EncodeList(obj, AFN);
+                List<PmPacket376> packetList = null;
+                if(obj.getEquipProtocol().equals(TermProtocol.TERM_GW_376_01))
+                {
+                   packetList = getEncoder(100).Encode(obj, AFN);
+                }
+                else if(obj.getEquipProtocol().equals(TermProtocol.TERM_GW_376_02))
+                {
+                    packetList = getEncoder(100).EncodeList(obj, AFN);
+                }
                 for (PmPacket376 packet : packetList) {
                     RealTimeTaskDAO task = new RealTimeTaskDAO();
                     task.setSendmsg(BcdUtils.binArrayToString(packet.getValue()));
@@ -123,6 +185,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
                     task.setLogicAddress(obj.getTerminalAddr());
                     task.setGpMark(gpMark.toString());
                     task.setCommandMark(commandMark.toString());
+                    task.setMeterProtocol(obj.getMeterProtocol());
                     tasks.add(task);
                 }
             }
@@ -285,49 +348,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public Map<String, String> getReturnByWriteParameter(long appId) throws Exception {
-        List<RealTimeTaskDAO> tasks = this.taskService.getTasks(appId);
-        StringBuilder sb = new StringBuilder();
-        Map<String, String> results = new HashMap<String, String>();
-        try {
-            for (RealTimeTaskDAO task : tasks) {
-                String logicAddress = task.getLogicAddress();
-                String gpMark = task.getGpMark();
-                String[] GpArray = null;
-                if (null != gpMark) {
-                    GpArray = task.getGpMark().split("#");
-                }
-
-                String[] CommandArray = task.getCommandMark().split("#");
-                List<RTTaskRecvDAO> recvs = task.getRecvMsgs();
-                PmPacket376 packet = new PmPacket376();
-                for (RTTaskRecvDAO recv : recvs) {
-                    byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
-                    packet.setValue(msg, 0);
-                    PmPacketData dataBuf = packet.getDataBuffer();
-                    dataBuf.rewind();
-                    dataBuf.getDA(new PmPacket376DA());
-                    PmPacket376DT dt = new PmPacket376DT();
-                    dataBuf.getDT(dt);
-                    int result = dt.getFn();
-                    //全部确认或否认
-                    if (result < 3) {
-                        for (int i = 0; i < GpArray.length; i++) {
-                            for (int j = 0; j < CommandArray.length; j++) {
-                                String key = logicAddress + "#" + String.valueOf(GpArray[i]) + "#" + String.valueOf(CommandArray[i]);
-                                String value = String.valueOf(result);
-                                results.put(key, value);
-                            }
-                        }
-                    }
-                    //逐项确认
-                    if (result == 3) {
-                    }
-                }
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-        return results;
+        return this.getReturnConfirm(appId);
     }
  
     /**
@@ -350,7 +371,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                results = getDecoder(100).decode2Map(packet);
+                results = getDecoder376().decode2Map(packet);
             }
         }
         return results;
@@ -365,7 +386,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public Map<String, String> getReturnByWriteResetCommand(long appId) throws Exception {
-        return null;
+        return this.getReturnConfirm(appId);
     }
 
     /**
@@ -379,6 +400,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
         List<RealTimeTaskDAO> tasks = this.taskService.getTasks(appId);
         StringBuilder sb = new StringBuilder();
         Map<String, Map<String, String>> tempMap = null;
+        Map<String, Map<String, String>> resultMap = new HashMap<String, Map<String, String>>();
         for (RealTimeTaskDAO task : tasks) {
             String logicAddress = task.getLogicAddress();
             List<RTTaskRecvDAO> recvs = task.getRecvMsgs();
@@ -386,10 +408,11 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = getDecoder(100).decode2Map(packet);
+                tempMap = getDecoder376().decode2Map(packet);
+                Deal2DataMap(tempMap,resultMap);
             }
         }
-        return Deal2DataMap(tempMap);
+        return resultMap;
     }
 
     /**
@@ -410,7 +433,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit(packet);
+                tempMap = getDecoder(Integer.valueOf(task.getMeterProtocol())).decode2Map_TransMit(packet);
             }
         }
         return tempMap;
@@ -428,7 +451,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_WriteBack(packet);
+                tempMap = getDecoder(Integer.valueOf(task.getMeterProtocol())).decode2Map_TransMit_WriteBack(packet);
             }
         }
         return tempMap;
@@ -440,7 +463,8 @@ public class RealTimeProxy376 implements RealTimeInterface {
     public Map<String, Map<String, String>> readTransmitData(long appId) throws Exception {
         List<RealTimeTaskDAO> tasks = this.taskService.getTasks(appId);
         StringBuilder sb = new StringBuilder();
-        Map<String, Map<String, String>> tempMap = new HashMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> tempMap = null;
+        Map<String, Map<String, String>> resultMap = new HashMap<String, Map<String, String>>();
         for (RealTimeTaskDAO task : tasks) {
             String logicAddress = task.getLogicAddress();
             List<RTTaskRecvDAO> recvs = task.getRecvMsgs();
@@ -448,10 +472,11 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                tempMap = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map(packet);
+                tempMap = getDecoder(Integer.valueOf(task.getMeterProtocol())).decode2Map(packet);
+                Deal2DataMap(tempMap,resultMap);
             }
         }
-        return Deal2DataMap(tempMap);
+        return resultMap;
     }
     
     /**
@@ -473,7 +498,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {               
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                resultList = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_WriteParameterBack(packet,GpArray,CommandArray);
+                resultList = getDecoder(Integer.valueOf(task.getMeterProtocol())).decode2Map_TransMit_WriteParameterBack(packet,GpArray,CommandArray);
                 if(resultList!=null)
                 {
                     results.putAll(resultList);
@@ -497,7 +522,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
             for (RTTaskRecvDAO recv : recvs) {               
                 byte[] msg = BcdUtils.stringToByteArray(recv.getRecvMsg());
                 packet.setValue(msg, 0);
-                resultList = getDecoder(equipMap.loubaoProtocol(logicAddress)).decode2Map_TransMit_ControlBack(packet,GpArray,CommandArray);
+                resultList = getDecoder(Integer.valueOf(task.getMeterProtocol())).decode2Map_TransMit_ControlBack(packet,GpArray,CommandArray);
                 if(resultList!=null)
                 {
                     results.putAll(resultList);
@@ -507,9 +532,9 @@ public class RealTimeProxy376 implements RealTimeInterface {
         return results;
     }
 
-    private Map<String, Map<String, String>> Deal2DataMap(Map<String, Map<String, String>> sourceMap) throws IOException, MappingException, MarshalException, ValidationException {
+    private void Deal2DataMap(Map<String, Map<String, String>> sourceMap, Map<String, Map<String, String>> destMap) throws IOException, MappingException, MarshalException, ValidationException {
         String dataItemCode ;
-        Map<String, Map<String, String>> results = new TreeMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> results = destMap;
         ProtocolConfig config = ProtocolConfig.getInstance();//获取配置文件对象
         Iterator iterator = sourceMap.keySet().iterator();
         while (iterator.hasNext()) {
@@ -535,7 +560,6 @@ public class RealTimeProxy376 implements RealTimeInterface {
             }
 
         }
-        return results;
     }
 
     public Decoder getDecoder100() {

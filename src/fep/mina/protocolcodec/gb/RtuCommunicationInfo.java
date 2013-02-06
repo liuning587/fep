@@ -33,31 +33,34 @@ public class RtuCommunicationInfo {
     private byte currentSeq;        //下一个主动发送帧的帧序号
     private boolean idle;           //是否可以发送下行帧
     private byte currentRespSeq;    //当前等待回复的帧序号
-    private byte maxRetryTimes;     //当没有收到终端回应帧时最大重复发送次数
     private byte currentSendTimes;
     private Date currentSendTicket;
     private PmPacket currentPacket;
+    private long currentPacketTimeOut;
+    private byte currentReSendTimes;
     private int currentSequence;
     private boolean isTcp;
     private byte lastEc1;
     private byte lastEc2;
+    private static byte maxRetryTimes = 3;     //当没有收到终端回应帧时最大重复发送次数
     private static final byte EC_CALL_HOST_ID = 3;   //读取3类数据时使用的主站ID
     public final static byte AUTO_CALL_TASK_HOSTID = 2;//主动轮召任务返回
     public final static byte LOUBAO_OPRATE_HOSTID = 4;//漏保恢复尝试
     public final static byte UPGRADE = 5;//漏保恢复尝试
     private static final long TIME_OUT = 20 * 1000;
-    private static final long TIME_OUT_UPGRADE = 180 * 1000;
+    private static final long TIME_OUT_UPGRADE = 30 * 1000;
     private final static Logger LOGGER = LoggerFactory.getLogger(RtuCommunicationInfo.class);
     private class SeqPacket {
 
         private int sequence;
         private PmPacket pack;
         private long timeout;//发送超时时间（毫秒） add by lijun 2013.01.22
-
-        private SeqPacket(int sequence, PmPacket pack,long timeout) {
+        private byte reSendTimes;
+        private SeqPacket(int sequence, PmPacket pack,long timeout,byte reSendTimes) {
             this.sequence = sequence;
             this.pack = pack;
             this.timeout = timeout;
+            this.reSendTimes = reSendTimes;
         }
 
         /**
@@ -66,13 +69,26 @@ public class RtuCommunicationInfo {
         public long getTimeout() {
             return timeout;
         }
+
+        /**
+         * @return the reSendTimes
+         */
+        public int getReSendTimes() {
+            return reSendTimes;
+        }
+
+        /**
+         * @param reSendTimes the reSendTimes to set
+         */
+        public void setReSendTimes(byte reSendTimes) {
+            this.reSendTimes = reSendTimes;
+        }
     }
 
     public RtuCommunicationInfo(String rtua) {
         super();
         this.rtua = rtua;
         currentSeq = 0;
-        maxRetryTimes = 3;
         session = null;
         idle = true;
         lastEc1 = 0;
@@ -88,7 +104,7 @@ public class RtuCommunicationInfo {
     }
 
     public synchronized RtuCommunicationInfo setMaxRetryTimes(byte maxRetryTimes) {
-        this.maxRetryTimes = maxRetryTimes;
+        this.currentReSendTimes = maxRetryTimes;
         return this;
     }
 
@@ -99,7 +115,7 @@ public class RtuCommunicationInfo {
     public synchronized RtuCommunicationInfo setTcpSession(IoSession session) {
         this.isTcp = true;
         this.session = session;
-        this.sendNextPacket(true);
+      //  this.sendNextPacket(true);
         return this;
     }
 
@@ -129,7 +145,7 @@ public class RtuCommunicationInfo {
             }
         }
         else{
-           LOGGER.info("非预期的终端响应帧，非响应帧或者非上行帧或者seq不一致"+packet.toString());
+           LOGGER.info("非预期的终端响应帧，非响应帧或者非上行帧或者seq不一致"+packet.toHexString());
         }
     }
 
@@ -149,27 +165,29 @@ public class RtuCommunicationInfo {
             sendNextPacket(false);
         } else {
             LOGGER.info("Send packet: " + this.rtua + " not idle, sequence=" + sequence
-                    + ", pack=" + packet.toString());
+                    + ", pack=" + packet.toHexString());
         }
     }
 
     private void addPacket(int sequence, PmPacket packet, int priorityLevel) {
         long timeOut = RtuCommunicationInfo.TIME_OUT;
+        byte reSendTimes = RtuCommunicationInfo.maxRetryTimes;
         if(packet.getAfn()==AFNType.AFN_UPGRADE) {
             timeOut = RtuCommunicationInfo.TIME_OUT_UPGRADE;
+            reSendTimes = 10;
         }
         switch(priorityLevel)
         {
             case 0:{
-                this.unsendPacket0.add(new SeqPacket(sequence, packet,timeOut));
+                this.unsendPacket0.add(new SeqPacket(sequence, packet,timeOut,reSendTimes));
                 break;
             }
             case 1:{
-                this.unsendPacket1.add(new SeqPacket(sequence, packet,timeOut));
+                this.unsendPacket1.add(new SeqPacket(sequence, packet,timeOut,reSendTimes));
                 break;
             }
             case 2:{
-                this.unsendPacket2.add(new SeqPacket(sequence, packet,timeOut));
+                this.unsendPacket2.add(new SeqPacket(sequence, packet,timeOut,reSendTimes));
                 break;
             }
         }
@@ -184,11 +202,14 @@ public class RtuCommunicationInfo {
                 this.currentSendTimes = 0;
                 this.currentPacket = seqPacket.pack;
                 this.currentPacket.getSeq().setSeq(this.currentSeq);
+                this.currentPacketTimeOut = (seqPacket.timeout <= 0) ? RtuCommunicationInfo.TIME_OUT : seqPacket.timeout;
+                this.currentReSendTimes = (seqPacket.reSendTimes <= 0) ? RtuCommunicationInfo.maxRetryTimes : seqPacket.reSendTimes;
                 this.currentRespSeq = this.currentSeq;
                 this.currentSeq = (byte) ((++this.currentSeq) & 0x0F);
                 doSendPacket();
             } else {
                 this.idle = true;
+                 LOGGER.info("终端: " + rtua + " 当前发送报文队列为空，状态：空闲");
             }
         } else {
             boolean firstSent = this.currentSendTimes == 1;
@@ -199,8 +220,6 @@ public class RtuCommunicationInfo {
     }
 
     private SeqPacket pollPacket() {
-        
-        
         SeqPacket seqPacket = unsendPacket0.poll();
         if (seqPacket != null) {
             return seqPacket;
@@ -223,14 +242,15 @@ public class RtuCommunicationInfo {
                 this.currentSendTicket = new Date();
                 this.currentSendTimes++;
             }
-            if (this.currentSendTimes <= maxRetryTimes) {
+            if (this.currentSendTimes <= currentReSendTimes) {
                 if (this.session != null) {
+                    /*
                     LOGGER.info("DoSend: " + rtua + " sequence="
-                            + this.currentSequence + ", pack=" + this.currentPacket.toString());
+                            + this.currentSequence + ", pack=" + this.currentPacket.toHexString());*/
                     this.session.write(this.currentPacket);
                 } else {
                     LOGGER.info("DoSend: " + rtua + " not online, sequence="
-                            + this.currentSequence + ", pack=" + this.currentPacket.toString());
+                            + this.currentSequence + ", pack=" + this.currentPacket.toHexString());
                 }
 
                 if (!this.currentPacket.getControlCode().getIsOrgniger()) {
@@ -254,8 +274,8 @@ public class RtuCommunicationInfo {
         if (this.idle) {
             return;
         }
-        if (checkTime.getTime() - this.currentSendTicket.getTime() >= RtuCommunicationInfo.TIME_OUT) {
-            if (this.currentSendTimes > this.maxRetryTimes) {
+        if (checkTime.getTime() - this.currentSendTicket.getTime() >=  this.currentPacketTimeOut) {
+            if (this.currentSendTimes > this.currentReSendTimes) {
                 RtuRespPacketQueue.instance().addPacket(
                         new SequencedPmPacket(this.currentSequence, this.currentPacket,
                         SequencedPmPacket.Status.TIME_OUT));
@@ -263,7 +283,7 @@ public class RtuCommunicationInfo {
                 LOGGER.info(rtua + " 超时,发送下一包.（发送队列：0级数据包：" + this.unsendPacket0.size() + "个，1级数据包 " + this.unsendPacket1.size() + " 个,2级数据包" + this.unsendPacket2.size() + " 个" +" 检查时间=" + checkTime.toString() + ", 上次发送时间=" + this.currentSendTicket.toString()+")");
                 sendNextPacket(false);
             } else {
-                LOGGER.info(rtua + " 超时, 重发.（发送队列：0级数据包： " + this.unsendPacket0.size() + "个，1级数据包" + this.unsendPacket1.size() + " 个,2级数据包" + this.unsendPacket2.size() + " 个"+ " 检查时间=" + checkTime.toString() + ", 上次发送时间=" + this.currentSendTicket.toString()+")");
+                LOGGER.info(rtua + " 超时, 第"+currentSendTimes+"次重发.（发送队列：0级数据包： " + this.unsendPacket0.size() + "个，1级数据包" + this.unsendPacket1.size() + " 个,2级数据包" + this.unsendPacket2.size() + " 个"+ " 检查时间=" + checkTime.toString() + ", 上次发送时间=" + this.currentSendTicket.toString()+")");
                 doSendPacket();
             }
         }

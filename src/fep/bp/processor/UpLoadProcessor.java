@@ -18,6 +18,7 @@ import fep.codec.protocol.gb.gb376.PmPacket376EventBase;
 import fep.codec.protocol.gb.gb376.PmPacket376EventDecoder;
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
+import fep.meter645.Gb645MeterPacket;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuAutoUploadPacketQueue;
 import fep.system.SystemConst;
@@ -56,16 +57,12 @@ public class UpLoadProcessor extends BaseProcessor {
                 PmPacket376 packet = (PmPacket376) upLoadQueue.PollPacket();
                 if (packet.getAfn() == 0x0C) {
                     decodeAndSaveClassOneData(packet);
-                    //log.info("对报文： " + BcdUtils.binArrayToString(packet.getValue())+" 做入库处理成功");
                 } else if(packet.getAfn() == 0x10){
                     decodeAndSaveClasTransMitData(packet);
-                   // log.info("对报文： " + BcdUtils.binArrayToString(packet.getValue())+" 做入库处理成功");
                 } else if (packet.getAfn() == 0x0D) {
                     decodeAndSaveClassTwoData(packet);
-                   // log.info("对报文： " + BcdUtils.binArrayToString(packet.getValue())+" 做入库处理成功");
                 } else if (packet.getAfn() == 0x0E) {
                     DecodeEventAndSave(packet);
-                    log.info("对报文： " + BcdUtils.binArrayToString(packet.getValue())+" 做入库处理成功");
                 } else {
                     log.error("收到不支持的主动上送报文类" + BcdUtils.binArrayToString(packet.getValue()));
                 }
@@ -75,6 +72,11 @@ public class UpLoadProcessor extends BaseProcessor {
                 log.error(ex.getMessage());
             }
         }
+    }
+    
+    private Decoder getDecoder376()
+    {
+        return this.decoder100;
     }
     
     private Decoder getDecoder(int loubaoProtocol)
@@ -90,17 +92,23 @@ public class UpLoadProcessor extends BaseProcessor {
     private void decodeAndSaveClassOneData(PmPacket376 packet) {
         String logicalAddr = packet.getAddress().getRtua();
         Dto dto = new Dto(logicalAddr, packet.getAfn());
-        Decoder decoder = getDecoder(this.equipMap.loubaoProtocol(logicalAddr));
+        Decoder decoder = getDecoder376();
         decoder.decode2dto(packet, dto);
         dataService.insertRecvData(dto);
     }
 
-    private void decodeAndSaveClasTransMitData(PmPacket376 packet) {
+    private void decodeAndSaveClasTransMitData(PmPacket376 packet) throws Exception {
+        Gb645MeterPacket packet645= getDecoder376().getGb645MeterPacket(packet);
         String logicalAddr = packet.getAddress().getRtua();
+        String loubaoAddr = packet645.getAddress().getAddress();
         Dto dto = new Dto(logicalAddr, packet.getAfn());
-        Decoder decoder = getDecoder(this.equipMap.loubaoProtocol(logicalAddr));
-        decoder.decode2dto_TransMit(packet, dto);
-        dataService.insertRecvData(dto);
+        int loubaoProtocol = this.equipMap.loubaoProtocol(logicalAddr,loubaoAddr);
+        if(loubaoProtocol != -1)
+        {
+            Decoder decoder = getDecoder(loubaoProtocol);
+            decoder.decode2dto_TransMit(packet, dto);
+            dataService.insertRecvData(dto);
+        }    
     }
 
     private void decodeAndSaveClassTwoData(PmPacket376 packet) {

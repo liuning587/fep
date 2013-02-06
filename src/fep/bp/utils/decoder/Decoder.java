@@ -6,6 +6,8 @@ package fep.bp.utils.decoder;
 
 import fep.bp.model.Dto;
 import fep.bp.realinterface.conf.ProtocolConfig;
+import fep.codec.protocol.gb.gb376.PmPacket376;
+import fep.meter645.Gb645MeterPacket;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ public abstract class Decoder {
     public abstract Map<String, String> decode2Map_TransMit_WriteParameterBack(Object pack,String[] GpArray,String[] CommandArray);
     public abstract Map<String, String> decode2Map_TransMit_ControlBack(Object pack,String[] GpArray,String[] CommandArray);
     public abstract void decode2dto_TransMit(Object pack, Dto dto);
+    public abstract Gb645MeterPacket getGb645MeterPacket(PmPacket376 packet)  throws Exception;
     /**
      * @return the config
      */

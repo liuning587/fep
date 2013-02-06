@@ -6,6 +6,7 @@
 package fep.main;
 
 import fep.bp.config.Config;
+import fep.bp.db.commLog.CommLogWriter;
 import fep.bp.processor.SmsRespProcessor;
 import fep.mina.common.unrespchecker.RtuUnresponseChecker;
 import fep.mina.protocolcodec.gb.PepGbCommunicator;
@@ -13,6 +14,7 @@ import fep.mina.protocolcodec.gb.gb376.PmPacket376CodecFactory;
 import fep.mina.protocolcodec.gb.gb376.PmPacket376ServerIoHandler;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Timer;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
@@ -43,6 +45,10 @@ public class Main {
         RtuUnresponseChecker checker = new RtuUnresponseChecker(rtuMap);
         checker.run();
 
+        //启动通信日志记录器
+        Timer commLogTimer = new Timer();
+        CommLogWriter commLogWriter = CommLogWriter.getInstance();
+        commLogTimer.schedule(commLogWriter, CommLogWriter.maxCacheTime,CommLogWriter.maxCacheTime);
 
         //启动业务处理器
         SmsRespProcessor.setRtuMap(rtuMap);

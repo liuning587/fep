@@ -49,8 +49,15 @@ public class RealTimeSender extends BaseProcessor {
                     PmPacket packet = new PmPacket376();
                     packet.setValue(BcdUtils.stringToByteArray(task.getSendmsg()), 0);
                 //    log.info("开始往下发队列中发送报文："+task.getSendmsg());
-                    pepCommunicator.SendPacket(task.getTaskId(), packet,1);
-                    log.info("往下发队列中发送("+packet.getAddress().getRtua()+")报文："+task.getSendmsg());
+                    if(this.status.canProcess(packet.getAddress().getRtua(), ProcessLevel.Level2))
+                    {
+                        pepCommunicator.SendPacket(task.getTaskId(), packet,1);
+                        log.info("往下发队列中发送("+packet.getAddress().getRtua()+")报文："+task.getSendmsg());
+                    }
+                    else
+                    {
+                        log.info("终端："+packet.getAddress().getRtua()+"存在更高优先级任务，暂时无法执行该任务");
+                    }
                 }
             }
             else {

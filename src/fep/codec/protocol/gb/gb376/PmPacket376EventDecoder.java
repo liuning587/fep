@@ -46,6 +46,7 @@ public class PmPacket376EventDecoder {
                 }
                 event.erc = erc;
                 event.DecodeEventDetail(data, eventlen);
+                event.eventTime = eventTime;
                 eventList.add(event);
             }
         }

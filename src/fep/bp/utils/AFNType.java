@@ -12,6 +12,7 @@ package fep.bp.utils;
 public interface AFNType {
     static byte AFN_CONFIRM = 0x00; //AFN：确认/否认
     static byte AFN_RESET = 0x01; //AFN：复位
+    static byte AFN_HEARTBEAT = 0x02; //AFN：心跳
     static byte AFN_SETPARA = 0x04; //AFN：设置参数
     static byte AFN_CONTROL = 0x05; //AFN：控制命令
     static byte AFN_GETPARA = 0x0A; //AFN：读取参数

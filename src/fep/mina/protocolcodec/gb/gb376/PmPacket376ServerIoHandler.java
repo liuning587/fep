@@ -4,16 +4,17 @@
  */
 package fep.mina.protocolcodec.gb.gb376;
 
+import fep.bp.db.commLog.CommLogWriter;
+import fep.bp.utils.AFNType;
+import fep.codec.protocol.gb.gb376.PmPacket376;
+import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
+import fep.codec.utils.BcdUtils;
+import fep.mina.protocolcodec.gb.PepGbCommunicator;
 import java.util.TreeSet;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fep.bp.db.commLog.CommLogWriter;
-import fep.codec.protocol.gb.gb376.PmPacket376;
-import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
-import fep.codec.utils.BcdUtils;
-import fep.mina.protocolcodec.gb.PepGbCommunicator;
 
 /**
  *
@@ -66,7 +67,6 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
             PmPacket376 respPack = PmPacket376Factroy.makeAcKnowledgementPack(pack, 3, (byte) 0);
             session.write(respPack);
         }
-
         rtuMap.rtuReceiveTcpPacket(rtua, session, pack);
         
     }
@@ -81,7 +81,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
 
     private void showReceivePacket(String rtua, PmPacket376 pack){
         if (!needNotShow(pack)){
-            LOGGER.info("Receive from rtua<" + rtua + ">: " + BcdUtils.binArrayToString(pack.getValue()) + '\n' + pack.toString());
+            LOGGER.info("Receive from rtua<" + rtua + ">: " + BcdUtils.binArrayToString(pack.getValue()) + '\n' + pack.toHexString());
         }
     }
 
@@ -102,7 +102,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         PmPacket376 pack = (PmPacket376) message;
         if (!((pack.getAfn() == 2) && (!showActTestPack))) {
             LOGGER.info(" Had Sent to rtua<" + pack.getAddress().getRtua() + ">: "
-                    + BcdUtils.binArrayToString(pack.getValue()) + '\n' + pack.toString());
+                    + pack.toHexString() + '\n');
             commLogWriter.insertLog(pack.getAddress().getRtua(),BcdUtils.binArrayToString(pack.getValue()),"D" );
         }
     }

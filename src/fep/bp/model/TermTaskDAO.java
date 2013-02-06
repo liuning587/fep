@@ -32,6 +32,8 @@ public class TermTaskDAO {
     private int exec_unit_master;
     private byte aFN;
     private String gp_addr;
+    private byte transmitPort;//透传端口号，针对透传任务有效；
+    private byte transmitBaudrate;//透传波特率，针对透传任务有效；
     private List<CommanddItemDAO> commandItemList;
 
 
@@ -316,6 +318,34 @@ public class TermTaskDAO {
      */
     public void setGp_addr(String gp_addr) {
         this.gp_addr = gp_addr;
+    }
+
+    /**
+     * @return the transmitPort
+     */
+    public byte getTransmitPort() {
+        return transmitPort;
+    }
+
+    /**
+     * @param transmitPort the transmitPort to set
+     */
+    public void setTransmitPort(byte transmitPort) {
+        this.transmitPort = transmitPort;
+    }
+
+    /**
+     * @return the transmitBaudrate
+     */
+    public byte getTransmitBaudrate() {
+        return transmitBaudrate;
+    }
+
+    /**
+     * @param transmitBaudrate the transmitBaudrate to set
+     */
+    public void setTransmitBaudrate(byte transmitBaudrate) {
+        this.transmitBaudrate = transmitBaudrate;
     }
 
 

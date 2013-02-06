@@ -6,6 +6,8 @@ package fep.bp.processor.upgrade;
 
 import fep.bp.dal.RTTaskService;
 import fep.bp.model.UpgradeTaskDAO;
+import fep.bp.processor.ProcessLevel;
+import fep.bp.processor.ProcessorStatus;
 import fep.bp.utils.encoder.Encoder;
 import fep.bp.utils.encoder.encoder376.Encoder376;
 import fep.codec.protocol.gb.PmPacketData;
@@ -33,13 +35,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class UpgradeTask {
     private final static Logger log = LoggerFactory.getLogger(UpgradeTask.class);
-    private final int TIME_OUT = 30*1000;
+    private final int TIME_OUT = 350*1000;
     private int taskID;
     private String rtua;
     private InputStream binFileStream;
     private int totalPacketNumber;
-    private int currentSendNo;//当前发送帧序号
+    private int currentSendNo;//当前发送的包序号
     private int binFileSize;
+    private int lastFailFrameNo;//上一次升级失败是的包序号
     private String taskStatus;
     private ApplicationContext cxt;
     private RTTaskService taskService;
@@ -48,7 +51,8 @@ public class UpgradeTask {
     private Queue<SequencedPmPacket> rtuaUpgradeBackQueue;
     private PepCommunicatorInterface pepCommunicator;//通信代理器
     private Date startSendTicket;
-
+    private ProcessorStatus status;
+    private boolean haveUpgradeTask;
     /**
      * @return the taskStatus
      */
@@ -62,6 +66,44 @@ public class UpgradeTask {
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
     }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(ProcessorStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the haveUpgradeTask
+     */
+    public boolean isHaveUpgradeTask() {
+        return haveUpgradeTask;
+    }
+
+    /**
+     * @param haveUpgradeTask the haveUpgradeTask to set
+     */
+    public void setHaveUpgradeTask(boolean haveUpgradeTask) {
+        this.haveUpgradeTask = haveUpgradeTask;
+    }
+
+    /**
+     * @param lastFailFrameNo the lastFailFrameNo to set
+     */
+    public void setLastFailFrameNo(int lastFailFrameNo) {
+        
+        if(lastFailFrameNo ==0)
+        {
+            this.lastFailFrameNo = lastFailFrameNo;
+            this.currentSendNo  =lastFailFrameNo;
+        }
+        else{
+            this.lastFailFrameNo = lastFailFrameNo;
+            this.currentSendNo  =lastFailFrameNo-1;
+        }
+    
+    }
     
     private interface TaskStatus
     {
@@ -74,6 +116,7 @@ public class UpgradeTask {
     public UpgradeTask()
     {
         currentSendNo = 0;
+        haveUpgradeTask = false;
         this.startSendTicket =null;
         taskStatus = TaskStatus.Dealing;
         cxt = new ClassPathXmlApplicationContext(SystemConst.SPRING_BEANS);
@@ -92,9 +135,13 @@ public class UpgradeTask {
             binFileStream.read(binFile);
 
             List<PmPacket376> packetList = encoder.EncodeList_Upgrade(this.rtua, binFile);
+            int frameNo = 0;
+            totalPacketNumber = packetList.size();
             for (PmPacket376 packet : packetList) {
-                addUpgradePacket(packet);
-                totalPacketNumber++;
+                if(frameNo >= this.lastFailFrameNo-1) { //断点续传
+                    addUpgradePacket(packet);                
+                }   
+                frameNo++; 
             }
             binFileStream.close();
         } catch (IOException ex) {
@@ -111,52 +158,63 @@ public class UpgradeTask {
     {
         synchronized(this){
             this.rtuaUpgradeBackQueue.add(packet);
+            
         }
     }
     
     public void CheckBackPacket()
     {
         synchronized(this){
-            if(!this.rtuaUpgradeBackQueue.isEmpty())
+            if(isHaveUpgradeTask())
             {
-                SequencedPmPacket backPacket = rtuaUpgradeBackQueue.peek();
-                if(IsOK(backPacket))
+                if(!this.rtuaUpgradeBackQueue.isEmpty())
                 {
-                    if(currentSendNo<this.totalPacketNumber)
+                    SequencedPmPacket backPacket = rtuaUpgradeBackQueue.peek();
+                    if(IsOK(backPacket))
                     {
-                        updateTask(TaskStatus.Dealing);
-                        taskStatus = TaskStatus.Dealing;
-                        sendNextPacket();
+                        if(currentSendNo<this.totalPacketNumber)
+                        {
+                            updateTask(TaskStatus.Dealing);
+                            taskStatus = TaskStatus.Dealing;
+                            sendNextPacket();
+                        }
+                        else{
+                            updateTask(TaskStatus.Suncess);
+                            taskStatus = TaskStatus.Suncess;     
+                            this.status.updateStatus(rtua, ProcessLevel.Level3);
+                            this.setHaveUpgradeTask(false);
+                        }
                     }
-                    else{
-                        updateTask(TaskStatus.Suncess);
-                        taskStatus = TaskStatus.Suncess;                       
-                    }
-                 }
-                else//否认
-                {                  
-                    updateTask(TaskStatus.Failed);
-                    taskStatus = TaskStatus.Failed;
-                    log.info("收到否认帧失败！！！");
-                }
-            }
-            else//没有返回
-            {
-                if (this.startSendTicket != null) {
-                    Date checkTime =new Date();
-                    if (checkTime.getTime() - this.startSendTicket.getTime() >= this.TIME_OUT) {
-                        log.info("超时失败！！！");
+                    else//否认
+                    {                     
                         updateTask(TaskStatus.Failed);
                         taskStatus = TaskStatus.Failed;
-                        emptyPacketQueue();
+                        log.info("收到否认帧失败！！！");
                     }
                 }
-                else
+                else//没有返回
                 {
-                    sendNextPacket();
-                    taskStatus = TaskStatus.Dealing;
+                    if (this.startSendTicket != null) {
+                        Date checkTime =new Date();
+                        if (checkTime.getTime() - this.startSendTicket.getTime() >= this.TIME_OUT) 
+                        {
+                            log.info("终端："+this.rtua+"超时失败！！！");
+                            updateTask(TaskStatus.Failed);
+                            taskStatus = TaskStatus.Failed;
+                            emptyPacketQueue();
+                            this.status.updateStatus(rtua, ProcessLevel.Level3);
+                            this.startSendTicket = null;
+                            this.setHaveUpgradeTask(false);
+                        }
+                    }
+                    else
+                    {
+                        sendNextPacket();
+                        taskStatus = TaskStatus.Dealing;
+                    }
                 }
             }
+            
         }
     }
     
@@ -181,7 +239,8 @@ public class UpgradeTask {
         dao.setTaskId(taskID);
         dao.setLogicAddress(rtua);
         dao.setFailFrameNo(failFrameNo);
-        dao.setSchedule(Math.round((currentSendNo+1) / this.totalPacketNumber * 100));
+        float rate = ((float)currentSendNo) / (float)this.totalPacketNumber * 100;
+        dao.setSchedule(rate);
         dao.setTaskStatus(status);
         taskService.updateUpgradeTask(dao);
     }
@@ -215,7 +274,7 @@ public class UpgradeTask {
                 result = result && (Fn == 1);
                 
                 int SegNo  = (int) dataBuf.getBin(4);
-                result = result &&(SegNo+1 == this.currentSendNo);
+                result = result &&(SegNo == this.currentSendNo-1);
                 
                 rtuaUpgradeQueue.poll();
                 rtuaUpgradeBackQueue.poll();

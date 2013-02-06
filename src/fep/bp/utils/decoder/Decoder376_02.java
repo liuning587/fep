@@ -53,11 +53,18 @@ public class Decoder376_02 extends Decoder376{
             Map<String, Map<String, String>> results = new TreeMap<String, Map<String, String>>();
             PmPacket376 packet = (PmPacket376) pack;
             InnerDataBuffer InnerData =  getDataBuffer645(packet);
-            PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
-            String commandItemCode = "8000C040";
-            Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
-            results.put(InnerData.getKey(), dataItems);
-            return results;
+            if(InnerData != null)
+            {
+                PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
+                String commandItemCode = "8000C040";
+                Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
+                results.put(InnerData.getKey(), dataItems);
+                return results;
+            }
+            else
+            {
+                return null;
+            }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;
@@ -79,11 +86,18 @@ public class Decoder376_02 extends Decoder376{
             PmPacket376 packet = (PmPacket376) pack;
 
             InnerDataBuffer InnerData =  getDataBuffer645(packet);
-            PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
-            String commandItemCode = getCommandItemCode(dataBuffer645);
-            Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
-            results.put(InnerData.getKey(), dataItems);
-            return results;
+            if(InnerData!=null)
+            {
+                PmPacketData dataBuffer645 = InnerData.getInnerPacketData();
+                String commandItemCode = getCommandItemCode(dataBuffer645);
+                Map<String, String> dataItems = this.dataBuffer2Map(commandItemCode, dataBuffer645);
+                results.put(InnerData.getKey(), dataItems);
+                return results;
+            }
+            else
+            {
+                return null;
+            }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;

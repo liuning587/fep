@@ -13,6 +13,7 @@ import fep.bp.realinterface.mto.CommandItem;
 import fep.bp.realinterface.mto.DataItem;
 import fep.bp.realinterface.mto.DataItemGroup;
 import fep.bp.utils.AFNType;
+import fep.bp.utils.TermProtocol;
 import fep.bp.utils.UtilsBp;
 import fep.bp.utils.encoder.Encoder;
 import fep.codec.protocol.gb.*;
@@ -84,7 +85,7 @@ public class Encoder376 extends Encoder{
     */
    
     @Override
-    public PmPacket Encode(CollectObject obj, byte AFN) {
+    public List<PmPacket376> Encode(CollectObject obj, byte AFN) {
         try {
             String LogicalAddress = obj.getLogicalAddr();
             List<CommandItem> CommandItems = obj.getCommandItems();
@@ -92,15 +93,15 @@ public class Encoder376 extends Encoder{
             switch(AFN)
             {
                 case AFNType.AFN_GETPARA:
-                    return this.Encode_ReadPara(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadPara(LogicalAddress, MpSn, CommandItems,obj.getEquipProtocol());
                 case AFNType.AFN_SETPARA:
-                    return this.Encode_SetPara(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_SetPara(LogicalAddress, MpSn, CommandItems,obj.getEquipProtocol());
                 case AFNType.AFN_READDATA1:
-                    return this.Encode_ReadData1(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadData1(LogicalAddress, MpSn, CommandItems,obj.getEquipProtocol());
                 case AFNType.AFN_READDATA2:
-                    return this.Encode_ReadData2(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_ReadData2(LogicalAddress, MpSn, CommandItems,obj.getEquipProtocol());
                 case AFNType.AFN_RESET:
-                    return this.Encode_Reset(LogicalAddress, MpSn, CommandItems);
+                    return this.Encode_Reset(LogicalAddress, MpSn, CommandItems,obj.getEquipProtocol());
                 default:
                     return null;
             }
@@ -125,7 +126,6 @@ public class Encoder376 extends Encoder{
             gpMark.append(String.valueOf(MpSn[i])).append("#");
             List<CommandItem> CommandItems = obj.getCommandItems();
             for (CommandItem commandItem : CommandItems) {
-
                 if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
                 {
                     cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
@@ -703,39 +703,89 @@ public class Encoder376 extends Encoder{
     }
     
     //读一类数据组帧
-    private PmPacket Encode_ReadData1(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    private List<PmPacket376> Encode_ReadData1(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
     {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA1, MpSnList,CommandItems,false,true,false);
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_READDATA1, MpSnList,CommandItems,false,true,false);
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+            return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA1, MpSnList,CommandItems,false,true,false);
+        }
+        else {
+            return null;
+        }
     }
     
     //读二类数据组帧
-    private PmPacket Encode_ReadData2(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    private List<PmPacket376> Encode_ReadData2(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
     {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA2, MpSnList,CommandItems,false,true,true);
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_READDATA2, MpSnList,CommandItems,false,true,true);
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+            return Encode_Normal(LogicalAddr,AFNType.AFN_READDATA2, MpSnList,CommandItems,false,true,true);
+        }
+        else {
+            return null;
+        }   
     }
     
     //读参数组帧
-    private PmPacket Encode_ReadPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    private List<PmPacket376> Encode_ReadPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
     {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_GETPARA, MpSnList,CommandItems,false,true,false);
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_GETPARA, MpSnList,CommandItems,false,true,false);
+            
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+            return Encode_Normal(LogicalAddr,AFNType.AFN_GETPARA, MpSnList,CommandItems,false,true,false);
+        }
+        else {
+            return null;
+        }
+        
     }
     
     //设置参数组帧
-    private PmPacket Encode_SetPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
+    private List<PmPacket376> Encode_SetPara(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
     {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_SETPARA, MpSnList,CommandItems,true,true,true);
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_SETPARA, MpSnList,CommandItems,true,true,true);        
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+            return Encode_Normal(LogicalAddr,AFNType.AFN_SETPARA, MpSnList,CommandItems,true,true,true);
+        }
+        else {
+            return null;
+        }      
     }
     
     //设置参数组帧
-    private PmPacket Encode_Transmit(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
-    {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,true);
+    private List<PmPacket376> Encode_Transmit(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
+    { 
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {  
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,true);
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+            return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,true);
+        }
+        else {
+            return null;
+        } 
     }
     
     //复位组帧
-    private PmPacket Encode_Reset(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems)
-    {
-        return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,false);
+    private List<PmPacket376> Encode_Reset(String LogicalAddr,int[] MpSnList,List<CommandItem> CommandItems,String termProtocol)
+    { 
+        if(termProtocol.equals(TermProtocol.TERM_GW_376_01)) {  
+            return Encode_Normal_OneCmdItem(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,false);
+        }
+        else if (termProtocol.equals(TermProtocol.TERM_GW_376_02)) {
+           return Encode_Normal(LogicalAddr,AFNType.AFN_TRANSMIT, MpSnList,CommandItems,true,true,false);
+        }
+        else {
+            return null;
+        }
     }
 
 
@@ -750,10 +800,11 @@ public class Encoder376 extends Encoder{
      * @param FillValue：是否填充CommandItem内数据项的值（如：参数设置）
      * @return 
      */
-    private PmPacket Encode_Normal(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
+    private List<PmPacket376> Encode_Normal(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
     {
         try {
-            PmPacket packet = new PmPacket376();
+             List<PmPacket376> packetList = new ArrayList<PmPacket376>();
+            PmPacket376 packet = new PmPacket376();
             preSetPacket(packet, AFN, LogicalAddr);
 
             for (int i = 0; i <= MpSnList.length - 1; i++) {
@@ -776,7 +827,52 @@ public class Encoder376 extends Encoder{
             if(Tp) {
                 packet.setTpv(new TimeProtectValue());
             }//时间标签
-            return packet;
+            packetList.add(packet);
+            return packetList;
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage());
+            return null;
+        }
+    }
+
+/**
+     *  基于独立命令项的组帧方法
+     * @param LogicalAddr:终端逻辑地址
+     * @param AFN：功能码
+     * @param MpSnList ： 测量点列表
+     * @param CommandItems：命令像列表
+     * @param PW：是否含消息认证码字段PW
+     * @param Tp：是否含时间标签
+     * @param FillValue：是否填充CommandItem内数据项的值（如：参数设置）
+     * @return 
+     */
+    private List<PmPacket376> Encode_Normal_OneCmdItem(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
+    {
+        try {
+            List<PmPacket376> packetList = new ArrayList<PmPacket376>();
+            for (int i = 0; i <= MpSnList.length - 1; i++) {
+                for (CommandItem commandItem : CommandItems) {
+                   PmPacket376 packet = new PmPacket376();
+                    preSetPacket(packet, AFN, LogicalAddr);
+                    PmPacket376DA da = new PmPacket376DA(MpSnList[i]);
+                    PmPacket376DT dt = new PmPacket376DT();
+                    int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
+                    dt.setFn(fn);
+                    packet.getDataBuffer().putDA(da);
+                    packet.getDataBuffer().putDT(dt);
+                    if (FillValue) {
+                        putDataBuf_withValue((PmPacket376) packet,commandItem);
+                    }
+                    if(PW){
+                        packet.setAuthorize(new Authorize());
+                    }
+                    if(Tp) {
+                        packet.setTpv(new TimeProtectValue());
+                    }//时间标签
+                    packetList.add(packet);
+                }
+            }
+            return packetList;
         } catch (NumberFormatException numberFormatException) {
             log.error(numberFormatException.getMessage());
             return null;

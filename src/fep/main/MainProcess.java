@@ -23,7 +23,9 @@ public class MainProcess {
 
     private static int rtTaskSenderMaxNumber = 1;
     private static int pollingProcessorMaxNumber = 1;
-
+    private ProcessorStatus status;
+    private RealTimeSender realtimeSender;
+            
     private PollingProcessor pollingProcessor;
     private PlanManager planManager;
     private UpgradeProcessor upgradeProcessor;
@@ -76,15 +78,25 @@ public class MainProcess {
                 TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
         this.pepCommunicator = pepCommunicator;
+        status = new ProcessorStatus();
+        
         planManager = new PlanManager(this.pepCommunicator);
+        planManager.setProcessorStatus(status);
+        
         pollingProcessor = new PollingProcessor(this.pepCommunicator);
+        pollingProcessor.setProcessorStatus(status);
+        
         upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
+        upgradeProcessor.setProcessorStatus(status);
+        
+        realtimeSender = new RealTimeSender(this.pepCommunicator);
+        realtimeSender.setProcessorStatus(status);
    }
 
     public void run() {
         runPollingProcessor();
         runProcessor(rtTaskSenderMaxNumber, "启动组件：下发报文处理器 ", new ResponseDealer(this.pepCommunicator,upgradeProcessor));
-        runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", new RealTimeSender(this.pepCommunicator));
+        runProcessor(rtTaskSenderMaxNumber, "启动组件：任务发送器 ", realtimeSender);
         
         runPlanManager();
         runProcessor(rtTaskSenderMaxNumber, "启动短信回复检查处理器 ", new SMSCheckProcessor());
