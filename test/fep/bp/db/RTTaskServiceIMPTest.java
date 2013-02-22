@@ -104,11 +104,11 @@ public class RTTaskServiceIMPTest {
     
     @Test
     public void testInsertUpgradeFile() throws FileNotFoundException {
-        String s_FilePath = "F:\\pss\\material\\firmware.bin";
+        String s_FilePath = "F:\\git_source\\fep\\doc\\firmware.bin";
         FileInputStream fin; 
         if(new File(s_FilePath).exists()){ 
             fin = new FileInputStream(new File(s_FilePath));  
-            taskService.insertUpgradeFile("1.0","376（20121229）",fin);
+            taskService.insertUpgradeFile("1.3","376（20130220）",fin);
         }
     }
     

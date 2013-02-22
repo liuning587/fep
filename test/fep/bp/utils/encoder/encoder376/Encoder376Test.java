@@ -78,10 +78,12 @@ public class Encoder376Test {
         
         byte AFN = AFNType.AFN_GETPARA;
         String expResult = "684A004A00685112965634000A80000001000000000001000F16";
-        PmPacket encodePacket = encoder.Encode(obj, AFN);
-        String result = BcdUtils.binArrayToString(encodePacket.getValue());
-        assertEquals(expResult, result);
-
+        List<PmPacket376> encodePacketList = encoder.Encode(obj, AFN);
+        for(PmPacket376 encodePacket : encodePacketList)
+        {
+            String result = BcdUtils.binArrayToString(encodePacket.getValue());
+            assertEquals(expResult, result);
+        }
     }
 
     /**

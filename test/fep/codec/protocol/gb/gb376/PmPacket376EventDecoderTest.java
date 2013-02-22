@@ -5,8 +5,8 @@
 
 package fep.codec.protocol.gb.gb376;
 
-import fep.codec.protocol.gb.gb376.PmPacket376EventDecoder;
-import fep.codec.protocol.gb.gb376.PmPacket376EventBase;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventDecoder;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.utils.BcdDataBuffer;
 import java.util.List;
