@@ -8,8 +8,8 @@ package fep.bp.dal;
 import java.util.List;
 import fep.bp.model.Dto;
 import fep.bp.model.SMSDAO;
-import fep.codec.protocol.gb.gb376.Packet376Event36;
-import fep.codec.protocol.gb.gb376.PmPacket376EventBase;
+import fep.codec.protocol.gb.gb376.events.Packet376Event36;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
 
 /**
  *

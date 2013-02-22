@@ -5,7 +5,6 @@
 package fep.mina.protocolcodec.gb.gb376;
 
 import fep.bp.db.commLog.CommLogWriter;
-import fep.bp.utils.AFNType;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
 import fep.codec.utils.BcdUtils;
@@ -34,8 +33,6 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         this.rtuMap = rtuMap;
     }
 
-
-
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         if (session.getAttribute(SESSION_RTUS) != null) {
@@ -59,7 +56,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
             return;
         }
         
-        commLogWriter.insertLog(rtua,BcdUtils.binArrayToString(pack.getValue()),"U" );
+     //   commLogWriter.insertLog(rtua,BcdUtils.binArrayToString(pack.getValue()),"U" );
 
         registRtua(session, rtua);
 
@@ -81,7 +78,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
 
     private void showReceivePacket(String rtua, PmPacket376 pack){
         if (!needNotShow(pack)){
-            LOGGER.info("Receive from rtua<" + rtua + ">: " + BcdUtils.binArrayToString(pack.getValue()) + '\n' + pack.toHexString());
+            LOGGER.info("Receive from rtua<" + rtua + ">: " + BcdUtils.binArrayToString(pack.getValue()) + '\n');
         }
     }
 

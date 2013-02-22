@@ -557,29 +557,29 @@ public class Encoder376 extends Encoder{
     
 
     private void putDataBuf_withValue(PmPacket376 packet, CommandItem commandItem) {
-        String DataItemValue, Format, IsGroupEnd ;
-        int Length, bitnumber ;
+        String DataItemValue, Format, IsGroupEnd;
+        int Length, bitnumber;
         long TempCode = 0;
         List<ProtocolDataItem> DataItemList_Config = this.config.getDataItemList(commandItem.getIdentifier());
         Map<String, String> dataItemMap = commandItem.getDatacellParam();
-        if (dataItemMap != null) {
-            for (ProtocolDataItem dataItem : DataItemList_Config) {
-                String DataItemCode = dataItem.getDataItemCode();
-                DataItemValue = dataItem.getDefaultValue();
-                if (DataItemValue.equals("YESTERDAY")) //抄上一天
-                {
-                    DataItemValue = UtilsBp.getYeasterday();
-                }
 
+        for (ProtocolDataItem dataItem : DataItemList_Config) {
+            String DataItemCode = dataItem.getDataItemCode();
+            DataItemValue = dataItem.getDefaultValue();
+            if (DataItemValue.equals("YESTERDAY")) //抄上一天
+            {
+                DataItemValue = UtilsBp.getYeasterday();
+            }
+            if (dataItemMap != null) {
                 if (dataItemMap.containsKey(DataItemCode)) {
                     DataItemValue = dataItemMap.get(DataItemCode);
                 }
-                Format = dataItem.getFormat();
-                Length = dataItem.getLength();
-                IsGroupEnd = dataItem.getIsGroupEnd();
-                bitnumber = dataItem.getBitNumber();
-                FillDataBuffer(packet.getDataBuffer(), Format, DataItemValue, IsGroupEnd, Length, bitnumber);
             }
+            Format = dataItem.getFormat();
+            Length = dataItem.getLength();
+            IsGroupEnd = dataItem.getIsGroupEnd();
+            bitnumber = dataItem.getBitNumber();
+            FillDataBuffer(packet.getDataBuffer(), Format, DataItemValue, IsGroupEnd, Length, bitnumber);
         }
     }
 
@@ -803,12 +803,16 @@ public class Encoder376 extends Encoder{
     private List<PmPacket376> Encode_Normal(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
     {
         try {
-             List<PmPacket376> packetList = new ArrayList<PmPacket376>();
+            StringBuilder commandMark = new StringBuilder();
+            StringBuilder gpMark = new StringBuilder();
+            List<PmPacket376> packetList = new ArrayList<PmPacket376>();
             PmPacket376 packet = new PmPacket376();
             preSetPacket(packet, AFN, LogicalAddr);
 
             for (int i = 0; i <= MpSnList.length - 1; i++) {
+                gpMark.append(MpSnList[i]).append("#");
                 for (CommandItem commandItem : CommandItems) {
+                    commandMark.append(commandItem.getIdentifier()).append("#");
                     PmPacket376DA da = new PmPacket376DA(MpSnList[i]);
                     PmPacket376DT dt = new PmPacket376DT();
                     int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
@@ -827,6 +831,8 @@ public class Encoder376 extends Encoder{
             if(Tp) {
                 packet.setTpv(new TimeProtectValue());
             }//时间标签
+            packet.setCommandRemark(commandMark.toString());
+            packet.setMpSnRemark(gpMark.toString());
             packetList.add(packet);
             return packetList;
         } catch (NumberFormatException numberFormatException) {
@@ -849,27 +855,43 @@ public class Encoder376 extends Encoder{
     private List<PmPacket376> Encode_Normal_OneCmdItem(String LogicalAddr,byte AFN,int[] MpSnList,List<CommandItem> CommandItems,boolean PW,boolean Tp,boolean FillValue)
     {
         try {
+            StringBuilder commandMark = new StringBuilder();
+            StringBuilder gpMark = new StringBuilder();
             List<PmPacket376> packetList = new ArrayList<PmPacket376>();
             for (int i = 0; i <= MpSnList.length - 1; i++) {
+                gpMark.delete(0, gpMark.length());
+                gpMark.append(MpSnList[i]).append("#");
                 for (CommandItem commandItem : CommandItems) {
-                   PmPacket376 packet = new PmPacket376();
-                    preSetPacket(packet, AFN, LogicalAddr);
-                    PmPacket376DA da = new PmPacket376DA(MpSnList[i]);
-                    PmPacket376DT dt = new PmPacket376DT();
-                    int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
-                    dt.setFn(fn);
-                    packet.getDataBuffer().putDA(da);
-                    packet.getDataBuffer().putDT(dt);
-                    if (FillValue) {
-                        putDataBuf_withValue((PmPacket376) packet,commandItem);
+                    if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
+                    {
+                        int DataBuffLen = MAX_PACKET_LEN - 16 - 22;
+                        cmdItem2PacketList_Subpacket(commandItem, AFN, LogicalAddr, i, DataBuffLen, packetList);
                     }
-                    if(PW){
-                        packet.setAuthorize(new Authorize());
+                    else
+                    {
+                        commandMark.delete(0, commandMark.length());
+                        commandMark.append(commandItem.getIdentifier()).append("#");
+                        PmPacket376 packet = new PmPacket376();
+                        preSetPacket(packet, AFN, LogicalAddr);
+                        PmPacket376DA da = new PmPacket376DA(MpSnList[i]);
+                        PmPacket376DT dt = new PmPacket376DT();
+                        int fn = Integer.parseInt(commandItem.getIdentifier().substring(4, 8));//10+03+0002(protocolcode+afn+fn)
+                        dt.setFn(fn);
+                        packet.getDataBuffer().putDA(da);
+                        packet.getDataBuffer().putDT(dt);
+                        if (FillValue) {
+                            putDataBuf_withValue((PmPacket376) packet,commandItem);
+                        }
+                        if(PW){
+                            packet.setAuthorize(new Authorize());
+                        }
+                        if(Tp) {
+                            packet.setTpv(new TimeProtectValue());
+                        }//时间标签
+                        packet.setMpSnRemark(gpMark.toString());
+                        packet.setCommandRemark(commandMark.toString());
+                        packetList.add(packet);
                     }
-                    if(Tp) {
-                        packet.setTpv(new TimeProtectValue());
-                    }//时间标签
-                    packetList.add(packet);
                 }
             }
             return packetList;

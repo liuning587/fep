@@ -5,17 +5,18 @@ package fep.bp.processor;
 
 import fep.bp.dal.DataService;
 import fep.bp.model.Dto;
+import fep.bp.model.Dto.DtoItem;
 import fep.bp.utils.decoder.ClassTwoDataDecoder;
 import fep.bp.utils.decoder.Decoder;
 import fep.bp.utils.equipMap.EquipMap;
 import fep.codec.protocol.gb.PmPacketData;
-import fep.codec.protocol.gb.gb376.Packet376Event36;
-import fep.codec.protocol.gb.gb376.Packet376Event42;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376DA;
 import fep.codec.protocol.gb.gb376.PmPacket376DT;
-import fep.codec.protocol.gb.gb376.PmPacket376EventBase;
-import fep.codec.protocol.gb.gb376.PmPacket376EventDecoder;
+import fep.codec.protocol.gb.gb376.events.Packet376Event36;
+import fep.codec.protocol.gb.gb376.events.Packet376Event42;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventDecoder;
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
 import fep.meter645.Gb645MeterPacket;
@@ -107,6 +108,11 @@ public class UpLoadProcessor extends BaseProcessor {
         {
             Decoder decoder = getDecoder(loubaoProtocol);
             decoder.decode2dto_TransMit(packet, dto);
+            int gpSn = this.equipMap.loubaoGpSn(logicalAddr, loubaoAddr);
+            for(DtoItem dtoItem : dto.getDataItems())
+            {
+                dtoItem.gp = gpSn;
+            }
             dataService.insertRecvData(dto);
         }    
     }
@@ -132,13 +138,11 @@ public class UpLoadProcessor extends BaseProcessor {
                     Packet376Event36 event36 = (Packet376Event36) event;
                     saveLoubaoEvent(rtua, event36,36);
                 }
-                else if(event.GetEventCode() == 42) {//漏保事件42
+                else if((event.GetEventCode() == 42)||(event.GetEventCode() == 55)) {//漏保事件42
                     Packet376Event42 event42 = (Packet376Event42) event;
                     saveLoubaoEvent(rtua, event42,42);
                 }
-                else {
-                    saveEvent(rtua, dt.getFn(), da.getPn(), event);
-                }
+                saveEvent(rtua, dt.getFn(), da.getPn(), event);
             }
         }
     }

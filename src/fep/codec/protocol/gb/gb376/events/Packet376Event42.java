@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package fep.codec.protocol.gb.gb376;
+package fep.codec.protocol.gb.gb376.events;
 
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
@@ -154,8 +154,8 @@ public class Packet376Event42 extends PmPacket376EventBase{
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Comm port=").append(this.Tongxunduankou).append(" ");
-        sb.append("meters=(");
+        sb.append("端口：").append(this.Tongxunduankou).append(" ");
+        sb.append("详细信息：(");
         for (Meter42 event : this.meters) {
             sb.append("(").append(event.toString()).append(")");
         }

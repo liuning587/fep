@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fep.codec.protocol.gb.gb376;
+package fep.codec.protocol.gb.gb376.events;
 
+import fep.codec.utils.BcdDataBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import fep.codec.utils.BcdDataBuffer;
 
 /**
  *
@@ -34,19 +34,22 @@ public class PmPacket376EventDecoder {
                 }
                 
                 PmPacket376EventBase event;
-                if (erc == 36) {
-                    event = new Packet376Event36();
-                } 
-                else if (erc == 42) {
-                    event = new Packet376Event42();
-                    event.eventTime = eventTime;//
-                }
-                else {
-                    event = new Packet376EventNormal();
+                switch(erc)
+                {
+                    case 36:{event = new Packet376Event36();break;}
+                    case 42:
+                    case 55:{event = new Packet376Event42();break;}
+                    case 50:{event = new Packet376Event50();break;}
+                    case 51:{event = new Packet376Event51();break;}
+                    case 52:{event = new Packet376Event52();break;}
+                    case 53:{event = new Packet376Event53();break;}
+                    case 54:{event = new Packet376Event54();break;}
+                    case 56:{event = new Packet376Event56();break;}
+                    default:{event = new Packet376EventNormal();break;}
                 }
                 event.erc = erc;
-                event.DecodeEventDetail(data, eventlen);
                 event.eventTime = eventTime;
+                event.DecodeEventDetail(data, eventlen);              
                 eventList.add(event);
             }
         }

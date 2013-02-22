@@ -418,6 +418,12 @@ public class PmPacketData extends BcdDataBuffer{
         dataBuff.get(bytes);
         return BcdUtils.bytesToBitSetString(bytes);
     }
+    
+    public String getBS(int wordNumber){
+        byte[] bytes = new byte[wordNumber];
+        dataBuff.get(bytes);
+        return BcdUtils.bytesToBitSetString(bytes);
+    }
 
     public PmPacketData putBS24(String bs8){
         dataBuff.put(BcdUtils.bitSetStringToBytes(bs8));

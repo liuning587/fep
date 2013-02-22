@@ -21,13 +21,24 @@ import org.springframework.jdbc.core.RowMapper;
  * @author THINKPAD
  */
 public class EquipMap {
+    private class Loubao
+    {
+        public int gp_sn;
+        public String loubaoAddress;
+        
+        public Loubao(int gp_sn,String loubaoAddr)
+        {
+            this.gp_sn = gp_sn;
+            this.loubaoAddress = loubaoAddr;
+        }
+    }
     //漏保组信息
     private class LoubaoGroup
     {
-        public HashMap<String,String> loubaoMap;
+        public HashMap<String,Loubao> loubaoMap;
         public LoubaoGroup()
         {
-            loubaoMap = new HashMap<String,String>();
+            loubaoMap = new HashMap<String,Loubao>();
         }
         
     }
@@ -54,7 +65,7 @@ public class EquipMap {
     {
         try {
             StringBuilder sbSQL = new StringBuilder();
-            sbSQL.append("select logical_addr,terminalProtocol,loubaoProtocol,loubao_addr");
+            sbSQL.append("select logical_addr,gp_sn,terminalProtocol,loubaoProtocol,loubao_addr");
             sbSQL.append(" from v_term_protocl_lb");
             String SQL = sbSQL.toString();
             List<EqpDAO> results = (List<EqpDAO>) jdbcTemplate.query(SQL, new EqpRowMapper());
@@ -64,12 +75,12 @@ public class EquipMap {
             for (EqpDAO eqp : results) {
                 if(equipMap.containsKey(eqp.logicAddress))
                 {
-                    equipMap.get(eqp.logicAddress).loubaoMap.put(eqp.loubaoAddress, eqp.loubaoProtocol);
+                    equipMap.get(eqp.logicAddress).loubaoMap.put(eqp.loubaoAddress, new Loubao(eqp.gp_sn,eqp.loubaoProtocol));
                 }
                 else
                 {
                     LoubaoGroup group = new LoubaoGroup();
-                    group.loubaoMap.put(eqp.loubaoAddress, eqp.loubaoProtocol);
+                    group.loubaoMap.put(eqp.loubaoAddress,  new Loubao(eqp.gp_sn,eqp.loubaoProtocol));
                     equipMap.put(eqp.getLogicAddress(), group);
                 }
             }
@@ -82,9 +93,7 @@ public class EquipMap {
     
     public int loubaoProtocol(String logicalAddr,String loubaoAddr)
     {
-        if(!equipMap.containsKey(logicalAddr)) {
-            init();
-        }
+
         if(!equipMap.containsKey(logicalAddr)) {
             return -1;
         }
@@ -93,7 +102,25 @@ public class EquipMap {
             LoubaoGroup group = equipMap.get(logicalAddr);
             if(group.loubaoMap.containsKey(loubaoAddr))
             {
-                return Integer.valueOf(group.loubaoMap.get(loubaoAddr));
+                return Integer.valueOf(group.loubaoMap.get(loubaoAddr).loubaoAddress);
+            }
+            else {
+                return -1;
+            }
+        }
+    }
+    
+    public int loubaoGpSn(String logicalAddr,String loubaoAddr)
+    {
+        if(!equipMap.containsKey(logicalAddr)) {
+            return -1;
+        }
+        else
+        {
+            LoubaoGroup group = equipMap.get(logicalAddr);
+            if(group.loubaoMap.containsKey(loubaoAddr))
+            {
+                return Integer.valueOf(group.loubaoMap.get(loubaoAddr).gp_sn);
             }
             else {
                 return -1;
@@ -103,6 +130,7 @@ public class EquipMap {
     
     public class EqpDAO {
         private String logicAddress;
+        private int gp_sn;
         private String terminalProtocol;
         private String loubaoAddress;
         private String loubaoProtocol;
@@ -166,6 +194,20 @@ public class EquipMap {
         public void setLoubaoAddress(String loubaoAddress) {
             this.loubaoAddress = loubaoAddress;
         }
+
+        /**
+         * @return the gp_sn
+         */
+        public int getGp_sn() {
+            return gp_sn;
+        }
+
+        /**
+         * @param gp_sn the gp_sn to set
+         */
+        public void setGp_sn(int gp_sn) {
+            this.gp_sn = gp_sn;
+        }
     }
     
     public class EqpRowMapper implements RowMapper{
@@ -176,6 +218,7 @@ public class EquipMap {
         equip.setTerminalProtocol(rs.getString("terminalProtocol"));
         equip.setLoubaoProtocol(rs.getString("loubaoProtocol"));
         equip.setLoubaoAddress(rs.getString("loubao_addr"));
+        equip.setGp_sn(rs.getInt("gp_sn"));
         
         return equip;
     }

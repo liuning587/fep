@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package fep.codec.protocol.gb.gb376;
+package fep.codec.protocol.gb.gb376.events;
 
 import fep.codec.utils.BcdDataBuffer;
 import fep.codec.utils.BcdUtils;
