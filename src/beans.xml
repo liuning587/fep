@@ -38,13 +38,13 @@
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
         <!--连接池启动时的初始值-->
-        <property name="initialSize" value="2"/>
+        <property name="initialSize" value="5"/>
         <!--连接池的最大值-->
-        <property name="maxActive" value="10"/>
+        <property name="maxActive" value="30"/>
         <!--最大空闲值-->
-        <property name="maxIdle" value="5"/>
+        <property name="maxIdle" value="10"/>
         <!--最小空闲值-->
-        <property name="minIdle" value="2"/>
+        <property name="minIdle" value="5"/>
     </bean>
 
 
@@ -149,7 +149,14 @@
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
     </bean>
 
+    <bean id="psCtrlParaStoredProcedure" class="fep.bp.dal.storedProc.PSCtrlPara_StoredProcedure">
+        <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
+    </bean>
 
+    <bean id="psCustomParaStoredProcedure" class="fep.bp.dal.storedProc.PSCustomPara_StoredProcedure">
+        <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
+    </bean>
+    
     <bean id="rtTaskService" class="fep.bp.dal.RTTaskServiceIMP">
         <property name="dataSource" ref="dataSource" />
         <property name="oracleLobHandler" ref="oracleLobHandler" />
@@ -171,7 +178,9 @@
     <bean id="commLogService" class="fep.bp.db.commLog.CommLogService">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
+    <bean id="statusService" class="fep.bp.dal.StatusServiceIMP">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
     <bean id="dataService" class="fep.bp.dal.DataServiceIMP">
         <property name="dataSource" ref="dataSource" />
         <property name="p_actStoredProcedure" ref="p_actDataStoredProcedure" />
@@ -191,6 +200,8 @@
         <property name="pfcurvStoredProcedur" ref="pfcurvStoredProcedur" />
         <property name="psStatusStoredProcedur" ref="psStatusStoredProcedur" />
         <property name="humitureStoredProcedure" ref="humitureStoredProcedure" />
+        <property name="psCtrlParaStoredProcedure" ref="psCtrlParaStoredProcedure" />
+        <property name="psCustomParaStoreProcedure" ref="psCustomParaStoredProcedure" />
 
     </bean>
 
