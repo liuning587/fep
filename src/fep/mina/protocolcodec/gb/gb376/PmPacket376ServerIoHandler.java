@@ -4,32 +4,38 @@
  */
 package fep.mina.protocolcodec.gb.gb376;
 
-import fep.bp.db.commLog.CommLogWriter;
+import fep.bp.dal.StatusService;
+import fep.bp.model.StatusDAO;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
 import fep.codec.utils.BcdUtils;
 import fep.mina.protocolcodec.gb.PepGbCommunicator;
+import fep.system.SystemConst;
+import java.util.Date;
 import java.util.TreeSet;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
  * @author luxiaochung
  */
 public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
-
+    private StatusService statusService;
+    protected ApplicationContext cxt;
     private PepGbCommunicator rtuMap;
     private boolean showActTestPack = true;
     private final static String SESSION_RTUS = PmPacket376ServerIoHandler.class.getName() + ".rtus";
     private final static Logger LOGGER = LoggerFactory.getLogger(PmPacket376ServerIoHandler.class);
-    //add by lijun
-    private CommLogWriter  commLogWriter = CommLogWriter.getInstance();
 
     public PmPacket376ServerIoHandler(PepGbCommunicator rtuMap) {
         super();
+        cxt = new ClassPathXmlApplicationContext(SystemConst.SPRING_BEANS);
+        statusService = (StatusService) cxt.getBean(SystemConst.STATUS_BEAN);
         this.rtuMap = rtuMap;
     }
 
@@ -40,6 +46,8 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
             for (String rtua : rtus) {
                 rtuMap.rtuDisconnectted(rtua);
                 LOGGER.info("rtua<" + rtua + "> disconnect");
+                Date curDate = new Date(System.currentTimeMillis());
+                statusService.insertStatus(new StatusDAO(rtua,true,curDate,false));
             }
             rtus.clear();
         }
@@ -55,11 +63,11 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         if (!pack.getControlCode().getIsUpDirect()) {
             return;
         }
-        
-     //   commLogWriter.insertLog(rtua,BcdUtils.binArrayToString(pack.getValue()),"U" );
-
         registRtua(session, rtua);
-
+        
+        Date curDate = new Date(System.currentTimeMillis());
+        statusService.insertStatus(new StatusDAO(rtua,true,curDate,true));
+        
         if (pack.getControlCode().getIsOrgniger()) {//主动上送
             PmPacket376 respPack = PmPacket376Factroy.makeAcKnowledgementPack(pack, 3, (byte) 0);
             session.write(respPack);
@@ -100,7 +108,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         if (!((pack.getAfn() == 2) && (!showActTestPack))) {
             LOGGER.info(" Had Sent to rtua<" + pack.getAddress().getRtua() + ">: "
                     + pack.toHexString() + '\n');
-            commLogWriter.insertLog(pack.getAddress().getRtua(),BcdUtils.binArrayToString(pack.getValue()),"D" );
+           // commLogWriter.insertLog(pack.getAddress().getRtua(),BcdUtils.binArrayToString(pack.getValue()),"D" );
         }
     }
 

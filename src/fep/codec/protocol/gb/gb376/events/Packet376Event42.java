@@ -21,6 +21,7 @@ public class Packet376Event42 extends PmPacket376EventBase{
         public String meterAddress;//漏保地址
         public boolean haveAlarm;//告警状态
         public boolean isClosed;//闸位状态
+        public boolean isLocked;//闭锁
         public String xiangwei;
         public Date eventTime;
         public byte status;
@@ -31,11 +32,11 @@ public class Packet376Event42 extends PmPacket376EventBase{
                 case 0:
                     return "未知";
                 case 1:
-                    return "无效";
+                    return "突变";
                 case 2:
                     return "漏电";
                 case 3:
-                    return "无效";
+                    return "特波";
                 case 4:
                     return "缺零";
                 case 5:
@@ -68,6 +69,8 @@ public class Packet376Event42 extends PmPacket376EventBase{
                     return "手动";
                 case 19:
                     return "设置更改";
+                case 20:
+                    return "正在合闸";
                 default:
                     return "未知";
             }
@@ -88,6 +91,11 @@ public class Packet376Event42 extends PmPacket376EventBase{
             sb.append("有告警 ");
         } else {
             sb.append("无告警 ");
+        }
+        if (this.isLocked) {
+                sb.append("锁死状态 ");
+            } else {
+                sb.append("未锁死状态 ");
         }
         sb.append("相位").append(xiangwei).append(" ");
         sb.append(this.statusString());
@@ -116,7 +124,7 @@ public class Packet376Event42 extends PmPacket376EventBase{
                 byte s = (byte) eventData.getByte();
                 event.isClosed = ((s & 0x20) == 0x00);
                 event.haveAlarm = ((s & 0x40) == 0x40);
-                
+                event.isLocked = ((s & 0x80) == 0x80);
                 event.status = (byte) (s & 0x1f);
                 eventData.getByte();//将保留的状态字读掉
                 s = (byte) eventData.getByte();//故障相位

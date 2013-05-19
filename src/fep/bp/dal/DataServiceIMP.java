@@ -5,23 +5,32 @@
 package fep.bp.dal;
 
 import fep.bp.dal.storedProc.DAY_ECUR_STATIS_StoredProcedure;
-import fep.bp.dal.storedProc.DAY_VOLT_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_IMB_STATIS_StoredProcedure;
-import fep.bp.dal.storedProc.I_REACT_StoredProcedure;
-import fep.bp.dal.storedProc.I_ACT_StoredProcedure;
+import fep.bp.dal.storedProc.DAY_VOLT_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.ECCURV_StoredProcedure;
-import fep.bp.dal.storedProc.EventStoredProcedure;
-import fep.bp.dal.storedProc.PFCURV_StoredProcedure;
-import fep.bp.dal.storedProc.LouBaoEvent36_StoredProcedure;
 import fep.bp.dal.storedProc.ECCURV_StoredProcedure2;
+import fep.bp.dal.storedProc.EventStoredProcedure;
 import fep.bp.dal.storedProc.Humiture_StoredProcedure;
+import fep.bp.dal.storedProc.I_ACT_StoredProcedure;
+import fep.bp.dal.storedProc.I_REACT_StoredProcedure;
+import fep.bp.dal.storedProc.LouBaoEvent36_StoredProcedure;
 import fep.bp.dal.storedProc.LouBaoEvent42_StoredProcedure;
+import fep.bp.dal.storedProc.PFCURV_StoredProcedure;
+import fep.bp.dal.storedProc.PSCtrlPara_StoredProcedure;
+import fep.bp.dal.storedProc.PSCustomPara_StoredProcedure;
+import fep.bp.dal.storedProc.PSStatus_StoredProcedure;
 import fep.bp.dal.storedProc.P_ACT_StoredProcedure;
 import fep.bp.dal.storedProc.P_REACT_StoredProcedure;
 import fep.bp.dal.storedProc.PowerCurv_StoredProcedure;
-import fep.bp.dal.storedProc.PSStatus_StoredProcedure;
 import fep.bp.dal.storedProc.PowerCurv_StoredProcedure2;
+import fep.bp.model.Dto;
+import fep.bp.model.Dto.DtoItem;
+import fep.bp.utils.UtilsBp;
+import fep.codec.protocol.gb.gb376.events.Packet376Event36;
+import fep.codec.protocol.gb.gb376.events.Packet376Event36.Meter36;
 import fep.codec.protocol.gb.gb376.events.Packet376Event42;
+import fep.codec.protocol.gb.gb376.events.Packet376Event42.Meter42;
+import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
-import fep.bp.model.Dto;
-import fep.bp.model.Dto.DtoItem;
-import fep.bp.utils.UtilsBp;
-import fep.codec.protocol.gb.gb376.events.Packet376Event36;
-import fep.codec.protocol.gb.gb376.events.Packet376Event36.Meter36;
-import fep.codec.protocol.gb.gb376.events.Packet376Event42.Meter42;
-import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
 
 /**
  *
@@ -60,11 +62,14 @@ public class DataServiceIMP implements DataService {
     private EventStoredProcedure eventStoredProcedure;
     private LouBaoEvent36_StoredProcedure loubaoEvent36_StoredProcedure;
     private LouBaoEvent42_StoredProcedure loubaoEvent42_StoredProcedure;
-    private DAY_ECUR_STATIS_StoredProcedure ecurStatisStoredProcedur;
-    private DAY_VOLT_STATIS_StoredProcedure voltStatisStoredProcedur;
-    private DAY_IMB_STATIS_StoredProcedure imbStatisStoredProcedur;
-    private PFCURV_StoredProcedure pfcurvStoredProcedur;
-    private PSStatus_StoredProcedure psStatusStoredProcedur;
+    private DAY_ECUR_STATIS_StoredProcedure ecurStatisStoredProcedure;
+    private DAY_VOLT_STATIS_StoredProcedure voltStatisStoredProcedure;
+    private DAY_IMB_STATIS_StoredProcedure imbStatisStoredProcedure;
+    private PFCURV_StoredProcedure pfcurvStoredProcedure;
+    private PSStatus_StoredProcedure psStatusStoredProcedure;
+    //add on 2013-02-24  by lijun 
+    private PSCtrlPara_StoredProcedure psCtrlParaStoredProcedure;
+    private PSCustomPara_StoredProcedure psCustomParaStoreProcedure;
 
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -119,7 +124,7 @@ public class DataServiceIMP implements DataService {
         for (Meter42 meter : Meters) {
             try {
                 this.loubaoEvent42_StoredProcedure.execute(rtua, meter.meterAddress,
-                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), (meter.haveAlarm ? 1 : 0), meter.xiangwei, meter.eventValue);
+                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), (meter.isLocked ? 1 : 0), meter.xiangwei, meter.eventValue);
             } catch (Exception e) {
                 log.error("错误信息：", e.fillInStackTrace());
             }
@@ -174,6 +179,11 @@ public class DataServiceIMP implements DataService {
         if (commandItemCode.equals("100C0200")) {
             //電壓/電流曲線
             this.insertData_EC_CURV_LouBao(logicalAddress, dtoItem.gp, dtoItem.dataTime,commandItemCode, dtoItem);
+            this.insertData_PsCtrlPara(logicalAddress, dtoItem.gp, commandItemCode, dtoItem);
+        }
+        //用户自定义参数
+        if (commandItemCode.equals("100C0201")){
+            this.insertData_PsCustomPara(logicalAddress, dtoItem.gp, commandItemCode, dtoItem);
         }
     }
 
@@ -300,7 +310,7 @@ public class DataServiceIMP implements DataService {
             //電壓/電流曲線
             this.insertData_EC_CURV_LouBao(logicalAddress, dtoItem.gp, dtoItem.dataTime,commandItemCode, dtoItem);
             //漏保状态
-            this.psStatusStoredProcedur.execute(logicalAddress, dtoItem.gp, dtoItem.dataTime,
+            this.psStatusStoredProcedure.execute(logicalAddress, dtoItem.gp, dtoItem.dataTime,
                     dataItemMap.get("8000B66F01"), dataItemMap.get("8000B66F02"),
                     dataItemMap.get("8000B66F03"), dataItemMap.get("8000B66F04"));
         }
@@ -461,6 +471,18 @@ public class DataServiceIMP implements DataService {
             }
             else if(commandItemCode.equals("800001FF"))
             {
+                if("1".equals(dataItemMap.get("B661")))
+                {
+                    phase = "01";
+                }
+                else if("2".equals(dataItemMap.get("B661")))
+                {
+                    phase = "02";
+                }
+                else if("4".equals(dataItemMap.get("B661")))
+                {
+                    phase = "03";
+                }
                 this.eccurvStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
@@ -473,7 +495,7 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("B611"),
                     dataItemMap.get("B612"),
                     dataItemMap.get("B613"),
-                    dataItemMap.get("B661"));//最大漏电相位
+                    phase);//最大漏电相位
             }
             else if(commandItemCode.equals("100C0200"))
             {
@@ -531,7 +553,7 @@ public class DataServiceIMP implements DataService {
     {
         try {
             Map<String, String> dataItemMap = dtoItem.dataMap;
-            voltStatisStoredProcedur.execute(
+            voltStatisStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
                     dataDate,
@@ -565,7 +587,7 @@ public class DataServiceIMP implements DataService {
     {
         try {
             Map<String, String> dataItemMap = dtoItem.dataMap;
-            imbStatisStoredProcedur.execute(
+            imbStatisStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
                     dataDate,
@@ -590,7 +612,7 @@ public class DataServiceIMP implements DataService {
     {
         try {
             Map<String, String> dataItemMap = dtoItem.dataMap;
-            this.ecurStatisStoredProcedur.execute(
+            this.ecurStatisStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
                     dataDate,
@@ -624,6 +646,78 @@ public class DataServiceIMP implements DataService {
         try {
         } catch (DataAccessException dataAccessException) {
             log.error(dataAccessException.getMessage());
+        }
+    }
+    
+    //漏保控制字
+    private void insertData_PsCtrlPara(String logicalAddress,
+            int gpSn,
+            String dataDate,
+            DtoItem dtoItem)
+    {
+        try {
+            Map<String, String> dataItemMap = dtoItem.dataMap;
+            this.psCtrlParaStoredProcedure.execute(
+                    logicalAddress,
+                    gpSn,
+                    dataItemMap.get("100C020001"),//时间
+                    dataItemMap.get("100C020017"),//现场/远程
+                    dataItemMap.get("100C020018"),//数据告警
+                    dataItemMap.get("100C020019"),//报警灯光
+                    dataItemMap.get("100C020020"),//报警声音
+                    dataItemMap.get("100C020021"),//定时试跳
+                    dataItemMap.get("100C020022"),//档位返回
+                    dataItemMap.get("100C020023"),//重合闸
+                    dataItemMap.get("100C020025"),//欠压保护-数据告警
+                    dataItemMap.get("100C020026"),//欠压保护-跳闸控制
+                    dataItemMap.get("100C020027"),//过压保护-数据告警
+                    dataItemMap.get("100C020028"),//过压保护-跳闸控制
+                    dataItemMap.get("100C020029"),//缺相保护-数据告警
+                    dataItemMap.get("100C020030"),//缺相保护-跳闸控制
+                    dataItemMap.get("100C020031"),//过流保护-数据告警
+                    dataItemMap.get("100C020032"),//过流保护-跳闸控制
+                    dataItemMap.get("100C020034"),//试跳源
+                    dataItemMap.get("100C020036"),//缺零保护-数据告警
+                    dataItemMap.get("100C020038"),//缺零保护-跳闸控制
+                    dataItemMap.get("100C020039"),//II档额定剩余电流
+                    dataItemMap.get("100C020040"),//I档额定剩余电流
+                    dataItemMap.get("100C020041"),//极限不驱动时间
+                    dataItemMap.get("100C020042")//漏电报警时间
+
+                    );
+
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
+        }
+    }
+    
+    private void insertData_PsCustomPara(String logicalAddress,
+            int gpSn,
+            String dataDate,
+            DtoItem dtoItem)
+    {
+        try {
+            Map<String, String> dataItemMap = dtoItem.dataMap;
+            this.psCustomParaStoreProcedure.execute(
+                    logicalAddress,
+                    gpSn,
+                    dataItemMap.get("100C020101"),//过压超限值
+                    dataItemMap.get("100C020102"),//欠压超限值
+                    dataItemMap.get("100C020103"),//缺相超限值
+                    dataItemMap.get("100C020104"),//额定电流值
+                    dataItemMap.get("100C020105"),//定时试跳
+                    dataItemMap.get("100C020106"),//档位返回
+                    dataItemMap.get("100C020107"),//重合闸
+                    dataItemMap.get("100C020108"),//欠压保护-数据告警
+                    dataItemMap.get("100C020109"),//欠压保护-跳闸控制
+                    dataItemMap.get("100C020110"),//过压保护-数据告警
+                    dataItemMap.get("100C020111"),//过压保护-跳闸控制
+                    dataItemMap.get("100C020112")//缺相保护-数据告警
+                    
+                    );
+
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
         }
     }
 
@@ -799,70 +893,98 @@ public class DataServiceIMP implements DataService {
      * @return the ecurStatisStoredProcedur
      */
     public DAY_ECUR_STATIS_StoredProcedure getEcurStatisStoredProcedur() {
-        return ecurStatisStoredProcedur;
+        return ecurStatisStoredProcedure;
     }
 
     /**
      * @param ecurStatisStoredProcedur the ecurStatisStoredProcedur to set
      */
     public void setEcurStatisStoredProcedur(DAY_ECUR_STATIS_StoredProcedure ecurStatisStoredProcedur) {
-        this.ecurStatisStoredProcedur = ecurStatisStoredProcedur;
+        this.ecurStatisStoredProcedure = ecurStatisStoredProcedur;
     }
 
     /**
      * @return the voltStatisStoredProcedur
      */
     public DAY_VOLT_STATIS_StoredProcedure getVoltStatisStoredProcedur() {
-        return voltStatisStoredProcedur;
+        return voltStatisStoredProcedure;
     }
 
     /**
      * @param voltStatisStoredProcedur the voltStatisStoredProcedur to set
      */
     public void setVoltStatisStoredProcedur(DAY_VOLT_STATIS_StoredProcedure voltStatisStoredProcedur) {
-        this.voltStatisStoredProcedur = voltStatisStoredProcedur;
+        this.voltStatisStoredProcedure = voltStatisStoredProcedur;
     }
 
     /**
      * @return the imbStatisStoredProcedur
      */
     public DAY_IMB_STATIS_StoredProcedure getImbStatisStoredProcedur() {
-        return imbStatisStoredProcedur;
+        return imbStatisStoredProcedure;
     }
 
     /**
      * @param imbStatisStoredProcedur the imbStatisStoredProcedur to set
      */
     public void setImbStatisStoredProcedur(DAY_IMB_STATIS_StoredProcedure imbStatisStoredProcedur) {
-        this.imbStatisStoredProcedur = imbStatisStoredProcedur;
+        this.imbStatisStoredProcedure = imbStatisStoredProcedur;
     }
 
     /**
      * @return the pfcurvStoredProcedur
      */
     public PFCURV_StoredProcedure getPfcurvStoredProcedur() {
-        return pfcurvStoredProcedur;
+        return pfcurvStoredProcedure;
     }
 
     /**
      * @param pfcurvStoredProcedur the pfcurvStoredProcedur to set
      */
     public void setPfcurvStoredProcedur(PFCURV_StoredProcedure pfcurvStoredProcedur) {
-        this.pfcurvStoredProcedur = pfcurvStoredProcedur;
+        this.pfcurvStoredProcedure = pfcurvStoredProcedur;
     }
 
     /**
      * @return the psStatusStoredProcedur
      */
     public PSStatus_StoredProcedure getPsStatusStoredProcedur() {
-        return psStatusStoredProcedur;
+        return psStatusStoredProcedure;
     }
 
     /**
      * @param psStatusStoredProcedur the psStatusStoredProcedur to set
      */
     public void setPsStatusStoredProcedur(PSStatus_StoredProcedure psStatusStoredProcedur) {
-        this.psStatusStoredProcedur = psStatusStoredProcedur;
+        this.psStatusStoredProcedure = psStatusStoredProcedur;
+    }
+
+    /**
+     * @return the psCtrlParaStoredProcedure
+     */
+    public PSCtrlPara_StoredProcedure getPsCtrlParaStoredProcedure() {
+        return psCtrlParaStoredProcedure;
+    }
+
+    /**
+     * @param psCtrlParaStoredProcedure the psCtrlParaStoredProcedure to set
+     */
+    public void setPsCtrlParaStoredProcedure(PSCtrlPara_StoredProcedure psCtrlParaStoredProcedure) {
+        this.psCtrlParaStoredProcedure = psCtrlParaStoredProcedure;
+    }
+
+    /**
+     * @return the psCustomParaStoreProcedure
+     */
+    public PSCustomPara_StoredProcedure getPsCustomParaStoreProcedure() {
+        return psCustomParaStoreProcedure;
+    }
+
+    /**
+     * @param psCustomParaStoreProcedure the psCustomParaStoreProcedure to set
+     */
+    public void setPsCustomParaStoreProcedure(PSCustomPara_StoredProcedure psCustomParaStoreProcedure) {
+        this.psCustomParaStoreProcedure = psCustomParaStoreProcedure;
     }
 
 

@@ -204,25 +204,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public long writeParameters(MessageTranObject MTO) throws Exception {
-        try {
-            if ((null == MTO) || (MTO.getType() != MTOType.GW_376)) {
-                return FAILCODE;
-
-            } else {
-                int sequenceCode = getID();
-                List<RealTimeTaskDAO> tasks = this.Encode(MTO, sequenceCode, AFNType.AFN_SETPARA);
-                for (RealTimeTaskDAO task : tasks) {
-                    this.taskService.insertTask(task);
-                }
-                return sequenceCode;
-            }
-        } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage());
-            return FAILCODE;
-        } catch (DataAccessException dataAccessException) {
-            log.error(dataAccessException.getMessage());
-            return FAILCODE;
-        }
+        return MTO2Tasks(MTO,AFNType.AFN_SETPARA);
     }
 
     /**
@@ -233,25 +215,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public long readParameters(MessageTranObject MTO) throws Exception {
-        try {
-            if ((null == MTO) || (MTO.getType() != MTOType.GW_376)) {
-                return FAILCODE;
-            } else {
-                int sequenceCode = getID();
-                List<RealTimeTaskDAO> tasks = this.Encode(MTO, sequenceCode, AFNType.AFN_GETPARA);
-                for (RealTimeTaskDAO task : tasks) {
-                    this.taskService.insertTask(task);
-                }
-                return sequenceCode;
-            }
-
-        } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage());
-            return FAILCODE;
-        } catch (DataAccessException dataAccessException) {
-            log.error(dataAccessException.getMessage());
-            return FAILCODE;
-        }
+        return MTO2Tasks(MTO,AFNType.AFN_GETPARA);
     }
 
     /**
@@ -262,25 +226,29 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public long writeResetCommands(MessageTranObject MTO) throws Exception {
-        try {
-            if ((null == MTO) || (MTO.getType() != MTOType.GW_376)) {
-                return FAILCODE;
-            } else {
-                int sequenceCode = getID();
-                List<RealTimeTaskDAO> tasks = this.Encode(MTO, sequenceCode, AFNType.AFN_RESET);
-                for (RealTimeTaskDAO task : tasks) {
-                    this.taskService.insertTask(task);
-                }
-                return sequenceCode;
-            }
-
-        } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage());
-            return FAILCODE;
-        } catch (DataAccessException dataAccessException) {
-            log.error(dataAccessException.getMessage());
-            return FAILCODE;
-        }
+        return MTO2Tasks(MTO,AFNType.AFN_RESET);
+    }
+    
+    /**
+     * 下发控制命令
+     * @param MTO
+     * @return
+     * @throws Exception 
+     */
+    public long writeControlCommands(MessageTranObject MTO)throws Exception
+    {
+        return MTO2Tasks(MTO,AFNType.AFN_CONTROL);
+    }
+    
+    /**
+     * 获取控制命令返回结果
+     * @param appId
+     * @return
+     * @throws Exception 
+     */
+    public Map<String, String> getReturnByWriteControlCommand(long appId) throws Exception
+    {
+        return this.getReturnConfirm(appId);
     }
 
     /**
@@ -291,24 +259,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
      */
     @Override
     public long readData(MessageTranObject MTO) throws Exception {
-        try {
-            if ((null == MTO) || (MTO.getType() != MTOType.GW_376)) {
-                return FAILCODE;
-            } else {
-                int sequenceCode = getID();
-                List<RealTimeTaskDAO> tasks = this.Encode(MTO, sequenceCode, AFNType.AFN_READDATA1);
-                for (RealTimeTaskDAO task : tasks) {
-                    this.taskService.insertTask(task);
-                }
-                return sequenceCode;
-            }
-        } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage());
-            return FAILCODE;
-        } catch (DataAccessException dataAccessException) {
-            log.error(dataAccessException.getMessage());
-            return FAILCODE;
-        }
+        return MTO2Tasks(MTO,AFNType.AFN_READDATA1);
     }
 
     /**
@@ -629,5 +580,27 @@ public class RealTimeProxy376 implements RealTimeInterface {
     public void setEquipMap(EquipMap equipMap) {
         this.equipMap = equipMap;
         this.equipMap.init();
+    }
+
+    private long MTO2Tasks(MessageTranObject MTO,byte afn) {
+        try {
+            if ((null == MTO) || (MTO.getType() != MTOType.GW_376)) {
+                return FAILCODE;
+
+            } else {
+                int sequenceCode = getID();
+                List<RealTimeTaskDAO> tasks = this.Encode(MTO, sequenceCode, afn);
+                for (RealTimeTaskDAO task : tasks) {
+                    this.taskService.insertTask(task);
+                }
+                return sequenceCode;
+            }
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage());
+            return FAILCODE;
+        } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage());
+            return FAILCODE;
+        }
     }
 }

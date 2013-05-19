@@ -10,9 +10,11 @@ package fep.codec.protocol.gb;
  */
 import fep.codec.utils.BcdUtils;
 import java.nio.ByteBuffer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 abstract public class PmPacket {
-
+    private final static Logger LOGGER = LoggerFactory.getLogger(PmPacket.class);
     private ControlCode controlCode;
     private Address address;
     private Seq seq;
@@ -223,11 +225,13 @@ abstract public class PmPacket {
     }
 
     protected static int getMsgHeadOffset(byte[] msg, byte protocolVersion, int firstIndex) {
+        try {
+        //String hexstr = BcdUtils.binArrayToString(msg);
         int head = PmPacket.getHeadOffset(msg, firstIndex, protocolVersion);
         while (head != -1) {
             int len = (BcdUtils.byteToUnsigned(msg[head + 1]) + BcdUtils.byteToUnsigned(msg[head + 2]) * 0x0100) >> 2;
 
-            if ((msg.length>=(head + len + 7))&&(msg[head + len + 7] == 0x16)) {
+            if ((msg.length>(head + len + 7))&&(msg[head + len + 7] == 0x16)) {
                 if (PmPacket.calcCs(msg, head + 6, head + len + 6) == msg[head + len + 6]) {
                     return head;
                 }
@@ -237,6 +241,12 @@ abstract public class PmPacket {
         }
 
         return -1;
+        }
+        catch(Exception e)
+        {
+            LOGGER.error("error:",e);
+            return -1;
+        }
     }
 
     public static int getMsgEndOffset(byte[] msg, int head){

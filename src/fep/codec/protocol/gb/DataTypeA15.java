@@ -5,6 +5,7 @@
 
 package fep.codec.protocol.gb;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -42,6 +43,8 @@ public class DataTypeA15 extends DataTypeDateBase {
     @Override
     public String toString(){
         if (this.isNull) return "";
-        return this.getDate().toString();
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = sDateFormat.format(this.getDate());
+        return date;
     }
 }

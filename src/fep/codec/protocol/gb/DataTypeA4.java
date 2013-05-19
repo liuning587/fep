@@ -67,7 +67,9 @@ public class DataTypeA4 {
 
     @Override
     public String toString() {
-        if (this.isNull) return "";
+        if (this.isNull) {
+            return "";
+        }
         return (new Byte(this.value)).toString();
     }
 }

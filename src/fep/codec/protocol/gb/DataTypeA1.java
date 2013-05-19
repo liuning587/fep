@@ -58,6 +58,7 @@ public class DataTypeA1 {
             } catch (Exception ex){
                 this.isNull = true;
             }
+            this.isNull = false;
         }
     }
 
@@ -69,10 +70,10 @@ public class DataTypeA1 {
         byte[] result = new byte[6];
         result[0] = BcdUtils.intToBcd((byte)calendar.get(GregorianCalendar.SECOND));
         result[1] = BcdUtils.intToBcd((byte)calendar.get(GregorianCalendar.MINUTE));
-        result[2] = BcdUtils.intToBcd((byte)calendar.get(GregorianCalendar.HOUR));
+        result[2] = BcdUtils.intToBcd((byte)calendar.get(GregorianCalendar.HOUR_OF_DAY));
         result[3] = BcdUtils.intToBcd((byte)calendar.get(GregorianCalendar.DAY_OF_MONTH));
-        result[4] = (byte)(BcdUtils.intToBcd((byte)(calendar.get(GregorianCalendar.MONTH)+1))
-                +((calendar.get(GregorianCalendar.DAY_OF_WEEK)+6) % 7)<<5);
+        result[4] = BcdUtils.intToBcd((byte)(calendar.get(GregorianCalendar.MONTH)+1));
+        result[4] += ((calendar.get(GregorianCalendar.DAY_OF_WEEK)+6) % 7)<<5;
         result[5] = BcdUtils.intToBcd((byte)(calendar.get(GregorianCalendar.YEAR) % 100));
         return result;
     }
@@ -93,6 +94,11 @@ public class DataTypeA1 {
         if (this.isNull)
             return "";
         else
-            return calendar.toString();
+        {
+            SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String date = sDateFormat.format(this.getDate());
+            return date;
+            //return calendar.toString();
+        }
     }
 }

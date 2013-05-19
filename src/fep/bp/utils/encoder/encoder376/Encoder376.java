@@ -128,7 +128,7 @@ public class Encoder376 extends Encoder{
             for (CommandItem commandItem : CommandItems) {
                 if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
                 {
-                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
+                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), MpSn[i], DataBuffLen, results);
                 }
                 else {
                     if ((Index - 1) % CmdItemNum == 0) {
@@ -307,10 +307,10 @@ public class Encoder376 extends Encoder{
      
      private byte getFunCode(byte afn)
      {
-         if((afn == AFNType.AFN_SETPARA)||(afn == AFNType.AFN_UPGRADE)) {
+         if((afn == AFNType.AFN_SETPARA)||(afn == AFNType.AFN_UPGRADE)||(afn == AFNType.AFN_CONTROL)) {
              return FUNCODE_DOWM_10;
          }
-         else if((afn == AFNType.AFN_RESET)||(afn == AFNType.AFN_CONTROL)) {
+         else if((afn == AFNType.AFN_RESET)) {
              return FUNCODE_DOWM_1;
          }
          else {
@@ -636,8 +636,9 @@ public class Encoder376 extends Encoder{
                     while (iterator.hasNext()) {
                         String DataItemCode = (String) iterator.next();
                         dataItem = DataItemMap_Config.get(DataItemCode);
-                    }
-                    FillDataBuffer(packet.getDataBuffer(), dataItem.getFormat(), String.valueOf(ActualgroupNumber), dataItem.getIsGroupEnd(), dataItem.getLength(), dataItem.getBitNumber());
+                        DataItemValue = dataItemMap.get(DataItemCode);
+                        FillDataBuffer(packet.getDataBuffer(), dataItem.getFormat(),DataItemValue, dataItem.getIsGroupEnd(), dataItem.getLength(), dataItem.getBitNumber());
+                    }           
                 }
 
                 List<DataItem> dataItemList = group.getDataItemList();
@@ -865,7 +866,7 @@ public class Encoder376 extends Encoder{
                     if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
                     {
                         int DataBuffLen = MAX_PACKET_LEN - 16 - 22;
-                        cmdItem2PacketList_Subpacket(commandItem, AFN, LogicalAddr, i, DataBuffLen, packetList);
+                        cmdItem2PacketList_Subpacket(commandItem, AFN, LogicalAddr, MpSnList[i], DataBuffLen, packetList);
                     }
                     else
                     {
@@ -919,7 +920,7 @@ public class Encoder376 extends Encoder{
 
                 if (NeedSubpackage(commandItem)) //针对类似F10的参数，按每帧最大长度进行自动分包处理
                 {
-                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), i, DataBuffLen, results);
+                    cmdItem2PacketList_Subpacket(commandItem, AFN, obj.getLogicalAddr(), MpSn[i], DataBuffLen, results);
                 }
                 else {
                     if ((Index - 1) % CmdItemNum == 0) {

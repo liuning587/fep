@@ -6,14 +6,13 @@
 
 package fep.codec.protocol.gb;
 
+import fep.codec.utils.BcdDataBuffer;
+import fep.codec.utils.BcdUtils;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
-import fep.codec.utils.BcdDataBuffer;
-import fep.codec.utils.BcdUtils;
 
 /**
  *
@@ -490,6 +489,6 @@ public class PmPacketData extends BcdDataBuffer{
     }
 
     public boolean HaveDate(){
-        return (this.dataBuff.limit()-this.dataBuff.position() >=6);
+        return (this.dataBuff.limit()-this.dataBuff.position() >=5);
     }
 }

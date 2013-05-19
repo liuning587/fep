@@ -130,4 +130,22 @@ public interface RealTimeInterface {
      * @throws Exception 
      */
     public Map<String, String> getReturnByControl_TransMit(long appId) throws Exception;
+    
+    /**
+     * 下发控制命令
+     * @param MTO
+     * @return 回执码（-1:表示失败）
+     * @throws Exception
+     */
+    public long writeControlCommands(MessageTranObject MTO)throws Exception;
+    
+    
+    /**
+     * 获取控制命令结果
+     * @param appId
+     * @return
+     * @throws Exception
+     */
+    public Map<String, String> getReturnByWriteControlCommand(long appId) throws Exception;
+    
 }
