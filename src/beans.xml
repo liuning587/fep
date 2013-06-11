@@ -120,6 +120,10 @@
     <bean id="eventStoredProcedure" class="fep.bp.dal.storedProc.EventStoredProcedure">
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
     </bean>
+    
+    <bean id="accessRecordStoredProcedure" class="fep.bp.dal.storedProc.AccessRecordStoredProcedure">
+        <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
+    </bean>
 
     <bean id="louBaoEvent36_StoredProcedure" class="fep.bp.dal.storedProc.LouBaoEvent36_StoredProcedure">
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
@@ -202,7 +206,8 @@
         <property name="humitureStoredProcedure" ref="humitureStoredProcedure" />
         <property name="psCtrlParaStoredProcedure" ref="psCtrlParaStoredProcedure" />
         <property name="psCustomParaStoreProcedure" ref="psCustomParaStoredProcedure" />
-
+        <property name="accessRecordProcedure" ref="accessRecordStoredProcedure" />
+        
     </bean>
 
     <bean id="realTimeProxy376" class="fep.bp.realinterface.RealTimeProxy376">

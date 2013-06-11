@@ -4,6 +4,7 @@
  */
 package fep.bp.dal;
 
+import fep.bp.dal.storedProc.AccessRecordStoredProcedure;
 import fep.bp.dal.storedProc.DAY_ECUR_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_IMB_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_VOLT_STATIS_StoredProcedure;
@@ -60,6 +61,7 @@ public class DataServiceIMP implements DataService {
     private PowerCurv_StoredProcedure2 powerCurvStoredProcedure2;
     private Humiture_StoredProcedure humitureStoredProcedure;
     private EventStoredProcedure eventStoredProcedure;
+    private AccessRecordStoredProcedure accessRecordProcedure;
     private LouBaoEvent36_StoredProcedure loubaoEvent36_StoredProcedure;
     private LouBaoEvent42_StoredProcedure loubaoEvent42_StoredProcedure;
     private DAY_ECUR_STATIS_StoredProcedure ecurStatisStoredProcedure;
@@ -135,6 +137,16 @@ public class DataServiceIMP implements DataService {
     public void insertEvent(String rtua, PmPacket376EventBase event) {
         try {
             this.eventStoredProcedure.execute(rtua, 0, String.valueOf(event.GetEventCode()), UtilsBp.Date2String(event.getEventTime()), event.getEventDetail());
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
+        }
+    }
+    
+    @Override
+    public void insertAccessRecord(String rtua,Date accessDate,String AccessType,String cardCode,String doorMark)
+    {
+        try {
+            this.accessRecordProcedure.execute(rtua, cardCode, UtilsBp.Date2String(accessDate), AccessType,doorMark);
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
         }
@@ -985,6 +997,20 @@ public class DataServiceIMP implements DataService {
      */
     public void setPsCustomParaStoreProcedure(PSCustomPara_StoredProcedure psCustomParaStoreProcedure) {
         this.psCustomParaStoreProcedure = psCustomParaStoreProcedure;
+    }
+
+    /**
+     * @return the accessRecordProcedure
+     */
+    public AccessRecordStoredProcedure getAccessRecordProcedure() {
+        return accessRecordProcedure;
+    }
+
+    /**
+     * @param accessRecordProcedure the accessRecordProcedure to set
+     */
+    public void setAccessRecordProcedure(AccessRecordStoredProcedure accessRecordProcedure) {
+        this.accessRecordProcedure = accessRecordProcedure;
     }
 
 

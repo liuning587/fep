@@ -19,8 +19,9 @@ public class Gb645Address {
     public Gb645Address(byte[] data, int beginposition){
         super();
         if (data.length>=beginposition+6){
-            for (int i=0; i<6; i++)
+            for (int i=0; i<6; i++) {
                 value[i] = data[beginposition+i];
+            }
         }
     }
 
@@ -60,8 +61,9 @@ public class Gb645Address {
     }
 
     public void setValue(byte[] msg, int beginIndex){
-        for (int i=0; i<6; i++)
+        for (int i=0; i<6; i++) {
             this.value[i] = msg[beginIndex+i];
+        }
     }
 
     private byte[] getShrinkedMeterAddr(){
@@ -73,21 +75,25 @@ public class Gb645Address {
             }
             return temp;
         }
-        else
+        else {
             return this.value;
+        }
     }
 
     public static String meterAddressToString(byte[] addr){
-        if (addr.length==6)
+        if (addr.length==6) {
             return BcdUtils.binArrayToString(BcdUtils.reverseBytes(addr));
-        else
+        }
+        else {
             return "000000000000";
+        }
     }
     
     public static byte[] stringToMeterAddress(String address){
         String temp;
-        if (address.length()>12)
+        if (address.length()>12) {
             temp = address.substring(address.length()-12);
+        }
         else {
             temp = BcdUtils.dupeString("0", 12-address.length())+address;
         }

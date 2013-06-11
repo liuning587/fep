@@ -457,6 +457,8 @@ public class Encoder376 extends Encoder{
                 bits = 8;
                 groupBinValue = 0;
             }
+        } else if (Format.equals("BS16")) {
+            packetdata.putBS16(DataItemValue);
         } else if (Format.equals("BS24")) {
             packetdata.putBS24(DataItemValue);
         } else if (Format.equals("BS64")) {
@@ -525,6 +527,16 @@ public class Encoder376 extends Encoder{
             } catch (ParseException ex) {
                 log.error(ex.getMessage());
             }
+        }else if (Format.equals("METER_ADDRESS")) {
+            String temp;
+            byte[] tempData;
+            if (DataItemValue.length() > 12) {
+                temp = DataItemValue.substring(DataItemValue.length() - 12);
+            } else {
+                temp = BcdUtils.dupeString("0", 12 - DataItemValue.length()) + DataItemValue;
+            }
+            tempData = BcdUtils.reverseBytes(BcdUtils.stringToByteArray(temp));
+            packetdata.put(tempData);
         }
 
     }

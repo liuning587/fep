@@ -9,6 +9,7 @@ import fep.bp.model.Dto;
 import fep.codec.protocol.gb.gb376.events.Packet376Event36;
 import fep.codec.protocol.gb.gb376.events.Packet376Event42;
 import fep.codec.protocol.gb.gb376.events.PmPacket376EventBase;
+import java.util.Date;
 
 /**
  *
@@ -22,4 +23,6 @@ public interface DataService {
     public void insertLBEvent42(String rtua, Packet376Event42 event);
 
     public void insertEvent(String rtua, PmPacket376EventBase event);
+    
+    public void insertAccessRecord(String rtua,Date accessDate,String AccessType,String cardCode,String doorMark);
 }

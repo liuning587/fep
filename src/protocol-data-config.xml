@@ -142,11 +142,81 @@
 		<DataItem DataItemCode="1004006606" Length="2" Format="BIN" BitNumber="0" Description="数据单元标识PnXXXX" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
 		<DataItem DataItemCode="1004006607" Length="2" Format="BIN" BitNumber="0" Description="数据单元标识FnXXXX" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
-	<CommandItem CommandCode="10040067">
+    <CommandItem CommandCode="10040067">
 		<DataItem DataItemCode="1004006701" Length="1" Format="BIN" BitNumber="0" Description="1类任务启动/停止标志" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
-	<CommandItem CommandCode="10040068">
-		<DataItem DataItemCode="1004006801" Length="1" Format="BIN" BitNumber="0" Description="2类任务启动/停止标志" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+    <CommandItem CommandCode="10040068">
+	<DataItem DataItemCode="1004006801" Length="1" Format="BIN" BitNumber="0" Description="2类任务启动/停止标志" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="10040073">
+	<DataItem DataItemCode="1004007301" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第1组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007302" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007303" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第1组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007304" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第2组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007305" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007306" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第2组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007307" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第3组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007308" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007309" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第3组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007310" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第4组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007311" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007312" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第4组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007313" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第5组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007314" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007315" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第5组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007316" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第6组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007317" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007318" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第6组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007319" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第7组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007320" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007321" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第7组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007322" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第8组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007323" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007324" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第8组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007325" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第9组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007326" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007327" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第9组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007328" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第10组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007329" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007330" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第10组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007331" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第11组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007332" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007333" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第11组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007334" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第12组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007335" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007336" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第12组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007337" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第13组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007338" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007339" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第13组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007340" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第14组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007341" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007342" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第14组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007343" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第15组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007344" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007345" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第15组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+	<DataItem DataItemCode="1004007346" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第16组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007347" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007348" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第16组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="10040074">
+        <DataItem DataItemCode="1004007401" Length="2" Format="A5" BitNumber="0" Description="目标功率因数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007402" Length="3" Format="A23" BitNumber="0" Description="投入无功功率门限" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007403" Length="3" Format="A23" BitNumber="0" Description="切除无功功率门限" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007404" Length="1" Format="BIN" BitNumber="0" Description="延时时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007405" Length="1" Format="BIN" BitNumber="0" Description="动作时间间隔" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="10040075">
+        <DataItem DataItemCode="1004007501" Length="2" Format="A7" BitNumber="0" Description="过电压" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007502" Length="2" Format="A7" BitNumber="0" Description="过电压回差值" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007503" Length="2" Format="A7" BitNumber="0" Description="欠电压" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007504" Length="2" Format="A7" BitNumber="0" Description="欠电压回差值" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007505" Length="2" Format="A5" BitNumber="0" Description="总畸变电流含有率上限" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007506" Length="2" Format="A5" BitNumber="0" Description="总畸变电流含有率越限回差值" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007507" Length="2" Format="A5" BitNumber="0" Description="总畸变电压含有率上限" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007508" Length="2" Format="A5" BitNumber="0" Description="总畸变电压含有率越限回差值" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="10040076">
+        <DataItem DataItemCode="1004007601" Length="1" Format="BIN" BitNumber="0" Description="控制方式" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10040081">
         <DataItem DataItemCode="1004008101" Length="2" Format="A2" BitNumber="0" Description="直流模拟量量程起始值" DefaultValue="11111111" IsGroupEnd="0" LowBitBefore="1"/>
@@ -189,9 +259,19 @@
         <DataItem DataItemCode="1004020109" Length="1" Format="BIN" BitNumber="0" Description="油温超上限持续时间" DefaultValue="24" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="1004020110" Length="2" Format="A5" BitNumber="0" Description="油温超上限越限恢复系数" DefaultValue="24" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
+    <CommandItem CommandCode="10050041">
+        <DataItem DataItemCode="1005004101" Length="1" Format="BS16" BitNumber="0" Description="控制投入电容器组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="10050042">
+        <DataItem DataItemCode="1005004101" Length="1" Format="BS16" BitNumber="0" Description="控制切除电容器组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
     <CommandItem CommandCode="10050053">
         <DataItem DataItemCode="1005005301" Length="1" Format="BIN" BitNumber="0" Description="指定通信端口" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
+    <CommandItem CommandCode="10050057">
+        <DataItem DataItemCode="1005005301" Length="2" Format="BS16" BitNumber="0" Description="控制输出高电平开关量组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+
     <CommandItem CommandCode="100C0002">
         <DataItem DataItemCode="100C000201" Length="6" Format="A1" BitNumber="0" Description="终端日历时钟" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
@@ -240,6 +320,34 @@
         <DataItem DataItemCode="2501" Length="3" Format="A9" BitNumber="0" Description="当前A相视在功率" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="2502" Length="3" Format="A9" BitNumber="0" Description="当前B相视在功率" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="2503" Length="3" Format="A9" BitNumber="0" Description="当前C相视在功率" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100C0065">
+        <DataItem DataItemCode="100C006501" Length="1" Format="BIN" BitNumber="0" Description="电容器运行方式" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006502" Length="2" Format="BS16" BitNumber="0" Description="电容器的投切状态" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100C0066">
+        <DataItem DataItemCode="100C006601" Length="4" Format="BIN" BitNumber="0" Description="当前第1组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006602" Length="4" Format="BIN" BitNumber="0" Description="当前第2组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006603" Length="4" Format="BIN" BitNumber="0" Description="当前第3组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006604" Length="4" Format="BIN" BitNumber="0" Description="当前第4组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006605" Length="4" Format="BIN" BitNumber="0" Description="当前第5组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006606" Length="4" Format="BIN" BitNumber="0" Description="当前第6组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006607" Length="4" Format="BIN" BitNumber="0" Description="当前第7组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006608" Length="4" Format="BIN" BitNumber="0" Description="当前第8组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006609" Length="4" Format="BIN" BitNumber="0" Description="当前第9组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006610" Length="4" Format="BIN" BitNumber="0" Description="当前第1组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006611" Length="4" Format="BIN" BitNumber="0" Description="当前第2组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006612" Length="4" Format="BIN" BitNumber="0" Description="当前第3组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006613" Length="4" Format="BIN" BitNumber="0" Description="当前第4组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006614" Length="4" Format="BIN" BitNumber="0" Description="当前第5组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006615" Length="4" Format="BIN" BitNumber="0" Description="当前第6组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006616" Length="4" Format="BIN" BitNumber="0" Description="当前第7组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006617" Length="4" Format="BIN" BitNumber="0" Description="当前第8组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006618" Length="4" Format="BIN" BitNumber="0" Description="当前第9组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100C0067">
+        <DataItem DataItemCode="100C006701" Length="4" Format="A13" BitNumber="0" Description="当前日补偿的无功电能量" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006702" Length="4" Format="A13" BitNumber="0" Description="当前月补偿的无功电能量" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="100C0073">
         <DataItem DataItemCode="100C007301" Length="2" Format="A2" BitNumber="0" Description="直流模拟量实时数据" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
@@ -338,6 +446,150 @@
         <DataItem DataItemCode="100C020111" Length="2" Format="A8" BitNumber="0" Description="第一档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C020112" Length="2" Format="A8" BitNumber="0" Description="第二档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C020113" Length="2" Format="A8" BitNumber="0" Description="第三档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0081">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0082">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0083">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0084">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0085">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0086">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0087">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0088">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0089">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0090">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0091">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0092">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0093">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0094">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0095">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0097">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0098">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0099">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0100">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0027">
+        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0028">
+        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0029">
+        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0101">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0102">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0103">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0104">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0105">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0106">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0107">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="3" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="24" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0108">
+        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="8000B611">
         <DataItem DataItemCode="B611" Length="2" Format="A8" BitNumber="0" Description="当前A相电压" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
@@ -725,148 +977,11 @@
         <DataItem DataItemCode="8001C04F06" Length="1" Format="BS8" BitNumber="0" Description="开关功能设定字" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="8001C04F07" Length="1" Format="BIN" BitNumber="0" Description="保留字节" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
-    <CommandItem CommandCode="100D0081">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    <CommandItem CommandCode="9000C074">
+        <DataItem DataItemCode="9000C07401" Length="1" Format="BIN" BitNumber="0" Description="卡序号" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="9000C07402" Length="6" Format="A12" BitNumber="0" Description="卡号" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
-    <CommandItem CommandCode="100D0082">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0083">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0084">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0085">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0086">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0087">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0088">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0089">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0090">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0091">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0092">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0093">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0094">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0095">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0097">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0098">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0099">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0100">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0027">
-        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0028">
-        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0029">
-        <DataItem DataItemCode="F012" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0101">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0102">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0103">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0104">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0105">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0106">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0107">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="3" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="24" IsGroupEnd="0" LowBitBefore="1"/>
-    </CommandItem>
-    <CommandItem CommandCode="100D0108">
-        <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
-        <DataItem DataItemCode="F002" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据密度" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="F003" Length="1" Format="BIN" BitNumber="0" Description="曲线类数据点数" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
+    <CommandItem CommandCode="9000C076">
+        <DataItem DataItemCode="9000C07601" Length="2" Format="BS16" BitNumber="0" Description="门控开关量标志" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
 </ProtocolCommandItems>

@@ -142,6 +142,14 @@ public class UpLoadProcessor extends BaseProcessor {
                     Packet376Event42 event42 = (Packet376Event42) event;
                     saveLoubaoEvent(rtua, event42,42);
                 }
+                else if(event.GetEventCode() == 4)//状态量变位
+                {
+                    this.dataService.insertAccessRecord(rtua, event.getEventTime(), "1", "",event.getEventDetail());
+                }
+                else if(event.GetEventCode() == 57)//台区门禁（循查事件）记录
+                {
+                    this.dataService.insertAccessRecord(rtua, event.getEventTime(), "2", event.getEventDetail(), "");
+                }
                 saveEvent(rtua, dt.getFn(), da.getPn(), event);
             }
         }
