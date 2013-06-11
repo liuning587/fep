@@ -71,7 +71,7 @@ public class RealTimeProxy376Test {
         citem.setIdentifier(commandItemCode);//终端上行通信口通信参数设置
         object.AddCommandItem(citem);
         object.setLogicalAddr(LogicAddress);
-        object.setEquipProtocol("100");
+        object.setEquipProtocol("101");
         object.setMpSn(new int[]{MpSn});
 
         MTO.getCollectObjects().add(object);
@@ -93,7 +93,7 @@ public class RealTimeProxy376Test {
     /**
      * Test of writeEquipmentParameters method, of class RealTimeProxy376.
      */
-    @Test
+    //@Test
     public void testWriteEquipmentParameters() throws Exception {
       // 测试F1
         /*
@@ -204,6 +204,7 @@ public class RealTimeProxy376Test {
 //        assertTrue(resultMap9.get("1004000902").equals("1111111111111111111111111111111111111111111111111111111111111111"));
 //
         //测试F10
+        /*
         Map datacellParams10 = new TreeMap();
         datacellParams10.put("1004001001","1");//本次电能表/交流采样装置配置数量
         CircleDataItems circleDataItems = new CircleDataItems();
@@ -231,7 +232,7 @@ public class RealTimeProxy376Test {
         long SequenceCode = instance.writeParameters(MTO10);
         List<RealTimeTaskDAO> taskList = taskService.getTasks(SequenceCode);
         assertTrue(taskList.size()>1);
-
+*/
 //        Map<String,String> resultMap10 = getTestResults(MTO10,"96123456#0#10040010");
 //        assertTrue(resultMap10.get("1004001001").equals("1"));
 //        assertTrue(resultMap10.get("1004001002").equals("1"));
@@ -347,7 +348,66 @@ public class RealTimeProxy376Test {
 //        MTO_376 MTO61  = PutInCommandItem(datacellParams61,null,"10040061","96123456",0);
 //        Map<String,String> resultMap61 = getTestResults(MTO61,"96123456#0#10040061");
 //        assertTrue(resultMap61.get("1004006101").equals("11111111"));
-////
+
+        //测试F65
+       // Map datacellParams67 = new TreeMap();
+      //  datacellParams67.put("1004006701","85");//定时上报周期单位
+        
+        
+        Map datacellParams65 = new TreeMap();
+        datacellParams65.put("1004006501","1");//定时上报周期单位
+        datacellParams65.put("1004006502","1");//定时上报周期
+        datacellParams65.put("1004006503","2013-03-22 10:00:00");//定时上报周期单位
+        datacellParams65.put("1004006504","1");//定时上报周期单位
+        datacellParams65.put("1004006505","1");//定时上报周期单位
+        CircleDataItems circleDataItems = new CircleDataItems();
+        for(int i=1;i<=1;i++)
+        {
+            DataItemGroup diGroup1 = new DataItemGroup();
+            diGroup1.AddDataItem(new DataItem("1004006506000"+i,"258"));//数据点标识1
+            diGroup1.AddDataItem(new DataItem("1004006507000"+i,"3344"));//数据类标识1
+            circleDataItems.AddDataItemGroup(diGroup1);
+        }
+        
+         MTO_376 MTO = new MTO_376();
+        CollectObject object = new CollectObject();
+        CommandItem citem = new CommandItem();
+        
+        citem.setDatacellParam(datacellParams65);
+        citem.setCircleDataItems(circleDataItems);
+        citem.setCircleLevel(1);
+
+        citem.setIdentifier("10040065");//终端上行通信口通信参数设置
+        object.AddCommandItem(citem);
+    //    CommandItem citem2 = new CommandItem();
+    //    citem2.setIdentifier("10040067");//终端上行通信口通信参数设置
+     //   citem2.setDatacellParam(datacellParams67);
+      //  object.AddCommandItem(citem2);
+        object.setLogicalAddr("33010008");
+        object.setEquipProtocol("101");
+        object.setMpSn(new int[]{1});
+        MTO.addCollectObject(object);
+        RealTimeProxy376 instance = proxy;
+        long SequenceCode = instance.writeParameters(MTO);
+        List<RealTimeTaskDAO> taskList = taskService.getTasks(SequenceCode);
+        assertTrue(taskList.size()>1);
+/*
+        MTO.getCollectObjects().add(object);
+
+        MTO_376 MTO10  = PutInCommandItem(datacellParams65,circleDataItems,"10040065","33010008",1);
+        
+         Map datacellParams67 = new TreeMap();
+        datacellParams67.put("1004006701","85");//定时上报周期单位
+        MTO_376 MTO67  = PutInCommandItem(datacellParams67,null,"10040067","33010008",0);
+        
+        RealTimeProxy376 instance = proxy;
+        long SequenceCode = instance.writeParameters(MTO10);
+        List<RealTimeTaskDAO> taskList = taskService.getTasks(SequenceCode);
+        assertTrue(taskList.size()>1);
+   */    
+        
+
+       
         //测试F81
 //        Map datacellParams81 = new TreeMap();
 //        datacellParams81.put("1004008101", "1");//直流模拟量量程起始值
@@ -621,29 +681,30 @@ public class RealTimeProxy376Test {
     /**
      * Test of transmitMsg method, of class RealTimeProxy376.
      */
-    //@Test
+    @Test
     public void testTransmitMsg() throws Exception {    
-     //  Map datacellParams1 = new TreeMap();
-   //    datacellParams1.put("0710", "0002");
-      
+       Map datacellParams1 = new TreeMap();
+       datacellParams1.put("9000C07401", "1");
+       datacellParams1.put("9000C07402", "000001563640");
         CommandItem commandItem = new CommandItem();
-        commandItem.setIdentifier("8000B66F");
-     //   commandItem.setDatacellParam(datacellParams1);
+        commandItem.setIdentifier("9000C074");
+        commandItem.setDatacellParam(datacellParams1);
         
         CollectObject_TransMit cob = new CollectObject_TransMit();
-        cob.setFuncode((byte)0x1b);
-        cob.setMeterAddr("000000000001");
+        cob.setFuncode((byte)0x04);
+        cob.setMeterAddr("CC0000000001");
         cob.setMeterType(MeterType.Meter645);
-        cob.setPort((byte)8);
+        cob.setPort((byte)24);
         cob.setEquipProtocol("101");
+        cob.setMeterType(101);
         SerialPortPara spp = new SerialPortPara();
-        spp.setBaudrate(BaudRate.bps_1200);
+        spp.setBaudrate(BaudRate.bps_2400);
         spp.setCheckbit(0);
         spp.setStopbit(1);
         spp.setOdd_even_bit(1);
         spp.setDatabit(8);
         cob.setSerialPortPara(spp);
-        cob.setTerminalAddr("33010001");
+        cob.setTerminalAddr("3301002C");
         cob.setWaitforByte((byte)5);
         cob.setWaitforPacket((byte)10);
         cob.addCommandItem(commandItem);
@@ -656,8 +717,8 @@ public class RealTimeProxy376Test {
         long SequenceCode = instance.transmitMsg(MTO);
         
         RealTimeTaskDAO task = taskService.getTask(SequenceCode);
-        assertTrue(task.getCommandMark().equals("8000B66F#"));
-        assertTrue(task.getGpMark().equals("000000000001#"));
+        assertTrue(task.getCommandMark().equals("9000C074#"));
+        assertTrue(task.getGpMark().equals("CC0000000001#"));
         
         PmPacket376 packet = new PmPacket376();
         packet.setValue(BcdUtils.stringToByteArray(task.getSendmsg()),0);
@@ -666,9 +727,8 @@ public class RealTimeProxy376Test {
         byte[] databuff = packet.getDataBuffer().getValue();
         int head = Gb645MeterPacket.getMsgHeadOffset(databuff, 0);
         Gb645MeterPacket pack = Gb645MeterPacket.getPacket(databuff, head);
-        assertTrue(pack.getAddress().getAddress().equals("000000000001"));
-        assertTrue(pack.getControlCode().getValue()==0x1B);
-
+        assertTrue(pack.getAddress().getAddress().equals("CC0000000001"));
+        assertTrue(pack.getControlCode().getValue()==0x04);
     }
 
    // @Test
@@ -744,7 +804,7 @@ public class RealTimeProxy376Test {
      */
     //@Test
     public void testGetReturnByReadParameter() throws Exception {
-        Map result = proxy.getReturnByReadParameter(169808);
+        Map result = proxy.getReturnByReadParameter(255813);
         assertTrue(result.size() > 0);
     }
 
@@ -767,5 +827,37 @@ public class RealTimeProxy376Test {
         this.taskService = taskService;
     }
 
+    /**
+     * Test of writeResetCommands method, of class RealTimeProxy376.
+     */
+   // @Test
+    public void testControlCommands() throws Exception {
+        System.out.println("writeControlCommands");
+        CommandItem commandItem = new CommandItem();
+        commandItem.setIdentifier("10050029");
+
+        CollectObject obj= new CollectObject();
+        obj.setLogicalAddr("33010008");
+        obj.setMpSn(new int[]{0});
+        obj.AddCommandItem(commandItem);
+        obj.setEquipProtocol("101");
+
+        MTO_376 MTO3 = new MTO_376();
+        MTO3.addCollectObject(obj);
+
+        RealTimeProxy376 instance = proxy;
+        long SequenceCode = instance.writeControlCommands(MTO3);
+        RealTimeTaskDAO task = taskService.getTask(SequenceCode);
+        PmPacket376 packet = new PmPacket376();
+        packet.setValue(BcdUtils.stringToByteArray(task.getSendmsg()),0);
+        assertTrue(packet.getAddress().getRtua().equals("33010008"));
+        assertTrue(packet.getAfn()==1);
+        PmPacket376DA da = new PmPacket376DA();
+        PmPacket376DT dt = new PmPacket376DT();
+        packet.getDataBuffer().rewind();
+        packet.getDataBuffer().getDA(da);
+        packet.getDataBuffer().getDT(dt);
+        assertTrue(dt.getFn()==1);
+    }
 
 }

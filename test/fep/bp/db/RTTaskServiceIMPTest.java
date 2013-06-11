@@ -108,7 +108,7 @@ public class RTTaskServiceIMPTest {
         FileInputStream fin; 
         if(new File(s_FilePath).exists()){ 
             fin = new FileInputStream(new File(s_FilePath));  
-            taskService.insertUpgradeFile("1.3","376（20130220）",fin);
+            taskService.insertUpgradeFile("1.4","376（20130501）",fin);
         }
     }
     
