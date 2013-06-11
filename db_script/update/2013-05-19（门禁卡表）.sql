@@ -1,0 +1,44 @@
+-- Create table
+create table C_CARD
+(
+  term_id        NUMBER not null,
+  card_no        NUMBER,
+  card_code      VARCHAR2(20),
+  lasttime_stamp DATE default SYSDATE
+)
+tablespace TABS_ARCHIVE
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 128K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Add comments to the columns 
+comment on column C_CARD.term_id
+  is '所属终端ID';
+comment on column C_CARD.card_no
+  is '门禁卡序号';
+comment on column C_CARD.card_code
+  is '门禁卡卡号';
+comment on column C_CARD.lasttime_stamp
+  is '最后表结构修改时间戳';
+-- Create/Recreate primary, unique and foreign key constraints 
+alter table C_CARD
+  add constraint PK_C_CARD primary key (TERM_ID,card_no)
+  using index 
+  tablespace TABS_ARCHIVE
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+

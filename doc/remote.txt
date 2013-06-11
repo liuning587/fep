@@ -1,0 +1,20 @@
+ºþÄÏ£º113.240.241.91:4669  Administrator/QLdq123456
+
+HD£º183.129.186.78    
+	windows : Administrator/Admin20121221  
+	linux:root / Root20121221
+	
+QL:115.238.74.114
+
+
+QL_Test:115.238.74.114:4669
+administrator/pss
+
+QL_Test_Server:115.238.74.114:4668
+administrator/admin@123
+
+ql_ROUTER
+192.168.0.1
+admin
+QL@admin123
+

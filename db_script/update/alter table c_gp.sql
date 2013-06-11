@@ -1,0 +1,1 @@
+update C_GP set port = '1' where port is null;

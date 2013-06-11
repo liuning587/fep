@@ -1,0 +1,14 @@
+2010-08-02 14:12:16,265 main ERROR processor.ResponseDealer - CallableStatementCallback; SQL [{call PRC_INSERT_EVENT(?, ?, ?, ?)}]; ORA-01403: 未找到任何数据
+ORA-06512: 在 "PSS.PRC_INSERT_EVENT", line 10
+ORA-06512: 在 line 1
+; nested exception is java.sql.SQLException: ORA-01403: 未找到任何数据
+ORA-06512: 在 "PSS.PRC_INSERT_EVENT", line 10
+ORA-06512: 在 line 1
+
+2010-08-02 14:17:22,968 main ERROR processor.ResponseDealer - CallableStatementCallback; SQL [{call PRC_INSERT_EVENT(?, ?, ?, ?)}]; ORA-01403: 未找到任何数据
+ORA-06512: 在 "PSS.PRC_INSERT_EVENT", line 10
+ORA-06512: 在 line 1
+; nested exception is java.sql.SQLException: ORA-01403: 未找到任何数据
+ORA-06512: 在 "PSS.PRC_INSERT_EVENT", line 10
+ORA-06512: 在 line 1
+
