@@ -16,6 +16,7 @@ import fep.bp.dal.storedProc.I_ACT_StoredProcedure;
 import fep.bp.dal.storedProc.I_REACT_StoredProcedure;
 import fep.bp.dal.storedProc.LouBaoEvent36_StoredProcedure;
 import fep.bp.dal.storedProc.LouBaoEvent42_StoredProcedure;
+import fep.bp.dal.storedProc.ObjectStatus_StoredProcedure;
 import fep.bp.dal.storedProc.PFCURV_StoredProcedure;
 import fep.bp.dal.storedProc.PSCtrlPara_StoredProcedure;
 import fep.bp.dal.storedProc.PSCustomPara_StoredProcedure;
@@ -72,6 +73,8 @@ public class DataServiceIMP implements DataService {
     //add on 2013-02-24  by lijun 
     private PSCtrlPara_StoredProcedure psCtrlParaStoredProcedure;
     private PSCustomPara_StoredProcedure psCustomParaStoreProcedure;
+    //add on 2013-06-28 by lijun
+    private ObjectStatus_StoredProcedure objStatusStoredProcedur;
 
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -152,6 +155,15 @@ public class DataServiceIMP implements DataService {
         }
     }
 
+    @Override
+    public void insertObjStatus(String rtua,int gpSn,String ObjectType,int statusValue)
+    {
+        try {
+            this.objStatusStoredProcedur.execute(rtua, gpSn, ObjectType, statusValue);
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
+        }
+    }
 
     /*===============================================内部函数，闲人莫入===============================*/
 
@@ -1011,6 +1023,20 @@ public class DataServiceIMP implements DataService {
      */
     public void setAccessRecordProcedure(AccessRecordStoredProcedure accessRecordProcedure) {
         this.accessRecordProcedure = accessRecordProcedure;
+    }
+
+    /**
+     * @return the objStatusStoredProcedur
+     */
+    public ObjectStatus_StoredProcedure getObjStatusStoredProcedur() {
+        return objStatusStoredProcedur;
+    }
+
+    /**
+     * @param objStatusStoredProcedur the objStatusStoredProcedur to set
+     */
+    public void setObjStatusStoredProcedur(ObjectStatus_StoredProcedure objStatusStoredProcedur) {
+        this.objStatusStoredProcedur = objStatusStoredProcedur;
     }
 
 

@@ -5,7 +5,7 @@
 package fep.mina.protocolcodec.gb.gb376;
 
 import fep.bp.dal.StatusService;
-import fep.bp.model.StatusDAO;
+import fep.bp.model.OnlineStatusDAO;
 import fep.codec.protocol.gb.gb376.PmPacket376;
 import fep.codec.protocol.gb.gb376.PmPacket376Factroy;
 import fep.codec.utils.BcdUtils;
@@ -47,7 +47,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
                 rtuMap.rtuDisconnectted(rtua);
                 LOGGER.info("rtua<" + rtua + "> disconnect");
                 Date curDate = new Date(System.currentTimeMillis());
-                statusService.insertStatus(new StatusDAO(rtua,true,curDate,false));
+                statusService.insertStatus(new OnlineStatusDAO(rtua,true,curDate,false));
             }
             rtus.clear();
         }
@@ -66,7 +66,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         registRtua(session, rtua);
         
         Date curDate = new Date(System.currentTimeMillis());
-        statusService.insertStatus(new StatusDAO(rtua,true,curDate,true));
+        statusService.insertStatus(new OnlineStatusDAO(rtua,true,curDate,true));
         
         if (pack.getControlCode().getIsOrgniger()) {//主动上送
             PmPacket376 respPack = PmPacket376Factroy.makeAcKnowledgementPack(pack, 3, (byte) 0);

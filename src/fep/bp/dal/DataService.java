@@ -23,6 +23,6 @@ public interface DataService {
     public void insertLBEvent42(String rtua, Packet376Event42 event);
 
     public void insertEvent(String rtua, PmPacket376EventBase event);
-    
+    public void insertObjStatus(String rtua,int gpSn,String ObjectType,int statusValue);
     public void insertAccessRecord(String rtua,Date accessDate,String AccessType,String cardCode,String doorMark);
 }

@@ -13,14 +13,14 @@ import java.util.Date;
 
 
 
-public class StatusDAO {
+public class OnlineStatusDAO {
     private String logicalAddress;
     private boolean iscurrent;
     private Date eventTime;
     private Date recordTime;
     private boolean isConnect;
 
-    public StatusDAO(String logicalAddress,boolean iscurrent,Date eventTime,boolean isConnect){
+    public OnlineStatusDAO(String logicalAddress,boolean iscurrent,Date eventTime,boolean isConnect){
         super();
         this.logicalAddress = logicalAddress;
         this.iscurrent = iscurrent;

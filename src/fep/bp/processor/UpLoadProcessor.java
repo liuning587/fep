@@ -144,6 +144,21 @@ public class UpLoadProcessor extends BaseProcessor {
                 }
                 else if(event.GetEventCode() == 4)//状态量变位
                 {
+                    String eventDetail = event.getEventDetail();
+                    if(eventDetail.length()==16)//门禁事件处理 add on 2013.06.29
+                    {
+                        
+                        String shiftStr = eventDetail.substring(0, 8);
+                        String statusStr = eventDetail.substring(8, 16);
+                        for(int i=0;i<4;i++)
+                        {
+                            if(shiftStr.charAt(i)=='1')
+                            {
+                                int statusValue = statusStr.charAt(i)-'0';
+                                this.dataService.insertObjStatus(rtua, i+1, "1", statusValue);
+                            }
+                        }
+                    }
                     this.dataService.insertAccessRecord(rtua, event.getEventTime(), "1", "",event.getEventDetail());
                 }
                 else if(event.GetEventCode() == 57)//台区门禁（循查事件）记录

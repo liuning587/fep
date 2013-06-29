@@ -142,11 +142,11 @@ public class Encoder376 extends Encoder{
                     dt.setFn(fn);
                     packet.getDataBuffer().putDA(da);
                     packet.getDataBuffer().putDT(dt);
-                    if ((AFN == AFNType.AFN_SETPARA)||(AFN == AFNType.AFN_READDATA2)) {
+                    if ((AFN == AFNType.AFN_SETPARA)||(AFN == AFNType.AFN_READDATA2)||(AFN == AFNType.AFN_CONTROL)) {
                         putDataBuf_withValue(packet, commandItem);
                     }
                     if (Index % CmdItemNum == 0) {
-                        if (AFN == AFNType.AFN_RESET || AFN == AFNType.AFN_SETPARA || AFN == AFNType.AFN_TRANSMIT)//消息认证码字段PW
+                        if (AFN == AFNType.AFN_RESET || AFN == AFNType.AFN_SETPARA || AFN == AFNType.AFN_TRANSMIT || AFN == AFNType.AFN_CONTROL)//消息认证码字段PW
                         {
                             packet.setAuthorize(new Authorize());
                         }
@@ -446,7 +446,7 @@ public class Encoder376 extends Encoder{
             groupValue += DataItemValue;
             // String IsGroupEnd = dataItem.getIsGroupEnd();
             if (IsGroupEnd.equals("1")) {
-                packetdata.putBS8(groupValue);
+                packetdata.putBS8(UtilsBp.Reverse(groupValue));
                 groupValue = "";
             }
         } else if (Format.equals("GROUP_BIN")) {

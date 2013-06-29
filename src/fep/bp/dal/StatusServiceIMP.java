@@ -4,7 +4,7 @@
  */
 package fep.bp.dal;
 
-import fep.bp.model.StatusDAO;
+import fep.bp.model.OnlineStatusDAO;
 import java.util.HashMap;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class StatusServiceIMP implements StatusService{
     private final static Logger log = LoggerFactory.getLogger(StatusServiceIMP.class);
     private JdbcTemplate jdbcTemplate;
     
-    private boolean needUpdateStatus(StatusDAO status)
+    private boolean needUpdateStatus(OnlineStatusDAO status)
     {
         boolean result = false;
         if(!statusMap.containsKey(status.getLogicalAddress()))
@@ -31,7 +31,7 @@ public class StatusServiceIMP implements StatusService{
         }
         else
         {
-            boolean IsConnect = ((StatusDAO)statusMap.get(status.getLogicalAddress())).isIsConnect();
+            boolean IsConnect = ((OnlineStatusDAO)statusMap.get(status.getLogicalAddress())).isIsConnect();
             if(status.isIsConnect() != IsConnect)
             {
                 statusMap.put(status.getLogicalAddress(), status);
@@ -44,7 +44,7 @@ public class StatusServiceIMP implements StatusService{
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    public void insertStatus(StatusDAO status) {
+    public void insertStatus(OnlineStatusDAO status) {
         try {
             if(needUpdateStatus(status))
             {

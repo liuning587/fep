@@ -153,6 +153,10 @@
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
     </bean>
 
+    <bean id="objStatusStoredProcedur" class="fep.bp.dal.storedProc.ObjectStatus_StoredProcedure">
+        <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
+    </bean>
+    
     <bean id="psCtrlParaStoredProcedure" class="fep.bp.dal.storedProc.PSCtrlPara_StoredProcedure">
         <constructor-arg  index="0" ref ="dataSource"></constructor-arg>
     </bean>
@@ -203,6 +207,7 @@
         <property name="imbStatisStoredProcedur" ref="dayimbStatisStoredProcedur" />
         <property name="pfcurvStoredProcedur" ref="pfcurvStoredProcedur" />
         <property name="psStatusStoredProcedur" ref="psStatusStoredProcedur" />
+        <property name="objStatusStoredProcedur" ref="objStatusStoredProcedur" />
         <property name="humitureStoredProcedure" ref="humitureStoredProcedure" />
         <property name="psCtrlParaStoredProcedure" ref="psCtrlParaStoredProcedure" />
         <property name="psCustomParaStoreProcedure" ref="psCustomParaStoredProcedure" />

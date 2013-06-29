@@ -149,54 +149,85 @@
 	<DataItem DataItemCode="1004006801" Length="1" Format="BIN" BitNumber="0" Description="2类任务启动/停止标志" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10040073">
-	<DataItem DataItemCode="1004007301" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第1组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007302" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007303" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第1组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007304" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第2组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007305" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007306" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第2组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007307" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第3组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007308" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007309" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第3组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007310" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第4组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007311" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007312" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第4组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007313" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第5组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007314" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007315" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第5组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007316" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第6组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007317" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007318" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第6组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007319" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第7组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007320" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007321" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第7组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007322" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第8组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007323" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007324" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第8组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007325" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第9组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007326" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007327" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第9组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007328" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第10组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007329" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007330" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第10组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007331" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第11组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007332" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007333" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第11组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007334" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第12组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007335" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007336" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第12组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007337" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第13组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007338" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007339" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第13组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007340" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第14组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007341" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007342" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第14组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007343" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第15组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007344" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007345" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第15组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
-	<DataItem DataItemCode="1004007346" Length="1" Format="GROUP_BIN" BitNumber="2" Description="第16组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007347" Length="1" Format="GROUP_BIN" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="1004007348" Length="1" Format="GROUP_BIN" BitNumber="3" Description="第16组电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007301" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第1组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007302" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007303" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007304" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007305" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第2组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007306" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007307" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007308" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007309" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第3组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007310" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007311" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007312" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007313" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第4组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007314" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007315" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007316" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007317" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第5组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007318" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007319" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007320" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007321" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第6组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007322" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007323" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007324" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007325" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第7组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007326" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007327" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007328" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007329" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第8组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007330" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007331" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007332" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007333" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第9组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007334" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007335" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007336" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007337" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第10组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007338" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007339" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007340" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007341" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第11组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007342" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007343" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007344" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007345" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第12组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007346" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007347" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007348" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007349" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第13组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007350" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007351" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007352" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007353" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第14组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007354" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007355" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007356" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007357" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第15组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007358" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007359" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007360" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		
+		<DataItem DataItemCode="1004007361" Length="1" Format="GROUP_BS8" BitNumber="2" Description="第16组补偿方式" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007362" Length="1" Format="GROUP_BS8" BitNumber="3" Description="备用" DefaultValue="0" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1004007363" Length="1" Format="GROUP_BS8" BitNumber="3" Description="分补相" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
+		<DataItem DataItemCode="1004007364" Length="2" Format="A2" BitNumber="0" Description="电容装见容量" DefaultValue="0" IsGroupEnd="1" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10040074">
         <DataItem DataItemCode="1004007401" Length="2" Format="A5" BitNumber="0" Description="目标功率因数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
@@ -269,7 +300,7 @@
         <DataItem DataItemCode="1005005301" Length="1" Format="BIN" BitNumber="0" Description="指定通信端口" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="10050057">
-        <DataItem DataItemCode="1005005301" Length="2" Format="BS16" BitNumber="0" Description="控制输出高电平开关量组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="1005005701" Length="2" Format="BS16" BitNumber="0" Description="控制输出高电平开关量组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
 
     <CommandItem CommandCode="100C0002">
@@ -983,5 +1014,8 @@
     </CommandItem>
     <CommandItem CommandCode="9000C076">
         <DataItem DataItemCode="9000C07601" Length="2" Format="BS16" BitNumber="0" Description="门控开关量标志" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+	<CommandItem CommandCode="9000C072">
+        <DataItem DataItemCode="9000C07201" Length="2" Format="BS16" BitNumber="0" Description="控制输出高电平开关量组" DefaultValue="1" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
 </ProtocolCommandItems>

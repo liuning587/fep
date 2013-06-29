@@ -4,12 +4,12 @@
  */
 package fep.bp.dal;
 
-import fep.bp.model.StatusDAO;
+import fep.bp.model.OnlineStatusDAO;
 
 /**
  *
  * @author THINKPAD
  */
 public interface StatusService {
-    public void insertStatus(StatusDAO status);
+    public void insertStatus(OnlineStatusDAO status);
 }
