@@ -106,6 +106,8 @@ public abstract class Decoder376 extends Decoder {
                 dataItems.put(DataItemCode, dataBuffer.getTEL());
             } else if (Format.equals("BS8")) {
                 dataItems.put(DataItemCode, dataBuffer.getBS8());
+            } else if (Format.equals("BS16")) {
+                dataItems.put(DataItemCode, dataBuffer.getBS16());
             } else if (Format.equals("GROUP_BS8")) {
                 if (GroupValue.length() == 0) {
                     GroupValue = UtilsBp.Reverse(dataBuffer.getBS8());
@@ -284,8 +286,9 @@ public abstract class Decoder376 extends Decoder {
             InnerData.setInnerPacketData(dataBuffer645);
             return InnerData;
         }
-        else
+        else {
             return null;
+        }
     }
 
     protected PmPacketData getDataBuffer(PmPacket376 packet) {
@@ -329,6 +332,9 @@ public abstract class Decoder376 extends Decoder {
         if (afn == 0X10) {  //透明转发，特殊处理
             long port = dataBuf.getBin(1);//终端通信端口号
             long len = dataBuf.getBin(2);//透明转发内容字节数k
+            if(len == 0) {
+                return results;
+            }
             byte[] databuff = new byte[(int) len];
             dataBuf.getRowIoBuffer().get(databuff);
             int head = Gb645MeterPacket.getMsgHeadOffset(databuff, 0);

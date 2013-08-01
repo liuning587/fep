@@ -25,4 +25,5 @@ public interface DataService {
     public void insertEvent(String rtua, PmPacket376EventBase event);
     public void insertObjStatus(String rtua,int gpSn,String ObjectType,int statusValue);
     public void insertAccessRecord(String rtua,Date accessDate,String AccessType,String cardCode,String doorMark);
+    public void insertCDDL(String logicalAddress,int gpSn,String wgdl_day,String wgdl_month);
 }

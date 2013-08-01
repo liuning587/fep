@@ -366,15 +366,29 @@
         <DataItem DataItemCode="100C006607" Length="4" Format="BIN" BitNumber="0" Description="当前第7组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C006608" Length="4" Format="BIN" BitNumber="0" Description="当前第8组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C006609" Length="4" Format="BIN" BitNumber="0" Description="当前第9组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006610" Length="4" Format="BIN" BitNumber="0" Description="当前第1组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006611" Length="4" Format="BIN" BitNumber="0" Description="当前第2组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006612" Length="4" Format="BIN" BitNumber="0" Description="当前第3组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006613" Length="4" Format="BIN" BitNumber="0" Description="当前第4组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006614" Length="4" Format="BIN" BitNumber="0" Description="当前第5组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006615" Length="4" Format="BIN" BitNumber="0" Description="当前第6组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006616" Length="4" Format="BIN" BitNumber="0" Description="当前第7组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006617" Length="4" Format="BIN" BitNumber="0" Description="当前第8组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
-        <DataItem DataItemCode="100C006618" Length="4" Format="BIN" BitNumber="0" Description="当前第9组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006610" Length="4" Format="BIN" BitNumber="0" Description="当前第10组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006611" Length="4" Format="BIN" BitNumber="0" Description="当前第11组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006612" Length="4" Format="BIN" BitNumber="0" Description="当前第12组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006613" Length="4" Format="BIN" BitNumber="0" Description="当前第13组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006614" Length="4" Format="BIN" BitNumber="0" Description="当前第14组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006615" Length="4" Format="BIN" BitNumber="0" Description="当前第15组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006616" Length="4" Format="BIN" BitNumber="0" Description="当前第16组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006617" Length="4" Format="BIN" BitNumber="0" Description="当前第1组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006618" Length="4" Format="BIN" BitNumber="0" Description="当前第2组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006619" Length="4" Format="BIN" BitNumber="0" Description="当前第3组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006620" Length="4" Format="BIN" BitNumber="0" Description="当前第4组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006621" Length="4" Format="BIN" BitNumber="0" Description="当前第5组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006622" Length="4" Format="BIN" BitNumber="0" Description="当前第6组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006623" Length="4" Format="BIN" BitNumber="0" Description="当前第7组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006624" Length="4" Format="BIN" BitNumber="0" Description="当前第8组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006625" Length="4" Format="BIN" BitNumber="0" Description="当前第9组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006626" Length="4" Format="BIN" BitNumber="0" Description="当前第10组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006627" Length="4" Format="BIN" BitNumber="0" Description="当前第11组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006628" Length="4" Format="BIN" BitNumber="0" Description="当前第12组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006629" Length="4" Format="BIN" BitNumber="0" Description="当前第13组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006630" Length="4" Format="BIN" BitNumber="0" Description="当前第14组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006631" Length="4" Format="BIN" BitNumber="0" Description="当前第15组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100C006632" Length="4" Format="BIN" BitNumber="0" Description="当前第16组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="100C0067">
         <DataItem DataItemCode="100C006701" Length="4" Format="A13" BitNumber="0" Description="当前日补偿的无功电能量" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
@@ -477,6 +491,46 @@
         <DataItem DataItemCode="100C020111" Length="2" Format="A8" BitNumber="0" Description="第一档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C020112" Length="2" Format="A8" BitNumber="0" Description="第二档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
         <DataItem DataItemCode="100C020113" Length="2" Format="A8" BitNumber="0" Description="第三档不驱动时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+    <CommandItem CommandCode="100D0041">
+        <DataItem DataItemCode="100D004101" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004102" Length="4" Format="BIN" BitNumber="0" Description="第1组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004103" Length="4" Format="BIN" BitNumber="0" Description="第2组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004104" Length="4" Format="BIN" BitNumber="0" Description="第3组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004105" Length="4" Format="BIN" BitNumber="0" Description="第4组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004106" Length="4" Format="BIN" BitNumber="0" Description="第5组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004107" Length="4" Format="BIN" BitNumber="0" Description="第6组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004107" Length="4" Format="BIN" BitNumber="0" Description="第7组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004108" Length="4" Format="BIN" BitNumber="0" Description="第8组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004109" Length="4" Format="BIN" BitNumber="0" Description="第9组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004110" Length="4" Format="BIN" BitNumber="0" Description="第10组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004111" Length="4" Format="BIN" BitNumber="0" Description="第11组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004112" Length="4" Format="BIN" BitNumber="0" Description="第12组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004113" Length="4" Format="BIN" BitNumber="0" Description="第13组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004114" Length="4" Format="BIN" BitNumber="0" Description="第14组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004115" Length="4" Format="BIN" BitNumber="0" Description="第15组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004116" Length="4" Format="BIN" BitNumber="0" Description="第16组电容器累计投入时间" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004117" Length="4" Format="BIN" BitNumber="0" Description="第1组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004118" Length="4" Format="BIN" BitNumber="0" Description="第2组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004119" Length="4" Format="BIN" BitNumber="0" Description="第3组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004120" Length="4" Format="BIN" BitNumber="0" Description="第4组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004121" Length="4" Format="BIN" BitNumber="0" Description="第5组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004122" Length="4" Format="BIN" BitNumber="0" Description="第6组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004123" Length="4" Format="BIN" BitNumber="0" Description="第7组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004124" Length="4" Format="BIN" BitNumber="0" Description="第8组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004125" Length="4" Format="BIN" BitNumber="0" Description="第9组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004126" Length="4" Format="BIN" BitNumber="0" Description="第10组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004127" Length="4" Format="BIN" BitNumber="0" Description="第11组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004128" Length="4" Format="BIN" BitNumber="0" Description="第12组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004129" Length="4" Format="BIN" BitNumber="0" Description="第13组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004130" Length="4" Format="BIN" BitNumber="0" Description="第14组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004131" Length="4" Format="BIN" BitNumber="0" Description="第15组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="100D004132" Length="4" Format="BIN" BitNumber="0" Description="第16组电容器累计投入次数" DefaultValue="" IsGroupEnd="0" LowBitBefore="1"/>
+    </CommandItem>
+	<CommandItem CommandCode="100D0042">
+        <DataItem DataItemCode="F011" Length="3" Format="A20" BitNumber="0" Description="日冻结类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>
+        <DataItem DataItemCode="F002" Length="4" Format="A13" BitNumber="0" Description="日补偿的无功电能量" DefaultValue="2" IsGroupEnd="0" LowBitBefore="1"/>
+        <DataItem DataItemCode="F003" Length="4" Format="A13" BitNumber="0" Description="月补偿的无功电能量" DefaultValue="48" IsGroupEnd="0" LowBitBefore="1"/>
     </CommandItem>
     <CommandItem CommandCode="100D0081">
         <DataItem DataItemCode="F011" Length="5" Format="A15" BitNumber="0" Description="曲线类数据时标" DefaultValue="YESTERDAY" IsGroupEnd="1" LowBitBefore="1"/>

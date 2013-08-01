@@ -64,8 +64,9 @@ public class Decoder376_01 extends Decoder376{
                 results.put(InnerData.getKey(), dataItems);
                 return results;
             }
-            else
+            else {
                 return null;
+            }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;

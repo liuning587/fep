@@ -5,6 +5,7 @@
 package fep.bp.dal;
 
 import fep.bp.dal.storedProc.AccessRecordStoredProcedure;
+import fep.bp.dal.storedProc.CD_DL_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_ECUR_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_IMB_STATIS_StoredProcedure;
 import fep.bp.dal.storedProc.DAY_VOLT_STATIS_StoredProcedure;
@@ -75,6 +76,9 @@ public class DataServiceIMP implements DataService {
     private PSCustomPara_StoredProcedure psCustomParaStoreProcedure;
     //add on 2013-06-28 by lijun
     private ObjectStatus_StoredProcedure objStatusStoredProcedur;
+    //add on 2013-07-28 by lijun
+    private CD_DL_StoredProcedure cdDlStoredProcedur;
+    
 
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -116,7 +120,8 @@ public class DataServiceIMP implements DataService {
         for (Meter36 meter : Meters) {
             try {
                 this.loubaoEvent36_StoredProcedure.execute(rtua, meter.meterAddress,
-                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), (meter.isLocked ? 1 : 0), meter.xiangwei, meter.eventValue);
+                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), (meter.isLocked ? 1 : 0), 
+                        meter.xiangwei, meter.eventValue,meter.toString());
             } catch (Exception e) {
                 log.error("错误信息：", e.fillInStackTrace());
             }
@@ -129,7 +134,8 @@ public class DataServiceIMP implements DataService {
         for (Meter42 meter : Meters) {
             try {
                 this.loubaoEvent42_StoredProcedure.execute(rtua, meter.meterAddress,
-                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), (meter.isLocked ? 1 : 0), meter.xiangwei, meter.eventValue);
+                        meter.status, meter.eventTime, new Date(), (meter.isClosed ? 1 : 0), 
+                        (meter.isLocked ? 1 : 0), meter.xiangwei, meter.eventValue,meter.toString());
             } catch (Exception e) {
                 log.error("错误信息：", e.fillInStackTrace());
             }
@@ -164,6 +170,16 @@ public class DataServiceIMP implements DataService {
             log.error("错误信息：", e.fillInStackTrace());
         }
     }
+    
+    @Override
+    public void insertCDDL(String logicalAddress, int gpSn, String wgdl_day, String wgdl_month) {
+        try {
+            this.cdDlStoredProcedur.execute(logicalAddress, gpSn, wgdl_day, wgdl_month);
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
+        }
+    }
+
 
     /*===============================================内部函数，闲人莫入===============================*/
 
@@ -208,6 +224,11 @@ public class DataServiceIMP implements DataService {
         //用户自定义参数
         if (commandItemCode.equals("100C0201")){
             this.insertData_PsCustomPara(logicalAddress, dtoItem.gp, commandItemCode, dtoItem);
+        }
+        
+        //F67当日、当月电容器累计补偿的无功电能量
+        if (commandItemCode.equals("100C0067")){
+            this.insertCDDL(logicalAddress, dtoItem.gp, dataItemMap.get("100C006701"),dataItemMap.get("100C006702"));
         }
     }
 
@@ -1039,5 +1060,20 @@ public class DataServiceIMP implements DataService {
         this.objStatusStoredProcedur = objStatusStoredProcedur;
     }
 
+    /**
+     * @return the cdDlStoredProcedur
+     */
+    public CD_DL_StoredProcedure getCdDlStoredProcedur() {
+        return cdDlStoredProcedur;
+    }
+
+    /**
+     * @param cdDlStoredProcedur the cdDlStoredProcedur to set
+     */
+    public void setCdDlStoredProcedur(CD_DL_StoredProcedure cdDlStoredProcedur) {
+        this.cdDlStoredProcedur = cdDlStoredProcedur;
+    }
+
+    
 
 }

@@ -81,7 +81,7 @@ public class Packet376Event42 extends PmPacket376EventBase{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("保护器地址=").append(meterAddress).append(" ");
+       // sb.append("保护器地址=").append(meterAddress).append(" ");
         if (this.isClosed) {
             sb.append("合闸状态 ");
         } else {

@@ -28,6 +28,7 @@ public class LouBaoEvent42_StoredProcedure extends StoredProcedure {
     private static final String HAVEALARM_PARA = "p_haveAlarm";
     private static final String PHASE_PARA = "p_phase";
     private static final String CURRENTVALUE_PARA = "p_currentValue";
+    private static final String EVENTDETAIL_PARA = "p_eventDetail";
 
     public LouBaoEvent42_StoredProcedure(){
 
@@ -44,13 +45,13 @@ public class LouBaoEvent42_StoredProcedure extends StoredProcedure {
             declareParameter(new SqlParameter(HAVEALARM_PARA,Types.NUMERIC));
             declareParameter(new SqlParameter(PHASE_PARA,Types.VARCHAR));
             declareParameter(new SqlParameter(CURRENTVALUE_PARA,Types.NUMERIC));
-
+            declareParameter(new SqlParameter(EVENTDETAIL_PARA,Types.VARCHAR));
             compile();
     }
 
     public Map execute(String logicalAddress,String loubaoAddress,int ex_code,
                         Date trig_time,Date receive_Time,int closed,int haveAlarm,
-                        String phase,int currentValue) {
+                        String phase,int currentValue,String eventDetail) {
             Map<String,Object> inputs = new HashMap<String,Object>();
             inputs.put(LOGICADDRESS_PARA, logicalAddress);
             inputs.put(LOUBAOADDRESS__PARA, loubaoAddress);
@@ -61,6 +62,7 @@ public class LouBaoEvent42_StoredProcedure extends StoredProcedure {
             inputs.put(HAVEALARM_PARA, haveAlarm);
             inputs.put(PHASE_PARA, phase);
             inputs.put(CURRENTVALUE_PARA, currentValue);
+            inputs.put(EVENTDETAIL_PARA, eventDetail);
             return super.execute(inputs);
         }
 }
