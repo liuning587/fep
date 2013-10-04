@@ -152,15 +152,15 @@ public class RtuCommunicationInfo {
     public synchronized void callRtuEventRecord(EventCountor ec) {
         PmPacket376 pack1 = PmPacket376Factroy.makeCallEventRecordPacket(RtuCommunicationInfo.EC_CALL_HOST_ID,
                 this.rtua, 1, this.lastEc1, ec.getEc1());
-        sendPacket(0, pack1, 0);
+        sendPacket(0, pack1, 0,(byte)0);
 
         PmPacket376 pack2 = PmPacket376Factroy.makeCallEventRecordPacket(RtuCommunicationInfo.EC_CALL_HOST_ID,
                 this.rtua, 2, this.lastEc2, ec.getEc2());
-        sendPacket(0, pack2, 0);
+        sendPacket(0, pack2, 0,(byte)0);
     }
 
-    public synchronized void sendPacket(int sequence, PmPacket packet, int priorityLevel) {
-        addPacket(sequence, packet, priorityLevel);
+    public synchronized void sendPacket(int sequence, PmPacket packet, int priorityLevel,byte resendtimes) {
+        addPacket(sequence, packet, priorityLevel,resendtimes);
         if (this.idle) {
             sendNextPacket(false);
         } else {
@@ -169,9 +169,12 @@ public class RtuCommunicationInfo {
         }
     }
 
-    private void addPacket(int sequence, PmPacket packet, int priorityLevel) {
+    private void addPacket(int sequence, PmPacket packet, int priorityLevel,byte reSendtimes) {
         long timeOut = RtuCommunicationInfo.TIME_OUT;
         byte reSendTimes = RtuCommunicationInfo.maxRetryTimes;
+        if(reSendtimes > 0) {
+            reSendTimes = reSendtimes;
+        }
         if(packet.getAfn()==AFNType.AFN_UPGRADE) {
             timeOut = RtuCommunicationInfo.TIME_OUT_UPGRADE;
             reSendTimes = 10;

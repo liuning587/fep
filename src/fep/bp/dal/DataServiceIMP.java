@@ -372,6 +372,13 @@ public class DataServiceIMP implements DataService {
             DtoItem dtoItem) {
         try {
             Map<String, String> dataItemMap = dtoItem.dataMap;
+            if(("-1".equals(dataItemMap.get("0100")))||
+                    ("-1".equals(dataItemMap.get("0101")))||
+                    ("-1".equals(dataItemMap.get("0102")))||
+                    ("-1".equals(dataItemMap.get("0103")))||
+                    ("-1".equals(dataItemMap.get("0104")))) {
+                return;
+            }//数据非法的情况
             this.p_actStoredProcedure.execute(
                     logicalAddress,
                     gpSn,

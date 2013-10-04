@@ -12,4 +12,5 @@ import fep.bp.model.OnlineStatusDAO;
  */
 public interface StatusService {
     public void insertStatus(OnlineStatusDAO status);
+    public void initStatus_offLine();
 }

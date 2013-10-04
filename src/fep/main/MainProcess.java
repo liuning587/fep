@@ -7,6 +7,7 @@ package fep.main;
 import fep.bp.processor.*;
 import fep.bp.processor.planManager.PlanManager;
 import fep.bp.processor.polling.PollingProcessor;
+import fep.bp.processor.upgrade.ResetSessionList;
 import fep.bp.processor.upgrade.UpgradeProcessor;
 import fep.mina.common.PepCommunicatorInterface;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -33,6 +34,8 @@ public class MainProcess {
     private final static Logger log = LoggerFactory.getLogger(MainProcess.class);
     private PepCommunicatorInterface pepCommunicator;//通信代理器
     private ThreadPoolExecutor threadPool;
+    
+    private ResetSessionList resetSessionList;//针对通信超时的通道进行断开重建
 
     private void runProcessor(int maxCount, String title, Runnable bp) {
         for (int i = 1; i <= maxCount; i++) {
@@ -77,6 +80,9 @@ public class MainProcess {
         this.threadPool = new ThreadPoolExecutor(10, 10, 3,
                 TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(5),
                 new ThreadPoolExecutor.DiscardOldestPolicy());
+        
+        resetSessionList = new ResetSessionList();
+        
         this.pepCommunicator = pepCommunicator;
         status = new ProcessorStatus();
         
@@ -88,6 +94,7 @@ public class MainProcess {
         
         upgradeProcessor = new UpgradeProcessor(this.pepCommunicator);
         upgradeProcessor.setProcessorStatus(status);
+        upgradeProcessor.setResetSessionList(resetSessionList);
         
         realtimeSender = new RealTimeSender(this.pepCommunicator);
         realtimeSender.setProcessorStatus(status);

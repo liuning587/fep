@@ -133,7 +133,7 @@ public class PollingJob implements Job {
                         pack.getAddress().setMastStationId((byte) 2);
                         if(this.status.canProcess(pack.getAddress().getRtua(), ProcessLevel.Level2))
                         {
-                            this.pepCommunicator.SendPacket(this.getsequenceCode(), pack,2);
+                            this.pepCommunicator.SendPacket(this.getsequenceCode(), pack,2,(byte)0);
                             log.info("向终端：["+task.getLogicAddress()+"] 下发轮召报文（命令项;" + Item.getIdentifier() + "）：" + BcdUtils.binArrayToString(pack.getValue()));
                         }
                         else
@@ -150,7 +150,7 @@ public class PollingJob implements Job {
                 {
                     PmPacket376 packet376 = (PmPacket376)packet;
                     packet.getAddress().setMastStationId((byte) 2);
-                    pepCommunicator.SendPacket(this.getsequenceCode(), packet,2);
+                    pepCommunicator.SendPacket(this.getsequenceCode(), packet,2,(byte)0);
                     log.info("向终端：["+task.getLogicAddress()+"] 下发轮召报文（命令项;" + Item.getIdentifier() + "）：" + BcdUtils.binArrayToString(packet.getValue()));
                 }
             }            

@@ -20,15 +20,17 @@ public abstract class DataTypeLongBase {
     }
 
     protected void setArray(byte[] array, int beginPosition, int len){
-        if (array.length-beginPosition<len)
+        if (array.length-beginPosition<len) {
             throw new IllegalArgumentException();
-        else
+        }
+        else {
             try {
                 this.value = BcdUtils.bcdToInt(array, beginPosition, len);
                 this.isNull = false;
             } catch (Exception ex){
                 this.isNull = true;
             }
+        }
     }
 
     protected byte[] getArray(int len){

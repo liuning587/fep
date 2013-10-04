@@ -29,6 +29,7 @@ public class UpgradeProcessor extends BaseProcessor{
     private RTTaskService taskService;
     private PepCommunicatorInterface pepCommunicator;//通信代理器
     private HashMap<String,UpgradeTask> upgradeTaskMap;
+    private ResetSessionList resetSessionList;//针对通信超时的通道进行断开重建
     
     public UpgradeProcessor(PepCommunicatorInterface pepCommunicator) {
         super();
@@ -105,4 +106,11 @@ public class UpgradeProcessor extends BaseProcessor{
             upgradeTask.CheckBackPacket();
         }
     }  
+
+    /**
+     * @param resetSessionList the resetSessionList to set
+     */
+    public void setResetSessionList(ResetSessionList resetSessionList) {
+        this.resetSessionList = resetSessionList;
+    }
 }

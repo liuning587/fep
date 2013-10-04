@@ -5,6 +5,13 @@
 
 package fep.bp.utils.decoder;
 
+import fep.bp.model.Dto;
+import fep.bp.model.Dto.DtoItem;
+import fep.codec.protocol.gb.PmPacketData;
+import fep.codec.protocol.gb.gb376.PmPacket376;
+import fep.codec.protocol.gb.gb376.PmPacket376DA;
+import fep.codec.protocol.gb.gb376.PmPacket376DT;
+import fep.codec.utils.BcdUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -16,13 +23,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import fep.bp.model.Dto;
-import fep.bp.model.Dto.DtoItem;
-import fep.codec.protocol.gb.PmPacketData;
-import fep.codec.protocol.gb.gb376.PmPacket376;
-import fep.codec.protocol.gb.gb376.PmPacket376DA;
-import fep.codec.protocol.gb.gb376.PmPacket376DT;
-import fep.codec.utils.BcdUtils;
 
 /**
  *
@@ -56,12 +56,15 @@ public class ClassTwoDataDecoder {
         Element defineNode = ClassTwoDataDecoder.getDefineNode(Integer.toString(fn));
         if (defineNode!=null){
            String timeTag = defineNode.getAttributeValue("timeTag");
-           if (timeTag.equals("Td_d"))
+           if (timeTag.equals("Td_d")) {
                 ClassTwoDataDecoder.decodeTd_d(data, classTwodto, pn, defineNode);
-           if (timeTag.equals("Td_c"))
+            }
+           if (timeTag.equals("Td_c")) {
                 ClassTwoDataDecoder.decodeTd_c(data, classTwodto, pn, defineNode);
-           if (timeTag.equals("Td_m"))
+            }
+           if (timeTag.equals("Td_m")) {
                 ClassTwoDataDecoder.decodeTd_m(data, classTwodto, pn, defineNode);
+            }
         }
         return classTwodto;
     }
@@ -71,8 +74,9 @@ public class ClassTwoDataDecoder {
         List fnNodes = root.getChildren("fn");
         for (int i = 0; i<fnNodes.size(); i++){
             Element fnNode = (Element) fnNodes.get(i);
-            if (fnNode.getAttributeValue("id").equals(name))
+            if (fnNode.getAttributeValue("id").equals(name)) {
                 return fnNode;
+            }
         }
         return null;
     }

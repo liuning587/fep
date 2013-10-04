@@ -51,7 +51,12 @@ public class RealTimeSender extends BaseProcessor {
                 //    log.info("开始往下发队列中发送报文："+task.getSendmsg());
                     if(this.status.canProcess(packet.getAddress().getRtua(), ProcessLevel.Level2))
                     {
-                        pepCommunicator.SendPacket(task.getTaskId(), packet,1);
+                        if("4".equals(task.getTask_type())) {
+                            pepCommunicator.SendPacket(task.getTaskId(), packet,1,(byte)1);
+                        }
+                        else {
+                            pepCommunicator.SendPacket(task.getTaskId(), packet,1,(byte)0);
+                        }
                         log.info("往下发队列中发送("+packet.getAddress().getRtua()+")报文："+task.getSendmsg());
                     }
                     else

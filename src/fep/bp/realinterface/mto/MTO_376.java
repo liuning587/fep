@@ -12,8 +12,18 @@ import net.sf.json.*;
 public class MTO_376 extends MessageTranObject{
     private List<CollectObject> collectObjects = new ArrayList<CollectObject>();
     private List<CollectObject_TransMit> collectObjects_Transmit = new ArrayList<CollectObject_TransMit>();
-    
+    private int taskType = 1;
 
+    public int getTaskType()
+    {
+        return taskType;
+    }
+    
+    public void setTaskType(int taskType)
+    {
+        this.taskType = taskType;  
+    }
+    
     public List<CollectObject> getCollectObjects(){
        return this.collectObjects;
     }

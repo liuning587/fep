@@ -25,7 +25,7 @@ public class DataTypeA12 extends DataTypeLongBase{
     }
 
     public long getValue(){
-        return this.value;
+        return this.isNull ? -1:this.value;
     }
 
     public final void setArray(byte[] array, int beginPosition){

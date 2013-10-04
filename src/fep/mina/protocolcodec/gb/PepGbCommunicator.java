@@ -4,6 +4,7 @@
  */
 package fep.mina.protocolcodec.gb;
 
+import fep.bp.processor.upgrade.ResetSessionList;
 import fep.codec.protocol.gb.PmPacket;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuAutoUploadPacketQueue;
@@ -22,6 +23,8 @@ import org.slf4j.LoggerFactory;
  * @author luxiaochung
  */
 public class PepGbCommunicator implements PepCommunicatorInterface {
+
+    private ResetSessionList resetSessionList;
 
     private Map<String, RtuCommunicationInfo> rtuSessionMap;
     private RtuConnectEventHandler rtuConnectEventHandler;
@@ -53,7 +56,7 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
     }
 
     @Override
-    public void SendPacket(int sequence, PmPacket packet, int priorityLevel) {
+    public void SendPacket(int sequence, PmPacket packet, int priorityLevel,byte reSendtimes) {
         String rtua = packet.getAddress().getRtua();
         RtuCommunicationInfo rtu = getRtuCommunictionInfo(rtua);
         if (rtu == null) {
@@ -62,13 +65,12 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
                 rtuSessionMap.put(rtua, rtu);
             }
         }
-        rtu.sendPacket(sequence, packet, priorityLevel);
+        rtu.sendPacket(sequence, packet, priorityLevel,reSendtimes);
     }
 
     @Override
     public void checkUndespPackets() {
-        Date checkTime;
-        checkTime = new Date();
+        Date checkTime = new Date();
         synchronized (this) {
             for (RtuCommunicationInfo rtu : rtuSessionMap.values()) {
                 rtu.checkNotResponed(checkTime);
@@ -113,9 +115,9 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
             addAutoUploadPacket(pack);
         }
 
-        if ((pack.getControlCode().getIsUpDirect()) && (pack.getControlCode().getUpDirectIsAppealCall())) {//要求访问
-            rtu.callRtuEventRecord(pack.getEC());
-        }
+//        if ((pack.getControlCode().getIsUpDirect()) && (pack.getControlCode().getUpDirectIsAppealCall())) {//要求访问
+//            rtu.callRtuEventRecord(pack.getEC());
+//        }
         
     }
     
@@ -125,5 +127,19 @@ public class PepGbCommunicator implements PepCommunicatorInterface {
          //   LOGGER.info("向业务层发送收到的终端主动上送报文："+pack.toString());
             autoUploadPacketQueue.addPacket(pack);
         }
+    }
+
+    /**
+     * @return the resetSessionList
+     */
+    public ResetSessionList getResetSessionList() {
+        return resetSessionList;
+    }
+
+    /**
+     * @param resetSessionList the resetSessionList to set
+     */
+    public void setResetSessionList(ResetSessionList resetSessionList) {
+        this.resetSessionList = resetSessionList;
     }
 }

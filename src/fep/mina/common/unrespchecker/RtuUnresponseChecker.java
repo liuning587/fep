@@ -4,7 +4,6 @@
  */
 package fep.mina.common.unrespchecker;
 
-import fep.bp.processor.polling.PollingProcessor;
 import fep.mina.common.PepCommunicatorInterface;
 import java.util.Date;
 import java.util.logging.Level;

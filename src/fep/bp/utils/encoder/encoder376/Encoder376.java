@@ -649,7 +649,7 @@ public class Encoder376 extends Encoder{
                         String DataItemCode = (String) iterator.next();
                         dataItem = DataItemMap_Config.get(DataItemCode);
                         DataItemValue = dataItemMap.get(DataItemCode);
-                        FillDataBuffer(packet.getDataBuffer(), dataItem.getFormat(),DataItemValue, dataItem.getIsGroupEnd(), dataItem.getLength(), dataItem.getBitNumber());
+                        FillDataBuffer(packet.getDataBuffer(), dataItem.getFormat(),String.valueOf(DataItemValue), dataItem.getIsGroupEnd(), dataItem.getLength(), dataItem.getBitNumber());
                     }           
                 }
 

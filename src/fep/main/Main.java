@@ -40,8 +40,6 @@ public class Main {
         System.out.println("FEP前置通信器监听端口： " + PORT);
         //System.out.println("Idle Timeout "+acceptor.getSessionConfig().getIdleTime(IdleStatus.BOTH_IDLE));
 
-
-
         RtuUnresponseChecker checker = new RtuUnresponseChecker(rtuMap);
         checker.run();
 

@@ -89,6 +89,7 @@ public abstract class Decoder376 extends Decoder {
      * @param dataBuffer 数据抽取的dataBuffer
      */
     private void fillDataItem(List<ProtocolDataItem> DataItemList_Config, Map<String, String> dataItems, PmPacketData dataBuffer) {
+         try {
         String GroupValue = "";
         for (ProtocolDataItem dataItem : DataItemList_Config) {
             String DataItemCode = dataItem.getDataItemCode();
@@ -159,9 +160,13 @@ public abstract class Decoder376 extends Decoder {
             } else if (Format.equals("A10")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA10().getValue()));
             } else if (Format.equals("A11")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA11().getValue()));
+                if(dataBuffer.getA11().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA11().getValue()));
+                }
             } else if (Format.equals("A12")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA12().getValue()));
+                if(dataBuffer.getA12().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA12().getValue()));
+                }
             } else if (Format.equals("A13")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA13().getValue()));
             } else if (Format.equals("A14")) {
@@ -181,22 +186,33 @@ public abstract class Decoder376 extends Decoder {
             } else if (Format.equals("A21")) {
                 dataItems.put(DataItemCode, dataBuffer.getA21().toString());
             } else if (Format.equals("A22")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA22().getValue()));
+                if(dataBuffer.getA22().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA22().getValue()));
+                }
             } else if (Format.equals("A23")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA23().getValue()));
+                if(dataBuffer.getA23().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA23().getValue()));
+                }
             } else if (Format.equals("A24")) {
                 dataItems.put(DataItemCode, dataBuffer.getA24().toString());
             } else if (Format.equals("A25")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA25().getValue()));
             } else if (Format.equals("A26")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA26().getValue()));
+                if(dataBuffer.getA26().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA26().getValue()));
+                }
             } else if (Format.equals("A27")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA27().getValue()));
+                if(dataBuffer.getA27().getValue()>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA27().getValue()));
+                }
             } else if (Format.equals("A29")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getBcdInt(1)));
             } else if (Format.equals("DATE_LOUBAO")) {
                 dataItems.put(DataItemCode, UtilsBp.DateArray2String(dataBuffer.getBytes(7)));
             }
+        }
+        } catch (Exception e) {
+            log.error("错误信息：", e.fillInStackTrace());
         }
     }
     
@@ -220,16 +236,16 @@ public abstract class Decoder376 extends Decoder {
      * @param dataBuffer：接收到数据的buffer
      */
     protected Map<String, String> dataBuffer2Map(String commandItemCode, PmPacketData dataBuffer) {
- //       try {
+        try {
 
             Map<String, String> dataItems = new TreeMap<String, String>();
             List<ProtocolDataItem> DataItemList_Config = config.getDataItemList(commandItemCode);
             fillDataItem(DataItemList_Config, dataItems, dataBuffer);
             return dataItems;
-  /*      } catch (Exception e) {
+        } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
             return null;
-        }*/
+        }
     }
 
     protected class InnerDataBuffer{

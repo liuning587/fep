@@ -278,6 +278,7 @@ public class RealTimeProxy376 implements RealTimeInterface {
 
                 List<RealTimeTaskDAO> tasks = Encode_TransMit(MTO, sequenceCode);
                 for (RealTimeTaskDAO task : tasks) {
+                    task.setTask_type(Integer.toString(MTO.getTaskType()));
                     this.taskService.insertTask(task);
                 }
                 return sequenceCode;

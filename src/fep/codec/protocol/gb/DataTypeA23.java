@@ -23,7 +23,7 @@ public class DataTypeA23 extends DataTypeLongBase{
     }
 
     public float getValue(){
-        return (float) (this.value/10000.0);
+        return this.isNull ? -1:(float) (this.value/10000.0);
     }
 
     @Override

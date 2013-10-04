@@ -53,6 +53,7 @@ public class UpgradeTask {
     private Date startSendTicket;
     private ProcessorStatus status;
     private boolean haveUpgradeTask;
+    private ResetSessionList resetSessionList;
     /**
      * @return the taskStatus
      */
@@ -103,6 +104,13 @@ public class UpgradeTask {
             this.currentSendNo  =lastFailFrameNo-1;
         }
     
+    }
+
+    /**
+     * @param resetSessionList the resetSessionList to set
+     */
+    public void setResetSessionList(ResetSessionList resetSessionList) {
+        this.resetSessionList = resetSessionList;
     }
     
     private interface TaskStatus
@@ -224,7 +232,7 @@ public class UpgradeTask {
             SequencedPmPacket toPacket = this.rtuaUpgradeQueue.peek();
             if(toPacket != null)
             {
-                this.pepCommunicator.SendPacket(toPacket.sequence, toPacket.pack, 0);
+                this.pepCommunicator.SendPacket(toPacket.sequence, toPacket.pack, 0,(byte)0);
                 currentSendNo++;
                 this.startSendTicket = new Date();
                 log.info("集中器【"+rtua+"】,下发升级报文第"+currentSendNo+"帧，共有"+totalPacketNumber+"帧");

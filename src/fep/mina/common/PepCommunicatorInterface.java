@@ -19,7 +19,7 @@ public interface PepCommunicatorInterface {
      * @param packet
      * @param priorityLevel 优先级，0为最优先
      */
-    public  void SendPacket(int sequence, PmPacket packet, int priorityLevel);
+    public  void SendPacket(int sequence, PmPacket packet, int priorityLevel, byte reSendtimes);
 
     /**
      * 主动上送时，报文放入RtuAutoUploadPacketQueue队列，包括不是主动上送的事件，

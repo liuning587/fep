@@ -55,5 +55,16 @@ public class StatusServiceIMP implements StatusService{
         } catch (DataAccessException dataAccessException) {
             log.error(dataAccessException.getMessage());
         }
-    }   
+    } 
+    
+    
+    public void initStatus_offLine()
+    {
+        try 
+        {
+                jdbcTemplate.update("update R_ONLINE_INFO set EVENT_TYPE = '0' where isCurrent=?",new Object[]{"1"});                          
+        } catch (DataAccessException dataAccessException) {
+            log.error(dataAccessException.getMessage());
+        }
+    }
 }

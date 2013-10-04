@@ -156,7 +156,15 @@
     <fn id="108" itemId="100D0108" title="测量点C相功率因数曲线" timeTag="Td_c" >
         <subitem subItemId="2603" codec="A5" />
     </fn>
+	
+	<fn id="161" itemId="100D0161" title="日冻结正向有功电能示值" timeTag="Td_m" >
+        <subitem subItemId="1611" codec="A14" />
+    </fn>
 
+	<fn id="162" itemId="100D0162" title="日冻结正向无功（组合无功1）电能示值" timeTag="Td_m" >
+        <subitem subItemId="1621" codec="A11" />
+    </fn>
+	
     <fn id="193" itemId="100D0193" title="正向有功最大需量及发生时间" timeTag="Td_m" >
         <subitem subItemId="1100" codec="A23" />
         <subitem subItemId="B100" codec="A17" />

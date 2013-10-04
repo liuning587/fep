@@ -23,7 +23,7 @@ public class DataTypeA27 extends DataTypeLongBase{
     }
 
     public long getValue(){
-        return this.value;
+        return this.isNull ? -1:this.value;
     }
 
     @Override

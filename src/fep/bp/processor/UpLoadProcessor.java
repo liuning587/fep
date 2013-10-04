@@ -23,6 +23,7 @@ import fep.meter645.Gb645MeterPacket;
 import fep.mina.common.PepCommunicatorInterface;
 import fep.mina.common.RtuAutoUploadPacketQueue;
 import fep.system.SystemConst;
+import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,6 +156,12 @@ public class UpLoadProcessor extends BaseProcessor {
                             if(shiftStr.charAt(i)=='1')
                             {
                                 int statusValue = statusStr.charAt(i)-'0';
+                                if (statusValue >0) {
+                                    statusValue = 0;
+                                }
+                                else {
+                                    statusValue = 1;
+                                } 
                                 this.dataService.insertObjStatus(rtua, i+1, "1", statusValue);
                             }
                         }
@@ -163,6 +170,8 @@ public class UpLoadProcessor extends BaseProcessor {
                 }
                 else if(event.GetEventCode() == 57)//台区门禁（循查事件）记录
                 {
+                    Date nowTime = new Date(System.currentTimeMillis());
+                    event.getEventTime().setSeconds(nowTime.getSeconds());
                     this.dataService.insertAccessRecord(rtua, event.getEventTime(), "2", event.getEventDetail(), "");
                 }
                 saveEvent(rtua, dt.getFn(), da.getPn(), event);

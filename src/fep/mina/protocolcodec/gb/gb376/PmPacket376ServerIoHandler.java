@@ -37,6 +37,7 @@ public class PmPacket376ServerIoHandler extends IoHandlerAdapter {
         cxt = new ClassPathXmlApplicationContext(SystemConst.SPRING_BEANS);
         statusService = (StatusService) cxt.getBean(SystemConst.STATUS_BEAN);
         this.rtuMap = rtuMap;
+        statusService.initStatus_offLine();
     }
 
     @Override
