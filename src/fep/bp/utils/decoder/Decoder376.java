@@ -160,17 +160,25 @@ public abstract class Decoder376 extends Decoder {
             } else if (Format.equals("A10")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA10().getValue()));
             } else if (Format.equals("A11")) {
-                if(dataBuffer.getA11().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA11().getValue()));
+                double value = dataBuffer.getA11().getValue();
+                if( value >=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A12")) {
-                if(dataBuffer.getA12().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA12().getValue()));
+                long value = dataBuffer.getA12().getValue();
+                if(value>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A13")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA13().getValue()));
             } else if (Format.equals("A14")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA14().getValue()));
+                double value = dataBuffer.getA14().getValue();
+                if( value >= 0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
+                }
+                else{
+                    dataItems.put(DataItemCode, "");
+                }
             } else if (Format.equals("A15")) {
                 dataItems.put(DataItemCode, dataBuffer.getA15().toString());
             } else if (Format.equals("A16")) {
@@ -186,24 +194,28 @@ public abstract class Decoder376 extends Decoder {
             } else if (Format.equals("A21")) {
                 dataItems.put(DataItemCode, dataBuffer.getA21().toString());
             } else if (Format.equals("A22")) {
-                if(dataBuffer.getA22().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA22().getValue()));
+                float value = dataBuffer.getA22().getValue();
+                if(value>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A23")) {
-                if(dataBuffer.getA23().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA23().getValue()));
+                float value = dataBuffer.getA23().getValue();
+                if(value>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A24")) {
                 dataItems.put(DataItemCode, dataBuffer.getA24().toString());
             } else if (Format.equals("A25")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA25().getValue()));
             } else if (Format.equals("A26")) {
-                if(dataBuffer.getA26().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA26().getValue()));
+                float value = dataBuffer.getA26().getValue();
+                if(value>=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A27")) {
-                if(dataBuffer.getA27().getValue()>=0) {
-                    dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA27().getValue()));
+                long value = dataBuffer.getA27().getValue();
+                if(value >=0) {
+                    dataItems.put(DataItemCode, String.valueOf(value));
                 }
             } else if (Format.equals("A29")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getBcdInt(1)));

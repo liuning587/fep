@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class Encoder {
     protected ProtocolConfig config;
-    protected static final int MAX_PACKET_LEN = 256;
+    protected static final int MAX_PACKET_LEN = 512;
 
     /**
      *对采集对象编码，生成报文对象

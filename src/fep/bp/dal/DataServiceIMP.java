@@ -372,13 +372,6 @@ public class DataServiceIMP implements DataService {
             DtoItem dtoItem) {
         try {
             Map<String, String> dataItemMap = dtoItem.dataMap;
-            if(("-1".equals(dataItemMap.get("0100")))||
-                    ("-1".equals(dataItemMap.get("0101")))||
-                    ("-1".equals(dataItemMap.get("0102")))||
-                    ("-1".equals(dataItemMap.get("0103")))||
-                    ("-1".equals(dataItemMap.get("0104")))) {
-                return;
-            }//数据非法的情况
             this.p_actStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
@@ -555,15 +548,15 @@ public class DataServiceIMP implements DataService {
                     logicalAddress,
                     gpSn,
                     dataDate,
-                    dataItemMap.get("100C020001"),
-                    dataItemMap.get("100C020002"),
-                    dataItemMap.get("100C020003"),
-                    "",
-                    dataItemMap.get("100C020008"),
-                    dataItemMap.get("100C020004"),
                     dataItemMap.get("100C020005"),
                     dataItemMap.get("100C020006"),
-                    dataItemMap.get("100C020007"));
+                    dataItemMap.get("100C020007"),
+                    "",
+                    dataItemMap.get("100C020009"),
+                    dataItemMap.get("100C020002"),
+                    dataItemMap.get("100C020003"),
+                    dataItemMap.get("100C020004"),
+                    dataItemMap.get("100C020008"));
             }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
@@ -753,19 +746,19 @@ public class DataServiceIMP implements DataService {
             this.psCustomParaStoreProcedure.execute(
                     logicalAddress,
                     gpSn,
-                    dataItemMap.get("100C020101"),//过压超限值
-                    dataItemMap.get("100C020102"),//欠压超限值
-                    dataItemMap.get("100C020103"),//缺相超限值
-                    dataItemMap.get("100C020104"),//额定电流值
-                    dataItemMap.get("100C020105"),//定时试跳
-                    dataItemMap.get("100C020106"),//档位返回
-                    dataItemMap.get("100C020107"),//重合闸
-                    dataItemMap.get("100C020108"),//欠压保护-数据告警
-                    dataItemMap.get("100C020109"),//欠压保护-跳闸控制
-                    dataItemMap.get("100C020110"),//过压保护-数据告警
-                    dataItemMap.get("100C020111"),//过压保护-跳闸控制
-                    dataItemMap.get("100C020112")//缺相保护-数据告警
-                    
+                    dataItemMap.get("100C020101"),//数据时间
+                    dataItemMap.get("100C020102"),//过压超限值
+                    dataItemMap.get("100C020103"),//欠压超限值
+                    dataItemMap.get("100C020104"),//缺相超限值
+                    dataItemMap.get("100C020105"),//额定电流值
+                    dataItemMap.get("100C020106"),//第一档剩余电流档位值
+                    dataItemMap.get("100C020107"),//第二档剩余电流档位值
+                    dataItemMap.get("100C020108"),//第三档剩余电流档位值
+                    dataItemMap.get("100C020109"),//第四档剩余电流档位值
+                    dataItemMap.get("100C020110"),//第五档剩余电流档位值
+                    dataItemMap.get("100C020111"),//第一档不驱动时间
+                    dataItemMap.get("100C020112"),//第二档不驱动时间
+                    dataItemMap.get("100C020113")//第三档不驱动时间
                     );
 
         } catch (Exception e) {

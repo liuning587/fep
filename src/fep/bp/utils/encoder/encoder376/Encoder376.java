@@ -544,13 +544,22 @@ public class Encoder376 extends Encoder{
     private int getDataItemGroupLength(CommandItem commandItem) {
         long TempCode = 0;
         int Len = 0;
+        Map<String, ProtocolDataItem> DataItemMap_Config = this.getConfig().getDataItemMap(commandItem.getIdentifier());
+        Map<String, String> dataItemMap = commandItem.getDatacellParam();
+        Iterator iterator = dataItemMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            String DataItemCode = (String) iterator.next();
+            ProtocolDataItem dataItem = DataItemMap_Config.get(DataItemCode);
+            Len += dataItem.getLength();
+        } 
+                    
         List<DataItemGroup> groups = commandItem.getCircleDataItems().getDataItemGroups();
         if (groups.size() > 0) {
             DataItemGroup group = groups.get(0);
-            Map<String, ProtocolDataItem> DataItemMap_Config = this.getConfig().getDataItemMap(commandItem.getIdentifier());
+            
 
-            List<DataItem> dataItemList = group.getDataItemList();
-            for (DataItem dataItem : dataItemList) {
+            List<DataItem> dataItemList_group = group.getDataItemList();
+            for (DataItem dataItem : dataItemList_group) {
                 String DataItemCode = dataItem.getDataItemCode();
                 if ((Long.valueOf(DataItemCode) - TempCode > 10000) && (TempCode != 0)) {
                     ProtocolDataItem TempdataItem = DataItemMap_Config.get(String.valueOf(TempCode + 10000).substring(0, 10));
@@ -561,7 +570,7 @@ public class Encoder376 extends Encoder{
                 Len += protocoldataItem.getLength();
                 TempCode = Long.valueOf(DataItemCode);
             }
-            return Len + 2;//个数（2字节）
+            return Len;
         } else {
             return 0;
         }
@@ -635,7 +644,7 @@ public class Encoder376 extends Encoder{
                 }
 
                 //生成一个报文
-                if (((Index - 1) % ActualgroupNumber == 0) && (!CanPacket)) {
+                if ((ActualgroupNumber!=0)&((Index - 1) % ActualgroupNumber == 0) && (!CanPacket)) {
                     packet = new PmPacket376();
                     packet.setCommandRemark(commandItem.getIdentifier());//设置命令项标志
                     packet.setMpSnRemark(String.valueOf(MpSn));//设置测量点标志
