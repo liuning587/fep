@@ -685,6 +685,7 @@ public class Encoder376 extends Encoder{
                     TempCode = Long.valueOf(DataItemCode);
                 }
                 if ((Index % ActualgroupNumber == 0) && (CanPacket)) {
+                    Index = 0;
                     if (AFN == AFNType.AFN_RESET || AFN == AFNType.AFN_SETPARA || AFN == AFNType.AFN_TRANSMIT)//消息认证码字段PW
                     {
                         packet.setAuthorize(new Authorize());
