@@ -154,7 +154,7 @@ public abstract class Decoder376 extends Decoder {
             } else if (Format.equals("A7")) {
                 dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA7().getValue()));
             } else if (Format.equals("A8")) {
-                dataItems.put(DataItemCode, String.valueOf(dataBuffer.getA8().getValue()));
+                dataItems.put(DataItemCode, dataBuffer.getA8().toString());
             } else if (Format.equals("A9")) {
                 dataItems.put(DataItemCode, String.format("%.4f", dataBuffer.getA9().getValue()));
             } else if (Format.equals("A10")) {

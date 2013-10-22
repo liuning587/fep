@@ -121,7 +121,7 @@ public class PmPacket376Factroy {
             orginData.rewind();
             PmPacket376DT orginDT = new PmPacket376DT();
             PmPacket376DA orginDA = new PmPacket376DA();
-            orginData.getDA(orginDA).getDT(orginDT);
+            orginData.getDA(orginDA).getDA(orginDA);
             data.putDA(orginDA).putDT(orginDT);
         }
         data.put(ackValue);

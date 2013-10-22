@@ -72,9 +72,9 @@ public class Packet376Event36 extends PmPacket376EventBase {
                 sb.append("分闸状态 ");
             }
             if (this.isLocked) {
-                sb.append("锁死状态 ");
+                sb.append("闭锁状态 ");
             } else {
-                sb.append("未锁死状态 ");
+                sb.append("未闭锁状态 ");
             }
             sb.append("相位").append(xiangwei).append(" ");
             sb.append(this.statusString());
