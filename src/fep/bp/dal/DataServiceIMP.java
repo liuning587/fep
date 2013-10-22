@@ -375,7 +375,7 @@ public class DataServiceIMP implements DataService {
             this.p_actStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
-                    dataDate,
+                    dataItemMap.get("F000"),
                     dataItemMap.get("0100"),
                     dataItemMap.get("0101"),
                     dataItemMap.get("0102"),
@@ -544,10 +544,12 @@ public class DataServiceIMP implements DataService {
             }
             else if(commandItemCode.equals("100C0200"))
             {
-                this.eccurvStoredProcedure.execute(
+                if(dataItemMap.get("100C020001").length() > 0)
+                {
+                    this.eccurvStoredProcedure.execute(
                     logicalAddress,
                     gpSn,
-                    dataDate,
+                    dataItemMap.get("100C020001"),
                     dataItemMap.get("100C020005"),
                     dataItemMap.get("100C020006"),
                     dataItemMap.get("100C020007"),
@@ -557,6 +559,7 @@ public class DataServiceIMP implements DataService {
                     dataItemMap.get("100C020003"),
                     dataItemMap.get("100C020004"),
                     dataItemMap.get("100C020008"));
+                }
             }
         } catch (Exception e) {
             log.error("错误信息：", e.fillInStackTrace());
